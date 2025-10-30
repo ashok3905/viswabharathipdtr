@@ -1,0 +1,2083 @@
+{
+  "holidays": [
+    {
+      "id": 1760754732061,
+      "text": "second saturday holiday",
+      "date": "18/10/2025, 8:02:12 am",
+      "file": null,
+      "fileName": null,
+      "expiryDate": "2025-10-19T02:32:12.061Z"
+    },
+    {
+      "id": 1760755212782,
+      "text": "sunday holiday",
+      "date": "18/10/2025, 8:10:12 am",
+      "file": null,
+      "fileName": null,
+      "expiryDate": "2025-10-19T02:40:12.782Z"
+    },
+    {
+      "id": 1760764638472,
+      "text": "today is holiday",
+      "date": "18/10/2025, 10:47:18 am",
+      "file": null,
+      "fileName": null,
+      "expiryDate": "2025-10-19T05:17:18.472Z"
+    }
+  ],
+  "paymentDues": {
+    "1a": [
+      {
+        "id": 1753758289494,
+        "text": "35322234",
+        "date": "29/7/2025, 8:34:49 am",
+        "file": null,
+        "fileName": null,
+        "rollNumbers": [
+          "10"
+        ],
+        "expiryDate": null
+      }
+    ],
+    "7c": []
+  },
+  "keyInfo": [
+    {
+      "id": 1760766115830,
+      "text": "abc",
+      "date": "18/10/2025, 11:11:55 am",
+      "file": null,
+      "fileName": null,
+      "expiryDate": "2025-10-19T05:41:55.830Z"
+    },
+    {
+      "id": 1760766692620,
+      "text": "def",
+      "date": "18/10/2025, 11:21:32 am",
+      "file": null,
+      "fileName": null,
+      "expiryDate": null
+    }
+  ],
+  "facultyPosts": {
+    "1": {
+      "homework": [],
+      "assignment": [],
+      "subject": [
+        {
+          "id": 1761803287138,
+          "text": "bring all your maths notebooks tomarrow",
+          "date": "30/10/2025, 11:18:07 am",
+          "faculty": "CB2501",
+          "file": null,
+          "fileName": null,
+          "expiryDate": null
+        }
+      ]
+    }
+  },
+  "assignments": {
+    "1": [
+      {
+        "id": 1761803163225,
+        "title": "maths assignment",
+        "classCode": "1",
+        "facultyCode": "CB2501",
+        "assignmentDate": "2025-10-30",
+        "questions": [
+          {
+            "question": "2+3=?",
+            "options": {
+              "a": "5",
+              "b": "2",
+              "c": "1",
+              "d": "9"
+            },
+            "correctAnswer": "a"
+          },
+          {
+            "question": "1-1=?",
+            "options": {
+              "a": "0",
+              "b": "-0",
+              "c": "+0",
+              "d": "1"
+            },
+            "correctAnswer": "a"
+          }
+        ],
+        "date": "30/10/2025, 11:16:03 am",
+        "expiryDate": "2025-10-31T05:46:03.225Z",
+        "isActive": true
+      }
+    ],
+    "2": [],
+    "6": [],
+    "7": [],
+    "2c": [],
+    "1a": []
+  },
+  "assignmentResults": {
+    "1757300603787": [
+      {
+        "assignmentId": 1757300603787,
+        "studentCode": "CB25-01-21",
+        "classCode": "1",
+        "score": 1,
+        "totalQuestions": 1,
+        "percentage": 100,
+        "results": [
+          {
+            "question": "2+3=?",
+            "options": {
+              "a": "5",
+              "b": "6",
+              "c": "7",
+              "d": "8"
+            },
+            "studentAnswer": "a",
+            "correctAnswer": "a",
+            "isCorrect": true
+          }
+        ],
+        "submittedAt": "8/9/2025, 8:35:09 am"
+      }
+    ],
+    "1760796012487": [
+      {
+        "assignmentId": 1760796012487,
+        "studentCode": "CB25-01-1",
+        "classCode": "1",
+        "score": 1,
+        "totalQuestions": 1,
+        "percentage": 100,
+        "results": [
+          {
+            "question": "add",
+            "options": {
+              "a": "a",
+              "b": "b",
+              "c": "c",
+              "d": "d"
+            },
+            "studentAnswer": "b",
+            "correctAnswer": "b",
+            "isCorrect": true
+          }
+        ],
+        "submittedAt": "18/10/2025, 7:30:53 pm"
+      }
+    ]
+  },
+  "history": {
+    "admin": [
+      {
+        "id": 1753581868311,
+        "text": "dasara",
+        "date": "27/7/2025, 7:34:28 am",
+        "file": "/uploads/1753581868276-509645540-Ashok Kumar Reddy Chagameddy_page-0001.jpg",
+        "fileName": "Ashok Kumar Reddy Chagameddy_page-0001.jpg",
+        "expiryDate": "2025-08-06T02:04:28.311Z",
+        "type": "holiday",
+        "originalDate": "27/7/2025, 7:34:28 am"
+      },
+      {
+        "id": 1753581894694,
+        "text": "you have 100000 payment due",
+        "date": "27/7/2025, 7:34:54 am",
+        "file": "/uploads/1753581894645-3186004-Ashok Kumar Reddy Chagameddy.pdf",
+        "fileName": "Ashok Kumar Reddy Chagameddy.pdf",
+        "rollNumbers": [
+          "10"
+        ],
+        "expiryDate": "2025-08-24T02:04:54.694Z",
+        "type": "payment-due",
+        "originalDate": "27/7/2025, 7:34:54 am"
+      },
+      {
+        "id": 1753758289494,
+        "text": "35322234",
+        "date": "29/7/2025, 8:34:49 am",
+        "file": null,
+        "fileName": null,
+        "rollNumbers": [
+          "10"
+        ],
+        "expiryDate": null,
+        "type": "payment-due",
+        "originalDate": "29/7/2025, 8:34:49 am"
+      },
+      {
+        "id": 1753841330707,
+        "text": "3600000",
+        "date": "30/7/2025, 7:38:50 am",
+        "file": null,
+        "fileName": null,
+        "rollNumbers": [
+          "30"
+        ],
+        "expiryDate": "2025-08-04T02:08:50.707Z",
+        "type": "payment-due",
+        "originalDate": "30/7/2025, 7:38:50 am"
+      },
+      {
+        "text": "Fee certificate generated for Mandeep (1) - 2024-2025: Total: ₹500000, Paid: ₹250000, Due: ₹250000",
+        "date": "2025-09-07T08:37:35.746Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-09-07T08:37:35.746Z"
+      },
+      {
+        "text": "Fee certificate generated for C.ads (10) - Class 1 - 2024-2025: Total: ₹23423, Paid: ₹12232, Due: ₹11191",
+        "date": "2025-09-07T09:29:36.981Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-09-07T09:29:36.981Z"
+      },
+      {
+        "text": "Fee certificate generated for K.Ram (CB25-01-21) - Class 1 - 2024-2025: Total: ₹100000000, Paid: ₹10000000, Due: ₹90000000",
+        "date": "2025-09-08T03:00:18.169Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-09-08T03:00:18.169Z"
+      },
+      {
+        "text": "Fee certificate generated for K.Ram (CB25-01-10) - Class 1 - 2024-2025: Total: ₹50000, Paid: ₹25000, Due: ₹25000",
+        "date": "2025-09-10T11:41:51.230Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-09-10T11:41:51.230Z"
+      },
+      {
+        "text": "Received fee export from receptionist: 2 students, Total: ₹70,545.99, Collected: ₹10,000",
+        "date": "2025-09-27T02:30:17.745Z",
+        "type": "receptionist-export",
+        "originalDate": "2025-09-27T02:30:17.745Z"
+      },
+      {
+        "id": 1760283152461,
+        "text": "Tomarrow is holiday",
+        "date": "12/10/2025, 9:02:32 pm",
+        "file": null,
+        "fileName": null,
+        "expiryDate": "2025-10-13T15:32:32.461Z",
+        "type": "holiday",
+        "originalDate": "12/10/2025, 9:02:32 pm"
+      },
+      {
+        "id": 1760622274831,
+        "text": "diwali",
+        "date": "16/10/2025, 7:14:34 pm",
+        "file": null,
+        "fileName": null,
+        "expiryDate": "2025-10-17T13:44:34.831Z",
+        "type": "holiday",
+        "originalDate": "16/10/2025, 7:14:34 pm"
+      },
+      {
+        "id": 1760622471499,
+        "text": "diwali",
+        "date": "16/10/2025, 7:17:51 pm",
+        "file": null,
+        "fileName": null,
+        "expiryDate": "2025-10-17T13:47:51.499Z",
+        "type": "holiday",
+        "originalDate": "16/10/2025, 7:17:51 pm"
+      },
+      {
+        "text": "All hall tickets deleted (2 tickets)",
+        "date": "2025-10-18T01:20:37.563Z",
+        "type": "all-hall-tickets-deleted",
+        "originalDate": "2025-10-18T01:20:37.563Z"
+      },
+      {
+        "text": "Hall Ticket created: abc (CB25-02-1) - mid",
+        "date": "2025-10-18T01:24:01.845Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-18T01:24:01.845Z"
+      },
+      {
+        "text": "Hall Ticket created: def (CB25-01-1) - mid",
+        "date": "2025-10-18T01:24:37.618Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-18T01:24:37.618Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: def (CB25-01-1) - mid",
+        "date": "2025-10-18T01:24:46.628Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-18T01:24:46.628Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: abc (CB25-02-1) - mid",
+        "date": "2025-10-18T01:24:54.660Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-18T01:24:54.660Z"
+      },
+      {
+        "text": "Hall Ticket deleted: def (CB25-01-1) - mid",
+        "date": "2025-10-18T01:24:59.648Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-18T01:24:59.648Z"
+      },
+      {
+        "text": "Hall Ticket deleted: abc (CB25-01-02) - MId Term",
+        "date": "2025-10-18T02:10:55.139Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-18T02:10:55.139Z"
+      },
+      {
+        "text": "Hall Ticket deleted: abc (CB25-02-1) - mid",
+        "date": "2025-10-18T02:11:00.578Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-18T02:11:00.578Z"
+      },
+      {
+        "text": "Hall Ticket deleted: A.Ram (CB25-02-21) - MId Term",
+        "date": "2025-10-18T02:11:03.294Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-18T02:11:03.294Z"
+      },
+      {
+        "text": "Hall Ticket created: K.Ram (CB25-02-15) - mid - 2 exam dates",
+        "date": "2025-10-18T02:12:49.913Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-18T02:12:49.913Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: abc (CB25-01-01) - MId Term",
+        "date": "2025-10-18T02:12:56.764Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-18T02:12:56.764Z"
+      },
+      {
+        "id": 1760754732061,
+        "text": "second saturday holiday",
+        "date": "18/10/2025, 8:02:12 am",
+        "file": null,
+        "fileName": null,
+        "expiryDate": "2025-10-19T02:32:12.061Z",
+        "type": "holiday",
+        "originalDate": "18/10/2025, 8:02:12 am"
+      },
+      {
+        "id": 1760755212782,
+        "text": "sunday holiday",
+        "date": "18/10/2025, 8:10:12 am",
+        "file": null,
+        "fileName": null,
+        "expiryDate": "2025-10-19T02:40:12.782Z",
+        "type": "holiday",
+        "originalDate": "18/10/2025, 8:10:12 am"
+      },
+      {
+        "id": 1760764638472,
+        "text": "today is holiday",
+        "date": "18/10/2025, 10:47:18 am",
+        "file": null,
+        "fileName": null,
+        "expiryDate": "2025-10-19T05:17:18.472Z",
+        "type": "holiday",
+        "originalDate": "18/10/2025, 10:47:18 am"
+      },
+      {
+        "id": 1760766115830,
+        "text": "abc",
+        "date": "18/10/2025, 11:11:55 am",
+        "file": null,
+        "fileName": null,
+        "expiryDate": "2025-10-19T05:41:55.830Z",
+        "type": "key-info",
+        "originalDate": "18/10/2025, 11:11:55 am"
+      },
+      {
+        "id": 1760766692620,
+        "text": "def",
+        "date": "18/10/2025, 11:21:32 am",
+        "file": null,
+        "fileName": null,
+        "expiryDate": null,
+        "type": "key-info",
+        "originalDate": "18/10/2025, 11:21:32 am"
+      },
+      {
+        "text": "Notification sent: diwali holiday to faculty",
+        "date": "2025-10-18T13:52:49.746Z",
+        "type": "notification-sent",
+        "originalDate": "2025-10-18T13:52:49.746Z"
+      },
+      {
+        "text": "All notifications deleted (3 notifications)",
+        "date": "2025-10-18T13:54:08.808Z",
+        "type": "all-notifications-deleted",
+        "originalDate": "2025-10-18T13:54:08.808Z"
+      },
+      {
+        "text": "Hall Ticket created: A.Ram (CB25-01-01) - MId Term",
+        "date": "2025-10-19T02:03:06.376Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-19T02:03:06.376Z"
+      },
+      {
+        "text": "Hall Ticket deleted: abc",
+        "date": "2025-10-19T02:03:44.891Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-19T02:03:44.891Z"
+      },
+      {
+        "text": "Hall Ticket deleted: K.Ram",
+        "date": "2025-10-19T02:03:47.768Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-19T02:03:47.768Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: A.Ram (CB25-01-01) - MId Term",
+        "date": "2025-10-21T02:03:42.229Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-21T02:03:42.229Z"
+      },
+      {
+        "text": "Hall Ticket deleted: A.Ram",
+        "date": "2025-10-21T02:08:49.351Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-21T02:08:49.351Z"
+      },
+      {
+        "text": "Hall Ticket created: abc (CB25-01-1) - mid",
+        "date": "2025-10-21T02:10:05.777Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-21T02:10:05.777Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: abc (CB25-01-1) - mid",
+        "date": "2025-10-21T02:11:33.110Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-21T02:11:33.110Z"
+      },
+      {
+        "text": "Hall Ticket created: abc (CB25-01-1) - MId Term",
+        "date": "2025-10-22T01:03:51.843Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.843Z"
+      },
+      {
+        "text": "Hall Ticket created: def (CB25-01-2) - MId Term",
+        "date": "2025-10-22T01:03:51.869Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.869Z"
+      },
+      {
+        "text": "Hall Ticket created: ghi (CB25-01-3) - MId Term",
+        "date": "2025-10-22T01:03:51.891Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.891Z"
+      },
+      {
+        "text": "Hall Ticket created: jkl (CB25-01-4) - MId Term",
+        "date": "2025-10-22T01:03:51.908Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.908Z"
+      },
+      {
+        "text": "Hall Ticket created: mno (CB25-01-5) - MId Term",
+        "date": "2025-10-22T01:03:51.926Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.926Z"
+      },
+      {
+        "text": "Hall Ticket created: pqr (CB25-01-6) - MId Term",
+        "date": "2025-10-22T01:03:51.944Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.944Z"
+      },
+      {
+        "text": "Hall Ticket created: stu (CB25-01-7) - MId Term",
+        "date": "2025-10-22T01:03:51.961Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.961Z"
+      },
+      {
+        "text": "Hall Ticket created: vwx (CB25-01-8) - MId Term",
+        "date": "2025-10-22T01:03:51.977Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:51.977Z"
+      },
+      {
+        "text": "Hall Ticket created: yz (CB25-01-9) - MId Term",
+        "date": "2025-10-22T01:03:52.001Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T01:03:52.001Z"
+      },
+      {
+        "text": "Hall Ticket deleted: abc",
+        "date": "2025-10-22T01:04:13.918Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-22T01:04:13.918Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: def (CB25-01-2) - MId Term",
+        "date": "2025-10-22T03:38:03.434Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-22T03:38:03.434Z"
+      },
+      {
+        "text": "All hall tickets deleted (9 tickets)",
+        "date": "2025-10-22T03:39:04.154Z",
+        "type": "all-hall-tickets-deleted",
+        "originalDate": "2025-10-22T03:39:04.154Z"
+      },
+      {
+        "text": "Hall Ticket created: abc (CB25-01-1) - mid",
+        "date": "2025-10-22T03:40:08.812Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-22T03:40:08.812Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: abc (CB25-01-1) - mid",
+        "date": "2025-10-22T03:40:13.523Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-22T03:40:13.523Z"
+      },
+      {
+        "text": "All hall tickets deleted (1 tickets)",
+        "date": "2025-10-22T03:45:47.305Z",
+        "type": "all-hall-tickets-deleted",
+        "originalDate": "2025-10-22T03:45:47.305Z"
+      },
+      {
+        "text": "All hall tickets deleted (0 tickets)",
+        "date": "2025-10-22T03:46:07.321Z",
+        "type": "all-hall-tickets-deleted",
+        "originalDate": "2025-10-22T03:46:07.321Z"
+      },
+      {
+        "text": "Hall Ticket created: abc (CB25-01-1) - MId Term",
+        "date": "2025-10-24T01:29:32.553Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-24T01:29:32.553Z"
+      },
+      {
+        "text": "Hall Ticket created: def (CB25-01-2) - MId Term",
+        "date": "2025-10-24T01:29:32.563Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-24T01:29:32.563Z"
+      },
+      {
+        "text": "Hall Ticket created: ghi (CB25-01-3) - MId Term",
+        "date": "2025-10-24T01:29:32.572Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-24T01:29:32.572Z"
+      },
+      {
+        "text": "Hall Ticket created: jkl (CB25-01-4) - MId Term",
+        "date": "2025-10-24T01:29:32.580Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-24T01:29:32.580Z"
+      },
+      {
+        "text": "Hall Ticket created: mno (CB25-01-5) - MId Term",
+        "date": "2025-10-24T01:29:32.589Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-24T01:29:32.589Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: abc (CB25-01-1) - MId Term",
+        "date": "2025-10-24T01:29:40.540Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-24T01:29:40.540Z"
+      },
+      {
+        "text": "All hall tickets deleted (5 tickets)",
+        "date": "2025-10-24T01:30:23.953Z",
+        "type": "all-hall-tickets-deleted",
+        "originalDate": "2025-10-24T01:30:23.953Z"
+      },
+      {
+        "text": "All fee certificates deleted (2 certificates)",
+        "date": "2025-10-30T03:18:38.038Z",
+        "type": "all-fee-certificates-deleted",
+        "originalDate": "2025-10-30T03:18:38.038Z"
+      },
+      {
+        "text": "Fee certificate issued to student: A.RAM Charan (CB25-01-21)",
+        "date": "2025-10-30T03:22:10.771Z",
+        "type": "fee-certificate-issued",
+        "originalDate": "2025-10-30T03:22:10.771Z"
+      },
+      {
+        "text": "Fee certificate issued to student: abc (CB25-04-20)",
+        "date": "2025-10-30T03:22:16.491Z",
+        "type": "fee-certificate-issued",
+        "originalDate": "2025-10-30T03:22:16.491Z"
+      },
+      {
+        "text": "Fee certificate deleted: A.RAM Charan (CB25-01-21)",
+        "date": "2025-10-30T03:26:42.218Z",
+        "type": "fee-certificate-deleted",
+        "originalDate": "2025-10-30T03:26:42.218Z"
+      },
+      {
+        "text": "Hall Ticket created: A.b (CB25-01-1) - MId Term",
+        "date": "2025-10-30T05:37:10.797Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:37:10.797Z"
+      },
+      {
+        "text": "Hall Ticket created: B.c (CB25-01-2) - MId Term",
+        "date": "2025-10-30T05:37:10.816Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:37:10.816Z"
+      },
+      {
+        "text": "Hall Ticket created: C.d (CB25-01-3) - MId Term",
+        "date": "2025-10-30T05:37:10.836Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:37:10.836Z"
+      },
+      {
+        "text": "Hall Ticket created: D.e (CB25-01-4) - MId Term",
+        "date": "2025-10-30T05:37:10.854Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:37:10.854Z"
+      },
+      {
+        "text": "Hall Ticket created: E.f (CB25-01-5) - MId Term",
+        "date": "2025-10-30T05:37:10.870Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:37:10.870Z"
+      },
+      {
+        "text": "Notification sent: Holiday to all",
+        "date": "2025-10-30T05:38:15.617Z",
+        "type": "notification-sent",
+        "originalDate": "2025-10-30T05:38:15.617Z"
+      },
+      {
+        "text": "Hall Ticket created: A.b (CB25-01-1) - mid",
+        "date": "2025-10-30T05:40:40.814Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:40:40.814Z"
+      },
+      {
+        "text": "Hall Ticket deleted: A.b",
+        "date": "2025-10-30T05:40:52.444Z",
+        "type": "hall-ticket-deleted",
+        "originalDate": "2025-10-30T05:40:52.444Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: A.b (CB25-01-1) - MId Term",
+        "date": "2025-10-30T05:41:03.277Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:41:03.277Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: B.c (CB25-01-2) - MId Term",
+        "date": "2025-10-30T05:41:05.581Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:41:05.581Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: C.d (CB25-01-3) - MId Term",
+        "date": "2025-10-30T05:41:08.653Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:41:08.653Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: D.e (CB25-01-4) - MId Term",
+        "date": "2025-10-30T05:41:10.965Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:41:10.965Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: E.f (CB25-01-5) - MId Term",
+        "date": "2025-10-30T05:41:13.421Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:41:13.421Z"
+      },
+      {
+        "text": "Hall Ticket created: a.B (CB25-02-1) - MId Term",
+        "date": "2025-10-30T05:43:01.143Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:43:01.143Z"
+      },
+      {
+        "text": "Hall Ticket created: b.C (CB25-02-2) - MId Term",
+        "date": "2025-10-30T05:43:01.162Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:43:01.162Z"
+      },
+      {
+        "text": "Hall Ticket created: c.D (CB25-02-3) - MId Term",
+        "date": "2025-10-30T05:43:01.177Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:43:01.177Z"
+      },
+      {
+        "text": "Hall Ticket created: d.E (CB25-02-4) - MId Term",
+        "date": "2025-10-30T05:43:01.190Z",
+        "type": "hall-ticket-created",
+        "originalDate": "2025-10-30T05:43:01.190Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: a.B (CB25-02-1) - MId Term",
+        "date": "2025-10-30T05:43:27.086Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:43:27.086Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: b.C (CB25-02-2) - MId Term",
+        "date": "2025-10-30T05:43:30.142Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:43:30.142Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: c.D (CB25-02-3) - MId Term",
+        "date": "2025-10-30T05:43:33.021Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:43:33.021Z"
+      },
+      {
+        "text": "Hall Ticket issued to student: d.E (CB25-02-4) - MId Term",
+        "date": "2025-10-30T05:43:34.981Z",
+        "type": "hall-ticket-issued",
+        "originalDate": "2025-10-30T05:43:34.981Z"
+      }
+    ],
+    "faculty": {
+      "222p-2c": [
+        {
+          "id": 1753841580005,
+          "title": "physics",
+          "classCode": "2c",
+          "facultyCode": "222p-2c",
+          "questions": [
+            {
+              "question": "abcde",
+              "options": {
+                "a": "q",
+                "b": "w",
+                "c": "a",
+                "d": "f"
+              },
+              "correctAnswer": "c"
+            },
+            {
+              "question": "32423423",
+              "options": {
+                "a": "1",
+                "b": "9",
+                "c": "2",
+                "d": "0"
+              },
+              "correctAnswer": "c"
+            }
+          ],
+          "date": "30/7/2025, 7:43:00 am",
+          "expiryDate": "2025-08-06T02:13:00.005Z",
+          "isActive": true,
+          "type": "assignment-created",
+          "originalDate": "30/7/2025, 7:43:00 am"
+        }
+      ],
+      "222p-1a": [
+        {
+          "id": 1753844416158,
+          "classCode": "1a",
+          "facultyCode": "222p-1a",
+          "rollNumber": "10",
+          "fullName": "fdwer",
+          "fatherName": "ertqwer",
+          "examType": "Unit Test 1",
+          "subjects": {
+            "telugu": 20,
+            "hindi": 12,
+            "english": 14,
+            "mathematics": 3,
+            "science": 14,
+            "social": 12
+          },
+          "totalMarks": 75,
+          "maxMarks": 600,
+          "percentage": 13,
+          "date": "30/7/2025, 8:30:16 am",
+          "type": "progress-card",
+          "originalDate": "30/7/2025, 8:30:16 am"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment",
+          "date": "1/9/2025, 7:40:37 am",
+          "type": "assignment-created",
+          "originalDate": "1/9/2025, 7:40:37 am"
+        },
+        {
+          "text": "Monthly attendance posted for Mandeep (10) - January 2025: 22/25 (88%)",
+          "date": "2025-09-01T02:58:34.253Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-01T02:58:34.253Z"
+        }
+      ],
+      "222P-5A": [
+        {
+          "text": "Monthly attendance posted for Mandeep (12) - July 2025: 15/20 (75%)",
+          "date": "2025-09-01T03:02:15.204Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-01T03:02:15.204Z"
+        }
+      ],
+      "222P-6B": [
+        {
+          "text": "Monthly attendance posted for Ram (22) - September 2025: 20/25 (80%)",
+          "date": "2025-09-01T03:03:03.837Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-01T03:03:03.837Z"
+        }
+      ],
+      "CB2501": [
+        {
+          "text": "Monthly attendance posted for K.Ram (CB25-01-21) - Class 1 - September 2025: 29/30 (97%)",
+          "date": "2025-09-08T03:02:33.247Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-08T03:02:33.247Z"
+        },
+        {
+          "text": "Monthly attendance posted for K.Ram (CB25-01-21) - Class 1 - September 2025: 29/30 (97%)",
+          "date": "2025-09-08T03:02:34.010Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-08T03:02:34.010Z"
+        },
+        {
+          "text": "Monthly attendance posted for K.Ram (CB25-01-21) - Class 1 - September 2025: 29/30 (97%)",
+          "date": "2025-09-08T03:02:34.228Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-08T03:02:34.228Z"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment for Class 1",
+          "date": "8/9/2025, 8:33:23 am",
+          "type": "assignment-created",
+          "originalDate": "8/9/2025, 8:33:23 am"
+        },
+        {
+          "text": "Progress card for K.Ram (CB25-01-21) - Class 1 - Annual: 99%",
+          "date": "8/9/2025, 8:34:12 am",
+          "type": "progress-card",
+          "originalDate": "8/9/2025, 8:34:12 am"
+        },
+        {
+          "text": "Monthly attendance posted for K.Ram (CB25-01-21) - Class 1 - September 2025: 25/30 (83%)",
+          "date": "2025-09-08T03:26:53.539Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-08T03:26:53.539Z"
+        },
+        {
+          "text": "Progress card for K.Ram (CB25-01-21) - Class 1 - Unit Test 1: 99%",
+          "date": "8/9/2025, 8:57:49 am",
+          "type": "progress-card",
+          "originalDate": "8/9/2025, 8:57:49 am"
+        },
+        {
+          "text": "Monthly attendance posted for K.Ram (CB25-01-10) - Class 1 - July 2025: 10/20 (50%)",
+          "date": "2025-09-22T06:36:05.930Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-09-22T06:36:05.930Z"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment for Class 2",
+          "date": "29/9/2025, 4:45:51 am",
+          "type": "assignment-created",
+          "originalDate": "29/9/2025, 4:45:51 am"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment for Class 6",
+          "date": "29/9/2025, 4:46:39 am",
+          "type": "assignment-created",
+          "originalDate": "29/9/2025, 4:46:39 am"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment for Class 7",
+          "date": "29/9/2025, 4:54:31 am",
+          "type": "assignment-created",
+          "originalDate": "29/9/2025, 4:54:31 am"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment for Class 7",
+          "date": "29/9/2025, 5:04:04 am",
+          "type": "assignment-created",
+          "originalDate": "29/9/2025, 5:04:04 am"
+        },
+        {
+          "text": "Assignment deleted: maths assignment for Class 2",
+          "date": "2025-09-29T01:17:48.720Z",
+          "type": "assignment-deleted",
+          "originalDate": "2025-09-29T01:17:48.720Z"
+        },
+        {
+          "text": "Assignment deleted: maths assignment for Class 6",
+          "date": "2025-09-29T01:17:48.772Z",
+          "type": "assignment-deleted",
+          "originalDate": "2025-09-29T01:17:48.772Z"
+        },
+        {
+          "text": "Assignment deleted: maths assignment for Class 7",
+          "date": "2025-09-29T01:17:48.844Z",
+          "type": "assignment-deleted",
+          "originalDate": "2025-09-29T01:17:48.844Z"
+        },
+        {
+          "text": "Assignment deleted: maths assignment for Class 7",
+          "date": "2025-09-29T01:17:48.857Z",
+          "type": "assignment-deleted",
+          "originalDate": "2025-09-29T01:17:48.857Z"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment for Class 2",
+          "date": "29/9/2025, 6:48:35 am",
+          "type": "assignment-created",
+          "originalDate": "29/9/2025, 6:48:35 am"
+        },
+        {
+          "text": "Progress card for C.Ashok (CB25-01-10) - Class 1 - Sliptest-1: 29/50 (58%)",
+          "date": "29/9/2025, 6:50:32 am",
+          "type": "progress-card",
+          "originalDate": "29/9/2025, 6:50:32 am"
+        },
+        {
+          "text": "Progress card for A.ram (CB25-01-10) - Class 1 - sliptest: 139/150 (93%) - Performance: SUPER",
+          "date": "29/9/2025, 7:31:28 am",
+          "type": "progress-card",
+          "originalDate": "29/9/2025, 7:31:28 am"
+        },
+        {
+          "text": "Progress card deleted for C.Ashok (CB25-01-10) - Sliptest-1",
+          "date": "2025-09-29T02:01:41.388Z",
+          "type": "progress-card-deleted",
+          "originalDate": "2025-09-29T02:01:41.388Z"
+        },
+        {
+          "text": "Progress card deleted for K.Ram (CB25-01-21) - Annual",
+          "date": "2025-09-29T02:01:52.280Z",
+          "type": "progress-card-deleted",
+          "originalDate": "2025-09-29T02:01:52.280Z"
+        },
+        {
+          "text": "Progress card deleted for K.Ram (CB25-01-21) - Unit Test 1",
+          "date": "2025-09-29T02:01:56.200Z",
+          "type": "progress-card-deleted",
+          "originalDate": "2025-09-29T02:01:56.200Z"
+        },
+        {
+          "text": "Progress card deleted for A.ram (CB25-01-10) - sliptest",
+          "date": "2025-09-29T02:08:01.372Z",
+          "type": "progress-card-deleted",
+          "originalDate": "2025-09-29T02:08:01.372Z"
+        },
+        {
+          "text": "Progress card for A.RamCharan Tej (CB25-01-1) - Class 1 - Unit test: 59/70 (84%) - Performance: EXCELLENT",
+          "date": "8/10/2025, 8:23:26 am",
+          "type": "progress-card",
+          "originalDate": "8/10/2025, 8:23:26 am"
+        },
+        {
+          "text": "Monthly attendance posted for K.Ram (CB25-01-1) - Class 1 - October 2025: 17/25 (68%)",
+          "date": "2025-10-08T02:53:58.827Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-10-08T02:53:58.827Z"
+        },
+        {
+          "text": "Monthly attendance posted for K.Ram (CB25-01-1) - Class 1 - October 2025: 17/25 (68%)",
+          "date": "2025-10-08T02:53:59.783Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-10-08T02:53:59.783Z"
+        },
+        {
+          "text": "Progress card for www (CB25-01-1) - Class 1 - ut1: 39/40 (98%) - Performance: SUPER",
+          "date": "8/10/2025, 8:51:12 am",
+          "type": "progress-card",
+          "originalDate": "8/10/2025, 8:51:12 am"
+        },
+        {
+          "text": "Progress card deleted for www (CB25-01-1) - ut1",
+          "date": "2025-10-08T03:22:36.530Z",
+          "type": "progress-card-deleted",
+          "originalDate": "2025-10-08T03:22:36.530Z"
+        },
+        {
+          "text": "Progress card deleted for A.RamCharan Tej (CB25-01-1) - Unit test",
+          "date": "2025-10-08T03:22:40.462Z",
+          "type": "progress-card-deleted",
+          "originalDate": "2025-10-08T03:22:40.462Z"
+        },
+        {
+          "text": "Progress card for Ashok (CB25-01-1) - Class 1 - Mid term: 57/60 (95%) - Performance: SUPER",
+          "date": "13/10/2025, 8:33:29 am",
+          "type": "progress-card",
+          "originalDate": "13/10/2025, 8:33:29 am"
+        },
+        {
+          "text": "Progress card for abc (CB25-01-12) - Class 1",
+          "date": "18/10/2025, 7:27:00 pm",
+          "type": "progress-card",
+          "originalDate": "18/10/2025, 7:27:00 pm"
+        },
+        {
+          "title": "science",
+          "text": "Assignment created: science for Class 1",
+          "date": "18/10/2025, 7:30:12 pm",
+          "type": "assignment-created",
+          "originalDate": "18/10/2025, 7:30:12 pm"
+        },
+        {
+          "text": "Progress card deleted for abc",
+          "date": "2025-10-18T14:01:31.212Z",
+          "type": "progress-card-deleted",
+          "originalDate": "2025-10-18T14:01:31.212Z"
+        },
+        {
+          "text": "Progress card for ashok (CB25-01-1) - Class 1",
+          "date": "18/10/2025, 7:32:32 pm",
+          "type": "progress-card",
+          "originalDate": "18/10/2025, 7:32:32 pm"
+        },
+        {
+          "text": "Monthly attendance deleted for K.Ram (CB25-01-10)",
+          "date": "2025-10-19T02:15:54.739Z",
+          "type": "attendance-deleted",
+          "originalDate": "2025-10-19T02:15:54.739Z"
+        },
+        {
+          "text": "Monthly attendance deleted for K.Ram (CB25-01-21)",
+          "date": "2025-10-19T02:15:59.616Z",
+          "type": "attendance-deleted",
+          "originalDate": "2025-10-19T02:15:59.616Z"
+        },
+        {
+          "text": "Monthly attendance deleted for K.Ram (CB25-01-1)",
+          "date": "2025-10-19T02:16:03.698Z",
+          "type": "attendance-deleted",
+          "originalDate": "2025-10-19T02:16:03.698Z"
+        },
+        {
+          "text": "Monthly attendance posted for A.b (CB25-01-1)",
+          "date": "2025-10-30T05:45:00.989Z",
+          "type": "monthly-attendance",
+          "originalDate": "2025-10-30T05:45:00.989Z"
+        },
+        {
+          "title": "maths assignment",
+          "text": "Assignment created: maths assignment for Class 1",
+          "date": "30/10/2025, 11:16:03 am",
+          "type": "assignment-created",
+          "originalDate": "30/10/2025, 11:16:03 am"
+        },
+        {
+          "text": "Progress card for A.b (CB25-01-1) - Class 1",
+          "date": "30/10/2025, 11:17:32 am",
+          "type": "progress-card",
+          "originalDate": "30/10/2025, 11:17:32 am"
+        },
+        {
+          "id": 1761803287138,
+          "text": "bring all your maths notebooks tomarrow",
+          "date": "30/10/2025, 11:18:07 am",
+          "faculty": "CB2501",
+          "file": null,
+          "fileName": null,
+          "expiryDate": null,
+          "type": "faculty-subject",
+          "originalDate": "30/10/2025, 11:18:07 am"
+        }
+      ]
+    },
+    "receptionist": [
+      {
+        "text": "Fee certificate generated for A.RAM Charan (CB25-01-1) - Class 1 - 2024-25: Total: ₹50000, Paid: ₹0, Due: ₹50000",
+        "date": "2025-10-08T02:51:17.045Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-08T02:51:17.045Z"
+      },
+      {
+        "text": "Fee certificate generated for A.RAM Charan (CB25-01-1) - Class 1 - 2024-25: Total: ₹50000, Paid: ₹20000, Due: ₹30000",
+        "date": "2025-10-08T02:51:39.960Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-08T02:51:39.960Z"
+      },
+      {
+        "text": "Hall Ticket issued: A.Ram (CB25-01-01) - MId Term",
+        "date": "2025-10-13T03:18:34.161Z",
+        "type": "hall-ticket",
+        "originalDate": "2025-10-13T03:18:34.161Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-01-2) - Class 1 - 2024-25: Total: ₹50000, Paid: ₹0, Due: ₹50000",
+        "date": "2025-10-14T02:18:17.546Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-14T02:18:17.546Z"
+      },
+      {
+        "text": "Hall Ticket issued: A.Ram (CB25-01-01) - MId Term",
+        "date": "2025-10-14T02:20:55.875Z",
+        "type": "hall-ticket",
+        "originalDate": "2025-10-14T02:20:55.875Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-01-2) - Class 1 - 2024-25: Total: ₹50000, Paid: ₹15000, Due: ₹35000",
+        "date": "2025-10-14T02:34:14.756Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-14T02:34:14.756Z"
+      },
+      {
+        "text": "Hall Ticket issued: abc (CB25-01-02) - MId Term",
+        "date": "2025-10-18T01:33:03.902Z",
+        "type": "hall-ticket",
+        "originalDate": "2025-10-18T01:33:03.902Z"
+      },
+      {
+        "text": "Hall Ticket issued: A.Ram (CB25-02-21) - MId Term",
+        "date": "2025-10-18T01:33:29.581Z",
+        "type": "hall-ticket",
+        "originalDate": "2025-10-18T01:33:29.581Z"
+      },
+      {
+        "text": "Hall Ticket issued: abc (CB25-01-01) - MId Term",
+        "date": "2025-10-18T02:10:29.459Z",
+        "type": "hall-ticket",
+        "originalDate": "2025-10-18T02:10:29.459Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-01-1)",
+        "date": "2025-10-24T01:21:28.899Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-24T01:21:28.899Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-01-1)",
+        "date": "2025-10-24T01:21:43.254Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-24T01:21:43.254Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-01-2)",
+        "date": "2025-10-24T01:23:05.953Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-24T01:23:05.953Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-01-2)",
+        "date": "2025-10-24T01:23:19.691Z",
+        "type": "fee-certificate",
+        "originalDate": "2025-10-24T01:23:19.691Z"
+      },
+      {
+        "text": "Fee certificate generated for A.RAM Charan (CB25-01-21)",
+        "date": "2025-10-30T03:19:38.100Z",
+        "type": "fee-certificate-generated",
+        "originalDate": "2025-10-30T03:19:38.100Z"
+      },
+      {
+        "text": "Fee certificate generated for A.RAM Charan (CB25-01-21)",
+        "date": "2025-10-30T03:20:04.556Z",
+        "type": "fee-certificate-generated",
+        "originalDate": "2025-10-30T03:20:04.556Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-04-20)",
+        "date": "2025-10-30T03:21:09.311Z",
+        "type": "fee-certificate-generated",
+        "originalDate": "2025-10-30T03:21:09.311Z"
+      },
+      {
+        "text": "Fee certificate generated for abc (CB25-04-20)",
+        "date": "2025-10-30T03:21:34.331Z",
+        "type": "fee-certificate-generated",
+        "originalDate": "2025-10-30T03:21:34.331Z"
+      }
+    ]
+  },
+  "progressCards": {
+    "1": [
+      {
+        "id": 1761803252380,
+        "classCode": "1",
+        "facultyCode": "CB2501",
+        "rollNumber": "1",
+        "studentCode": "CB25-01-1",
+        "fullName": "A.b",
+        "fatherName": "A.B",
+        "examType": "Unit test-1",
+        "subjects": {
+          "history": {
+            "maxMarks": 300,
+            "obtainedMarks": 299,
+            "percentage": "99.67"
+          },
+          "telugu": {
+            "maxMarks": 400,
+            "obtainedMarks": 399,
+            "percentage": "99.75"
+          }
+        },
+        "totalMarks": 700,
+        "obtainedMarks": 698,
+        "percentage": 100,
+        "performance": {
+          "grade": "SUPER",
+          "color": "#28a745",
+          "emoji": "🌟"
+        },
+        "postingDate": "2025-10-30",
+        "displayDays": 10,
+        "expiryDate": "2025-11-09T05:47:32.369Z",
+        "date": "30/10/2025, 11:17:32 am"
+      }
+    ],
+    "1a": [
+      {
+        "id": 1753844416158,
+        "classCode": "1a",
+        "facultyCode": "222p-1a",
+        "rollNumber": "10",
+        "fullName": "fdwer",
+        "fatherName": "ertqwer",
+        "examType": "Unit Test 1",
+        "subjects": {
+          "telugu": 20,
+          "hindi": 12,
+          "english": 14,
+          "mathematics": 3,
+          "science": 14,
+          "social": 12
+        },
+        "totalMarks": 75,
+        "maxMarks": 600,
+        "percentage": 13,
+        "date": "30/7/2025, 8:30:16 am"
+      }
+    ]
+  },
+  "monthlyAttendance": [
+    {
+      "id": 1756695514253.7112,
+      "classCode": "1a",
+      "facultyCode": "222p-1a",
+      "month": 1,
+      "year": 2025,
+      "studentName": "Mandeep",
+      "studentRoll": "10",
+      "totalWorkingDays": 25,
+      "attendedDays": 22,
+      "percentage": 88,
+      "postedAt": "2025-09-01T02:58:34.253Z"
+    },
+    {
+      "id": 1756695735204.3467,
+      "classCode": "5a",
+      "facultyCode": "222P-5A",
+      "month": 7,
+      "year": 2025,
+      "studentName": "Mandeep",
+      "studentRoll": "12",
+      "totalWorkingDays": 20,
+      "attendedDays": 15,
+      "percentage": 75,
+      "postedAt": "2025-09-01T03:02:15.204Z"
+    },
+    {
+      "id": 1756695783837.444,
+      "classCode": "6b",
+      "facultyCode": "222P-6B",
+      "month": 9,
+      "year": 2025,
+      "studentName": "Ram",
+      "studentRoll": "22",
+      "totalWorkingDays": 25,
+      "attendedDays": 20,
+      "percentage": 80,
+      "postedAt": "2025-09-01T03:03:03.837Z"
+    },
+    {
+      "id": 1761803100989.5615,
+      "classCode": "1",
+      "facultyCode": "CB2501",
+      "studentCode": "CB25-01-1",
+      "month": 10,
+      "year": 2025,
+      "studentName": "A.b",
+      "studentRoll": "1",
+      "totalWorkingDays": 30,
+      "attendedDays": 25,
+      "percentage": 83,
+      "postedAt": "2025-10-30T05:45:00.989Z"
+    }
+  ],
+  "feeCertificates": [
+    {
+      "id": 1757234255746.8699,
+      "studentRoll": "1",
+      "studentName": "Mandeep",
+      "fatherName": "A.Ram",
+      "totalFee": 500000,
+      "amountPaid": 250000,
+      "remainingDue": 250000,
+      "academicYear": "2024-2025",
+      "date": "2025-09-07T08:37:35.746Z",
+      "generatedBy": "admin"
+    },
+    {
+      "id": 1757237376981.2698,
+      "studentClass": "1",
+      "studentRoll": "10",
+      "studentName": "C.ads",
+      "fatherName": "saerfews",
+      "totalFee": 23423,
+      "amountPaid": 12232,
+      "remainingDue": 11191,
+      "academicYear": "2024-2025",
+      "date": "2025-09-07T09:29:36.981Z",
+      "generatedBy": "admin"
+    },
+    {
+      "id": 1757300418169.0571,
+      "studentClass": "1",
+      "studentRoll": "21",
+      "studentCode": "CB25-01-21",
+      "studentName": "K.Ram",
+      "fatherName": "K.Chiru",
+      "totalFee": 100000000,
+      "amountPaid": 10000000,
+      "remainingDue": 90000000,
+      "academicYear": "2024-2025",
+      "date": "2025-09-08T03:00:18.169Z",
+      "generatedBy": "admin"
+    },
+    {
+      "id": 1757504511230.3987,
+      "studentClass": "1",
+      "studentRoll": "10",
+      "studentCode": "CB25-01-10",
+      "studentName": "K.Ram",
+      "fatherName": "K.Chiru",
+      "totalFee": 50000,
+      "amountPaid": 25000,
+      "remainingDue": 25000,
+      "academicYear": "2024-2025",
+      "date": "2025-09-10T11:41:51.230Z",
+      "generatedBy": "admin"
+    }
+  ],
+  "receptionistFeeCertificates": [
+    {
+      "id": "FEE_1761794494331_v5rydiutf",
+      "studentClass": "4",
+      "studentRoll": 20,
+      "studentCode": "CB25-04-20",
+      "studentName": "abc",
+      "fatherName": "def",
+      "totalFee": 39999.99,
+      "amountPaid": 20000,
+      "remainingDue": 19999.989999999998,
+      "academicYear": "2024-25",
+      "remarks": "Payment: ₹20000 via upi",
+      "date": "2025-10-30T03:21:34.331Z",
+      "generatedBy": "receptionist",
+      "status": "issued",
+      "issuedDate": "2025-10-30T03:22:16.491Z"
+    }
+  ],
+  "hallTickets": [
+    {
+      "hallTicketId": "HT_1761802630759_gkobhj9qq",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "A.b",
+      "studentRoll": "1",
+      "studentClass": "1",
+      "studentCode": "CB25-01-1",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "mat",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "tel",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "receptionist",
+      "issuedDate": "2025-10-30T05:41:03.277Z",
+      "createdAt": "2025-10-30T05:37:10.797Z",
+      "status": "issued"
+    },
+    {
+      "hallTicketId": "HT_1761802630812_6mmuee9id",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "B.c",
+      "studentRoll": "2",
+      "studentClass": "1",
+      "studentCode": "CB25-01-2",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "mat",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "tel",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "receptionist",
+      "issuedDate": "2025-10-30T05:41:05.581Z",
+      "createdAt": "2025-10-30T05:37:10.816Z",
+      "status": "issued"
+    },
+    {
+      "hallTicketId": "HT_1761802630830_6vjc44yn1",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "C.d",
+      "studentRoll": "3",
+      "studentClass": "1",
+      "studentCode": "CB25-01-3",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "mat",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "tel",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "receptionist",
+      "issuedDate": "2025-10-30T05:41:08.653Z",
+      "createdAt": "2025-10-30T05:37:10.836Z",
+      "status": "issued"
+    },
+    {
+      "hallTicketId": "HT_1761802630848_0a8v00eyp",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "D.e",
+      "studentRoll": "4",
+      "studentClass": "1",
+      "studentCode": "CB25-01-4",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "mat",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "tel",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "receptionist",
+      "issuedDate": "2025-10-30T05:41:10.965Z",
+      "createdAt": "2025-10-30T05:37:10.854Z",
+      "status": "issued"
+    },
+    {
+      "hallTicketId": "HT_1761802630865_xyq2fye05",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "E.f",
+      "studentRoll": "5",
+      "studentClass": "1",
+      "studentCode": "CB25-01-5",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "mat",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "tel",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "receptionist",
+      "issuedDate": "2025-10-30T05:41:13.421Z",
+      "createdAt": "2025-10-30T05:37:10.870Z",
+      "status": "issued"
+    },
+    {
+      "hallTicketId": "HT_1761802981135_mye52nldw",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "a.B",
+      "studentRoll": "1",
+      "studentClass": "2",
+      "studentCode": "CB25-02-1",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "eng",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "hindi",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "admin",
+      "createdAt": "2025-10-30T05:43:01.143Z",
+      "status": "issued",
+      "issuedDate": "2025-10-30T05:43:27.086Z"
+    },
+    {
+      "hallTicketId": "HT_1761802981156_584aosjnd",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "b.C",
+      "studentRoll": "2",
+      "studentClass": "2",
+      "studentCode": "CB25-02-2",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "eng",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "hindi",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "admin",
+      "createdAt": "2025-10-30T05:43:01.162Z",
+      "status": "issued",
+      "issuedDate": "2025-10-30T05:43:30.142Z"
+    },
+    {
+      "hallTicketId": "HT_1761802981172_j4mglbe0b",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "c.D",
+      "studentRoll": "3",
+      "studentClass": "2",
+      "studentCode": "CB25-02-3",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "eng",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "hindi",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "admin",
+      "createdAt": "2025-10-30T05:43:01.177Z",
+      "status": "issued",
+      "issuedDate": "2025-10-30T05:43:33.021Z"
+    },
+    {
+      "hallTicketId": "HT_1761802981186_cz54mgp30",
+      "examName": "MId Term",
+      "fromDate": "2025-11-01",
+      "toDate": "2025-11-02",
+      "studentName": "d.E",
+      "studentRoll": "4",
+      "studentClass": "2",
+      "studentCode": "CB25-02-4",
+      "examSchedule": [
+        {
+          "date": "2025-11-01",
+          "exams": [
+            {
+              "examName": "eng",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        },
+        {
+          "date": "2025-11-02",
+          "exams": [
+            {
+              "examName": "hindi",
+              "timing": "9:00 AM - 10:00 AM"
+            }
+          ]
+        }
+      ],
+      "remarks": "",
+      "issuedBy": "admin",
+      "createdAt": "2025-10-30T05:43:01.190Z",
+      "status": "issued",
+      "issuedDate": "2025-10-30T05:43:34.981Z"
+    }
+  ],
+  "studentHallTickets": {
+    "CB25-01-1": [
+      {
+        "hallTicketId": "HT_1761802630759_gkobhj9qq",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "A.b",
+        "studentRoll": "1",
+        "studentClass": "1",
+        "studentCode": "CB25-01-1",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "mat",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "tel",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "receptionist",
+        "issuedDate": "2025-10-30T05:41:03.277Z",
+        "createdAt": "2025-10-30T05:37:10.797Z",
+        "status": "issued"
+      }
+    ],
+    "CB25-01-2": [
+      {
+        "hallTicketId": "HT_1761802630812_6mmuee9id",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "B.c",
+        "studentRoll": "2",
+        "studentClass": "1",
+        "studentCode": "CB25-01-2",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "mat",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "tel",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "receptionist",
+        "issuedDate": "2025-10-30T05:41:05.581Z",
+        "createdAt": "2025-10-30T05:37:10.816Z",
+        "status": "issued"
+      }
+    ],
+    "CB25-01-3": [
+      {
+        "hallTicketId": "HT_1761802630830_6vjc44yn1",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "C.d",
+        "studentRoll": "3",
+        "studentClass": "1",
+        "studentCode": "CB25-01-3",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "mat",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "tel",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "receptionist",
+        "issuedDate": "2025-10-30T05:41:08.653Z",
+        "createdAt": "2025-10-30T05:37:10.836Z",
+        "status": "issued"
+      }
+    ],
+    "CB25-01-4": [
+      {
+        "hallTicketId": "HT_1761802630848_0a8v00eyp",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "D.e",
+        "studentRoll": "4",
+        "studentClass": "1",
+        "studentCode": "CB25-01-4",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "mat",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "tel",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "receptionist",
+        "issuedDate": "2025-10-30T05:41:10.965Z",
+        "createdAt": "2025-10-30T05:37:10.854Z",
+        "status": "issued"
+      }
+    ],
+    "CB25-01-5": [
+      {
+        "hallTicketId": "HT_1761802630865_xyq2fye05",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "E.f",
+        "studentRoll": "5",
+        "studentClass": "1",
+        "studentCode": "CB25-01-5",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "mat",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "tel",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "receptionist",
+        "issuedDate": "2025-10-30T05:41:13.421Z",
+        "createdAt": "2025-10-30T05:37:10.870Z",
+        "status": "issued"
+      }
+    ],
+    "CB25-02-1": [
+      {
+        "hallTicketId": "HT_1761802981135_mye52nldw",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "a.B",
+        "studentRoll": "1",
+        "studentClass": "2",
+        "studentCode": "CB25-02-1",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "eng",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "hindi",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "admin",
+        "createdAt": "2025-10-30T05:43:01.143Z",
+        "status": "issued",
+        "issuedDate": "2025-10-30T05:43:27.086Z"
+      }
+    ],
+    "CB25-02-2": [
+      {
+        "hallTicketId": "HT_1761802981156_584aosjnd",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "b.C",
+        "studentRoll": "2",
+        "studentClass": "2",
+        "studentCode": "CB25-02-2",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "eng",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "hindi",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "admin",
+        "createdAt": "2025-10-30T05:43:01.162Z",
+        "status": "issued",
+        "issuedDate": "2025-10-30T05:43:30.142Z"
+      }
+    ],
+    "CB25-02-3": [
+      {
+        "hallTicketId": "HT_1761802981172_j4mglbe0b",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "c.D",
+        "studentRoll": "3",
+        "studentClass": "2",
+        "studentCode": "CB25-02-3",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "eng",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "hindi",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "admin",
+        "createdAt": "2025-10-30T05:43:01.177Z",
+        "status": "issued",
+        "issuedDate": "2025-10-30T05:43:33.021Z"
+      }
+    ],
+    "CB25-02-4": [
+      {
+        "hallTicketId": "HT_1761802981186_cz54mgp30",
+        "examName": "MId Term",
+        "fromDate": "2025-11-01",
+        "toDate": "2025-11-02",
+        "studentName": "d.E",
+        "studentRoll": "4",
+        "studentClass": "2",
+        "studentCode": "CB25-02-4",
+        "examSchedule": [
+          {
+            "date": "2025-11-01",
+            "exams": [
+              {
+                "examName": "eng",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          },
+          {
+            "date": "2025-11-02",
+            "exams": [
+              {
+                "examName": "hindi",
+                "timing": "9:00 AM - 10:00 AM"
+              }
+            ]
+          }
+        ],
+        "remarks": "",
+        "issuedBy": "admin",
+        "createdAt": "2025-10-30T05:43:01.190Z",
+        "status": "issued",
+        "issuedDate": "2025-10-30T05:43:34.981Z"
+      }
+    ]
+  },
+  "notifications": [
+    {
+      "id": "notif_1761802695617_wz28m0nn9",
+      "source": "admin",
+      "title": "Holiday",
+      "message": "tomarrow is holiday due to heavy rains",
+      "type": "urgent",
+      "priority": "urgent",
+      "targetAudience": "all",
+      "targetClass": "all",
+      "createdAt": "2025-10-30T05:38:15.617Z",
+      "expiryDate": "2025-11-01T05:38:15.617Z",
+      "displayDays": 2,
+      "readBy": [
+        "CB2501",
+        "CB25-01-1"
+      ],
+      "file": null,
+      "fileName": null
+    }
+  ],
+  "studentFeeCertificates": {
+    "CB25-04-20": [
+      {
+        "id": "FEE_1761794494331_v5rydiutf",
+        "studentClass": "4",
+        "studentRoll": 20,
+        "studentCode": "CB25-04-20",
+        "studentName": "abc",
+        "fatherName": "def",
+        "totalFee": 39999.99,
+        "amountPaid": 20000,
+        "remainingDue": 19999.989999999998,
+        "academicYear": "2024-25",
+        "remarks": "Payment: ₹20000 via upi",
+        "date": "2025-10-30T03:21:34.331Z",
+        "generatedBy": "receptionist",
+        "status": "issued",
+        "issuedDate": "2025-10-30T03:22:16.491Z"
+      }
+    ]
+  }
+}

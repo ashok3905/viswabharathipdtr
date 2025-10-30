@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viswbharathi High School - School Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%, #f8fafc 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(99, 102, 241, 0.08);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 20px; height: 20px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 15px; height: 15px; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 25px; height: 25px; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 18px; height: 18px; left: 40%; animation-delay: 3s; }
+        .particle:nth-child(5) { width: 22px; height: 22px; left: 50%; animation-delay: 4s; }
+        .particle:nth-child(6) { width: 16px; height: 16px; left: 60%; animation-delay: 5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Main container */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 25px -5px rgba(0, 0, 0, 0.08),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            padding: 2.5rem;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Back button */
+        .back-btn {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(100, 116, 139, 0.1);
+            border: none;
+            border-radius: 10px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .back-btn:hover {
+            background: rgba(100, 116, 139, 0.2);
+            transform: translateX(-2px);
+        }
+
+        /* QR Login indicator */
+        .qr-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 0.3rem;
+            animation: pulse 2s infinite;
+        }
+
+        .qr-indicator.show {
+            display: flex;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* School logo */
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 16px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            animation: pulse 2s ease-in-out infinite alternate;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Typography */
+        .school-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e293b, #475569);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Role selection */
+        .role-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+
+        .role-btn {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .role-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .role-btn.admin {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .role-btn.admin:hover {
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .role-btn.faculty {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .role-btn.faculty:hover {
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .role-btn.student {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .role-btn.student:hover {
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Login form */
+        .login-form {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .login-form.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: white;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .login-submit {
+            flex: 1;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .cancel-btn {
+            flex: 1;
+            background: rgba(100, 116, 139, 0.1);
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn:hover {
+            background: rgba(100, 116, 139, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Beautiful Alert Styles */
+        .alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .alert-box {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .alert-overlay.show .alert-box {
+            transform: scale(1);
+        }
+
+        .alert-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            animation: bounceIn 0.6s ease-out;
+        }
+
+        .alert-icon.error {
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+            color: #ef4444;
+        }
+
+        .alert-icon.success {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            color: #22c55e;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .alert-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .alert-message {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .alert-button {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .alert-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Loading state */
+        .loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .loading .btn-text {
+            opacity: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .school-title {
+                font-size: 1.6rem;
+            }
+
+            .role-btn, .login-submit, .cancel-btn {
+                padding: 0.75rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .form-buttons {
+                flex-direction: column;
+            }
+
+            .alert-box {
+                padding: 1.5rem;
+            }
+        }
+        .logo img {
+    max-width: 80px;   /* or whatever size you want */
+    max-height: 80px;
+    display: block;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.role-btn.receptionist {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+.role-btn.receptionist:hover {
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Animated particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <!-- QR Login Indicator -->
+        <div class="qr-indicator" id="qrIndicator">
+            <i class="fas fa-qrcode"></i>
+            <span>QR Login Active</span>
+        </div>
+
+        <div class="logo"><img src="logo.png" alt=""></div>
+        
+        <h1 class="school-title">School Portal</h1>
+        
+        <div class="role-selection" id="roleSelection">
+            <h2 class="subtitle">Select Your Role</h2>
+            <button class="role-btn admin" onclick="showLogin('admin')">
+                <i class="fas fa-user-shield"></i>
+                <span class="btn-text">Admin Login</span>
+            </button>
+            <button class="role-btn faculty" onclick="showLogin('faculty')">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span class="btn-text">Faculty Login</span>
+            </button>
+            <button class="role-btn student" onclick="showLogin('student')">
+                <i class="fas fa-user-graduate"></i>
+                <span class="btn-text">Student Login</span>
+            </button>
+            <button class="role-btn receptionist" onclick="showLogin('receptionist')">
+                <i class="fas fa-desk"></i>
+                <span class="btn-text">Receptionist Login</span>
+            </button>
+        </div>
+
+        <div class="login-form" id="loginForm">
+            <h3 class="login-title" id="loginTitle"></h3>
+            <div class="login-format-info" id="loginFormatInfo"></div>
+            <input type="text" class="login-input" id="loginCode" placeholder="Enter your login code" autocomplete="new-password" data-form-type="other">
+            <div class="form-buttons">
+                <button class="login-submit" onclick="processLogin()">
+                    <span class="btn-text">Login</span>
+                </button>
+                <button class="cancel-btn" onclick="hideLogin()">
+                    <span class="btn-text">Cancel</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- QR Processing indicator -->
+        <div class="qr-processing" id="qrProcessing" style="display: none;">
+            <div class="qr-spinner"></div>
+            <h3>Processing QR Login...</h3>
+            <p>Please wait while we authenticate your credentials.</p>
+        </div>
+    </div>
+
+    <!-- Beautiful Alert Modal -->
+    <div class="alert-overlay" id="alertOverlay">
+        <div class="alert-box">
+            <div class="alert-icon" id="alertIcon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="alert-title" id="alertTitle">Alert</h3>
+            <p class="alert-message" id="alertMessage">This is an alert message.</p>
+            <button class="alert-button" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentRole = '';
+
+        // Clear form data on page load and handle auto-fill prevention
+        window.addEventListener('load', function() {
+            // Clear all form inputs with enhanced security
+            document.querySelectorAll('input').forEach(input => {
+                input.value = '';
+                input.setAttribute('autocomplete', 'new-password');
+                input.setAttribute('data-form-type', 'other');
+                // Disable browser autofill/suggestions
+                input.setAttribute('data-lpignore', 'true');
+                input.setAttribute('data-1p-ignore', 'true');
+            });
+            
+            // Clear browser history to prevent form data caching
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+            
+            // Additional security measures
+            disableBrowserAutofill();
+            
+            // Handle QR code parameters if present
+            handleQRLogin();
+        });
+
+        // Enhanced function to disable browser autofill completely
+        function disableBrowserAutofill() {
+            const loginInput = document.getElementById('loginCode');
+            
+            // Set multiple attributes to prevent autofill
+            loginInput.setAttribute('autocomplete', 'new-password');
+            loginInput.setAttribute('data-form-type', 'other');
+            loginInput.setAttribute('data-lpignore', 'true');
+            loginInput.setAttribute('data-1p-ignore', 'true');
+            loginInput.setAttribute('readonly', 'readonly');
+            
+            // Remove readonly on focus to allow typing
+            loginInput.addEventListener('focus', function() {
+                this.removeAttribute('readonly');
+            });
+            
+            // Clear any autofilled values immediately
+            setInterval(() => {
+                if (loginInput.value && !document.activeElement === loginInput) {
+                    // Only clear if user is not actively typing
+                    const currentTime = new Date().getTime();
+                    if (!loginInput.dataset.lastTyped || (currentTime - parseInt(loginInput.dataset.lastTyped)) > 100) {
+                        loginInput.value = '';
+                    }
+                }
+            }, 50);
+            
+            // Track user typing
+            loginInput.addEventListener('input', function() {
+                this.dataset.lastTyped = new Date().getTime();
+            });
+        }
+
+        // Show login form for selected role
+        function showLogin(role) {
+            currentRole = role;
+            const roleSelection = document.getElementById('roleSelection');
+            const loginForm = document.getElementById('loginForm');
+            const loginTitle = document.getElementById('loginTitle');
+            const loginCode = document.getElementById('loginCode');
+            const formatInfo = document.getElementById('loginFormatInfo');
+
+            // Clear any existing input value
+            loginCode.value = '';
+            
+            // Hide role selection
+            roleSelection.style.display = 'none';
+            
+            // Show login form
+            loginForm.classList.add('show');
+            
+            // Set title, placeholder, and format info based on role
+            let title = '';
+            let placeholder = '';
+            let icon = '';
+            let formatText = '';
+            
+            switch(role) {
+                case 'admin':
+                    title = 'Admin Login';
+                    placeholder = 'Enter admin code';
+                    icon = '<i class="fas fa-user-shield"></i>';
+                    break;
+                case 'faculty':
+                    title = 'Faculty Login';
+                    placeholder = 'Enter faculty code';
+                    icon = '<i class="fas fa-chalkboard-teacher"></i>';
+                    break;
+                case 'student':
+                    title = 'Student Login';
+                    placeholder = 'Enter student code';
+                    icon = '<i class="fas fa-user-graduate"></i>';
+                    formatText = 'Student Code Format:<br>• Classes 1-10: CB25-[CLASS]-[ROLL]<br>• Example: CB25-01-1 (Class 1, Roll 1)';
+                    break;
+                case 'receptionist':
+                    title = 'Receptionist Login';
+                    placeholder = 'Enter receptionist code';
+                    icon = '<i class="fas fa-desk"></i>';
+                    break;
+            }
+            
+            loginTitle.innerHTML = icon + ' ' + title;
+            loginCode.placeholder = placeholder;
+            formatInfo.innerHTML = formatText;
+            
+            // Reset security attributes for the input
+            setTimeout(() => {
+                loginCode.setAttribute('autocomplete', 'new-password');
+                loginCode.setAttribute('data-form-type', 'other');
+                loginCode.focus();
+            }, 100);
+        }
+
+        // Hide login form and show role selection
+        function hideLogin() {
+            const roleSelection = document.getElementById('roleSelection');
+            const loginForm = document.getElementById('loginForm');
+            const loginCode = document.getElementById('loginCode');
+            
+            // Clear input completely
+            loginCode.value = '';
+            loginCode.blur(); // Remove focus
+            
+            // Hide login form
+            loginForm.classList.remove('show');
+            
+            // Show role selection
+            roleSelection.style.display = 'block';
+            
+            // Reset current role
+            currentRole = '';
+            
+            // Clear any browser stored data
+            setTimeout(() => {
+                loginCode.setAttribute('autocomplete', 'new-password');
+                loginCode.setAttribute('readonly', 'readonly');
+            }, 100);
+        }
+
+        // Validate admin code
+        function validateAdminCode(code) {
+            return code === 'CB25-A';
+        }
+
+        // Validate faculty code
+        function validateFacultyCode(code) {
+            const validPrePrimary = ['CB25N', 'CB25L', 'CB25U'];
+            const validClasses = [];
+            
+            // Generate CB2501 to CB2510
+            for (let i = 1; i <= 10; i++) {
+                validClasses.push('CB25' + i.toString().padStart(2, '0'));
+            }
+            
+            return validPrePrimary.includes(code) || validClasses.includes(code);
+        }
+
+        // Validate receptionist code
+        function validateReceptionistCode(code) {
+            return code === 'CB25-R';
+        }
+
+        // Validate student code - Updated for new format CB25-01-1 to CB25-10-60
+        function validateStudentCode(code) {
+            // Pattern: CB25-[CLASS]-[ROLL] where CLASS is 01-10 and ROLL is 1-60
+            const pattern = /^CB25-(0[1-9]|10)-([1-9]|[1-5][0-9]|60)$/;
+            return pattern.test(code);
+        }
+
+        // Extract class and roll number from student code - Updated for new format
+        function parseStudentCode(code) {
+            const match = code.match(/^CB25-(0[1-9]|10)-([1-9]|[1-5][0-9]|60)$/);
+            if (match) {
+                const classNum = parseInt(match[1]);
+                const rollNum = parseInt(match[2]);
+                return { class: classNum, roll: rollNum };
+            }
+            return null;
+        }
+
+        // Process login based on current role
+        function processLogin() {
+            const loginCode = document.getElementById('loginCode').value.trim().toUpperCase();
+            const submitBtn = document.querySelector('.login-submit');
+            
+            if (!loginCode) {
+                showAlert('Please enter your login code', 'error');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.classList.add('loading');
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                let isValid = false;
+                let redirectUrl = '';
+                let errorMessage = 'Invalid login code';
+                
+                switch(currentRole) {
+                    case 'admin':
+                        if (validateAdminCode(loginCode)) {
+                            isValid = true;
+                            redirectUrl = 'admin.html';
+                            sessionStorage.setItem('adminCode', loginCode);
+                        } else {
+                            errorMessage = 'Invalid admin code. Expected format: CB25-A';
+                        }
+                        break;
+                        
+                    case 'faculty':
+                        if (validateFacultyCode(loginCode)) {
+                            isValid = true;
+                            redirectUrl = 'faculty.html';
+                            sessionStorage.setItem('facultyCode', loginCode);
+                        } else {
+                            errorMessage = 'Invalid faculty code. Use CB25N/CB25L/CB25U for pre-primary or CB2501-CB2510 for classes';
+                        }
+                        break;
+
+                    case 'receptionist':
+                        if (validateReceptionistCode(loginCode)) {
+                            isValid = true;
+                            redirectUrl = 'receptionist.html';
+                            sessionStorage.setItem('receptionistCode', loginCode);
+                        } else {
+                            errorMessage = 'Invalid receptionist code. Expected format: CB25-R';
+                        }
+                        break;
+                        
+                    case 'student':
+                        if (validateStudentCode(loginCode)) {
+                            const studentInfo = parseStudentCode(loginCode);
+                            isValid = true;
+                            redirectUrl = 'student.html';
+                            sessionStorage.setItem('studentCode', loginCode);
+                            sessionStorage.setItem('studentClass', studentInfo.class);
+                            sessionStorage.setItem('studentRoll', studentInfo.roll);
+                        } else {
+                            errorMessage = 'Invalid student code. Format: CB25-[CLASS]-[ROLL] (e.g., CB25-01-1)';
+                        }
+                        break;
+                }
+                
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                
+                if (isValid) {
+                    showAlert('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 1500);
+                } else {
+                    showAlert(errorMessage, 'error');
+                    // Clear input and reset security attributes
+                    const input = document.getElementById('loginCode');
+                    input.value = '';
+                    input.blur();
+                    setTimeout(() => {
+                        input.setAttribute('readonly', 'readonly');
+                    }, 100);
+                }
+            }, 1000);
+        }
+
+        // Show alert modal
+        function showAlert(message, type = 'error') {
+            const alertOverlay = document.getElementById('alertOverlay');
+            const alertIcon = document.getElementById('alertIcon');
+            const alertTitle = document.getElementById('alertTitle');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            if (type === 'success') {
+                alertIcon.className = 'alert-icon success';
+                alertIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                alertTitle.textContent = 'Success';
+            } else {
+                alertIcon.className = 'alert-icon error';
+                alertIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                alertTitle.textContent = 'Error';
+            }
+            
+            alertMessage.textContent = message;
+            alertOverlay.classList.add('show');
+        }
+
+        // Close alert modal
+        function closeAlert() {
+            const alertOverlay = document.getElementById('alertOverlay');
+            alertOverlay.classList.remove('show');
+        }
+
+        // Handle QR code login parameters
+        function handleQRLogin() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role');
+            const code = urlParams.get('code');
+            const name = urlParams.get('name');
+            
+            if (role && code) {
+                const upperCode = code.toUpperCase();
+                
+                // Store the name if provided
+                if (name) {
+                    sessionStorage.setItem('userName', name);
+                }
+                
+                // Show QR indicator
+                document.getElementById('qrIndicator').classList.add('show');
+                
+                // Validate and redirect based on role
+                let isValid = false;
+                let redirectUrl = '';
+                
+                if (role === 'admin' && validateAdminCode(upperCode)) {
+                    sessionStorage.setItem('adminCode', upperCode);
+                    isValid = true;
+                    redirectUrl = 'admin.html';
+                } else if (role === 'faculty' && validateFacultyCode(upperCode)) {
+                    sessionStorage.setItem('facultyCode', upperCode);
+                    isValid = true;
+                    redirectUrl = 'faculty.html';
+                } else if (role === 'receptionist' && validateReceptionistCode(upperCode)) {
+                    sessionStorage.setItem('receptionistCode', upperCode);
+                    isValid = true;
+                    redirectUrl = 'receptionist.html';
+                } else if (role === 'student' && validateStudentCode(upperCode)) {
+                    const studentInfo = parseStudentCode(upperCode);
+                    sessionStorage.setItem('studentCode', upperCode);
+                    sessionStorage.setItem('studentClass', studentInfo.class);
+                    sessionStorage.setItem('studentRoll', studentInfo.roll);
+                    isValid = true;
+                    redirectUrl = 'student.html';
+                }
+                
+                if (isValid) {
+                    showAlert(`${role.charAt(0).toUpperCase() + role.slice(1)} login successful! Redirecting...`, 'success');
+                    setTimeout(() => window.location.href = redirectUrl, 1500);
+                } else {
+                    showAlert('Invalid QR code. Please try again.', 'error');
+                    clearURL();
+                }
+            }
+        }
+
+        // Clear URL parameters
+        function clearURL() {
+            const url = new URL(window.location);
+            url.search = '';
+            window.history.replaceState({}, document.title, url.toString());
+        }
+
+        // Auto-format input as user types - Updated for new student format and receptionist
+        function formatInput(input, role) {
+            let value = input.value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+            
+            if (role === 'admin') {
+                // Format: CB25-A
+                if (value.length > 0 && !value.startsWith('CB25')) {
+                    if (value.startsWith('CB')) {
+                        value = 'CB25' + value.substring(2);
+                    } else {
+                        value = 'CB25' + value;
+                    }
+                }
+                if (value.length > 4 && !value.includes('-')) {
+                    value = value.substring(0, 4) + '-' + value.substring(4);
+                }
+                if (value.length > 6) {
+                    value = value.substring(0, 6);
+                }
+            } else if (role === 'receptionist') {
+                // Format: CB25-R
+                if (value.length > 0 && !value.startsWith('CB25')) {
+                    if (value.startsWith('CB')) {
+                        value = 'CB25' + value.substring(2);
+                    } else {
+                        value = 'CB25' + value;
+                    }
+                }
+                if (value.length > 4 && !value.includes('-')) {
+                    value = value.substring(0, 4) + '-' + value.substring(4);
+                }
+                if (value.length > 6) {
+                    value = value.substring(0, 6);
+                }
+            } else if (role === 'faculty') {
+                // Format: CB25N/CB25L/CB25U or CB2501-CB2510
+                if (value.length > 0 && !value.startsWith('CB25')) {
+                    if (value.startsWith('CB')) {
+                        value = 'CB25' + value.substring(2);
+                    } else {
+                        value = 'CB25' + value;
+                    }
+                }
+                if (value.length > 6) {
+                    value = value.substring(0, 6);
+                }
+            } else if (role === 'student') {
+                // Format: CB25-01-1 (CB25 + - + class + - + roll)
+                if (value.length > 0 && !value.startsWith('CB25')) {
+                    if (value.startsWith('CB')) {
+                        value = 'CB25' + value.substring(2);
+                    } else {
+                        value = 'CB25' + value;
+                    }
+                }
+                
+                // Add first dash after CB25
+                if (value.length > 4 && value.charAt(4) !== '-') {
+                    value = value.substring(0, 4) + '-' + value.substring(4);
+                }
+                
+                // Add second dash after class number
+                if (value.length > 7 && value.charAt(7) !== '-') {
+                    value = value.substring(0, 7) + '-' + value.substring(7);
+                }
+                
+                // Limit total length to CB25-10-60 (10 characters)
+                if (value.length > 10) {
+                    value = value.substring(0, 10);
+                }
+            }
+            
+            return value;
+        }
+
+        // Handle Enter key press in login input and format input
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginCode = document.getElementById('loginCode');
+            
+            // Enhanced security setup
+            disableBrowserAutofill();
+            
+            loginCode.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    processLogin();
+                }
+            });
+
+            // Auto-format input as user types
+            loginCode.addEventListener('input', function(e) {
+                if (currentRole) {
+                    const formattedValue = formatInput(e.target, currentRole);
+                    if (e.target.value !== formattedValue) {
+                        e.target.value = formattedValue;
+                    }
+                }
+                // Update last typed timestamp for security
+                e.target.dataset.lastTyped = new Date().getTime();
+            });
+            
+            // Additional security - clear on blur
+            loginCode.addEventListener('blur', function(e) {
+                setTimeout(() => {
+                    if (!document.activeElement || document.activeElement !== e.target) {
+                        e.target.setAttribute('readonly', 'readonly');
+                    }
+                }, 100);
+            });
+            
+            // Close alert when clicking outside
+            const alertOverlay = document.getElementById('alertOverlay');
+            alertOverlay.addEventListener('click', function(e) {
+                if (e.target === alertOverlay) {
+                    closeAlert();
+                }
+            });
+        });
+
+        // Handle page visibility change (clear sensitive data when tab is hidden)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.querySelectorAll('input').forEach(input => {
+                    if (input.type !== 'hidden') {
+                        input.value = '';
+                        input.blur();
+                    }
+                });
+            }
+        });
+
+        // Clear forms before page unload and on focus loss
+        window.addEventListener('beforeunload', function() {
+            document.querySelectorAll('input').forEach(input => {
+                input.value = '';
+            });
+        });
+
+        // Additional security - clear input periodically if not in use
+        setInterval(() => {
+            const loginInput = document.getElementById('loginCode');
+            if (loginInput && loginInput.value && document.activeElement !== loginInput) {
+                const lastTyped = loginInput.dataset.lastTyped;
+                const currentTime = new Date().getTime();
+                if (!lastTyped || (currentTime - parseInt(lastTyped)) > 10000) { // 10 seconds of inactivity
+                    loginInput.value = '';
+                }
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

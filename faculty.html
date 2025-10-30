@@ -1,0 +1,4217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <title>Faculty Dashboard</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:rgb(52,164,220);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    padding: 1rem;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Animated background particles */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 60% 30%, rgba(16, 185, 129, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 30% 70%, rgba(236, 72, 153, 0.1) 2px, transparent 2px);
+    background-size: 50px 50px, 80px 80px, 60px 60px, 70px 70px;
+    animation: particleFloat 20s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes particleFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-20px) rotate(-1deg); }
+    75% { transform: translateY(-10px) rotate(0.5deg); }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.08),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4, #10b981);
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e293b, #475569);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sections */
+.section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.08),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInScale 0.8s ease-out;
+    animation-fill-mode: both;
+}
+
+.section:nth-child(2) { animation-delay: 0.2s; }
+.section:nth-child(3) { animation-delay: 0.4s; }
+.section:nth-child(4) { animation-delay: 0.6s; }
+.section:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.section:hover::before {
+    transform: scaleX(1);
+}
+
+.section h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section h2::before {
+    content: '📋';
+    font-size: 1.2em;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-5px); }
+    60% { transform: translateY(-3px); }
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Button styling */
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0.25rem;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0px);
+}
+
+/* Primary button */
+button[type="submit"], button:not([class]) {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+button[type="submit"]:hover, button:not([class]):hover {
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* History button */
+.history-btn {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.history-btn:hover {
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Logout button */
+button[onclick*="index.html"] {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}
+
+button[onclick*="index.html"]:hover {
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Post items */
+.post-item {
+    background: rgba(248, 250, 252, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #6366f1;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #6366f1, #8b5cf6);
+    transition: width 0.3s ease;
+}
+
+.post-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.post-item:hover::before {
+    width: 8px;
+}
+
+/* File links */
+.file-link {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.file-link:hover {
+    color: #4f46e5;
+    transform: translateX(3px);
+}
+
+/* Modal styling */
+#historyModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#historyModal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#historyModal > div {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    min-width: 300px;
+    transform: scale(0.9) translateY(50px);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+#historyModal.show > div {
+    transform: scale(1) translateY(0);
+}
+
+/* Loading animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .section {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+    }
+    
+    .container {
+        padding: 0;
+    }
+    
+    .header {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+    
+    .section {
+        padding: 1.25rem;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .header-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    button {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    input, textarea, select {
+        padding: 0.875rem;
+        font-size: 0.95rem;
+    }
+    
+    .post-item {
+        padding: 1.25rem;
+    }
+    
+    #historyModal > div {
+        padding: 1.5rem;
+        border-radius: 16px;
+        min-width: unset;
+        width: 95%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+    
+    .section {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+    
+    .section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    button {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    input, textarea, select {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+    
+    .post-item {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    #historyModal > div {
+        padding: 1rem;
+        border-radius: 12px;
+        width: 98%;
+        max-height: 85%;
+    }
+}
+
+@media (max-width: 320px) {
+    h1 {
+        font-size: 1.4rem;
+    }
+    
+    .section h2 {
+        font-size: 1.2rem;
+    }
+    
+    button {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .section {
+        padding: 0.75rem;
+    }
+    
+    .header {
+        padding: 0.75rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    body::before,
+    body::after {
+        display: none;
+    }
+    
+    .section {
+        background: white;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    button {
+        display: none;
+    }
+}
+/* Progress Card Modal Specific Styles */
+.progress-card-modal .modal-content {
+    max-width: 95%;
+    max-height: 95%;
+    width: 1000px;
+}
+
+.progress-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.student-details-section,
+.subjects-section,
+.additional-info-section {
+    background: rgba(248, 250, 252, 0.5);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid #6366f1;
+}
+
+.student-details-section h4,
+.subjects-section h4,
+.additional-info-section h4 {
+    color: #1e293b;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.subject-item {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.subject-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.subject-item .form-row {
+    margin-bottom: 0;
+}
+
+.progress-card-item {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #10b981;
+    transition: all 0.3s ease;
+}
+
+.progress-card-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.progress-card-item h4 {
+    color: #1e293b;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.progress-card-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.summary-item {
+    background: rgba(248, 250, 252, 0.5);
+    padding: 0.75rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.summary-item strong {
+    display: block;
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.grade-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.grade-aplus { background: #dcfce7; color: #166534; }
+.grade-a { background: #dbeafe; color: #1e40af; }
+.grade-bplus { background: #fef3c7; color: #92400e; }
+.grade-b { background: #fed7aa; color: #9a3412; }
+.grade-cplus { background: #fde68a; color: #a16207; }
+.grade-c { background: #fecaca; color: #b91c1c; }
+.grade-d { background: #fecaca; color: #991b1b; }
+.grade-f { background: #fee2e2; color: #7f1d1d; }
+
+.progress-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.progress-card-actions button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+/* Status Messages for Progress Cards */
+.error-msg {
+    background: #fee2e2;
+    color: #7f1d1d;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border-left: 4px solid #dc2626;
+    margin-bottom: 1rem;
+}
+
+.success-msg {
+    background: #dcfce7;
+    color: #166534;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border-left: 4px solid #16a34a;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Design for Progress Cards */
+@media (max-width: 768px) {
+    .progress-card-modal .modal-content {
+        width: 95%;
+        max-width: none;
+        padding: 1rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .progress-card-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .student-details-section,
+    .subjects-section,
+    .additional-info-section {
+        padding: 1rem;
+    }
+    
+    .subject-item {
+        padding: 0.75rem;
+    }
+    
+    .progress-card-item {
+        padding: 1rem;
+    }
+    
+    .progress-card-actions {
+        flex-direction: column;
+    }
+    
+    .progress-card-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .progress-card-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .summary-item {
+        padding: 0.5rem;
+    }
+    
+    .grade-badge {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Animation for progress card creation */
+@keyframes progressCardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.progress-card-item {
+    animation: progressCardSlideIn 0.3s ease-out;
+}
+
+/* Hover effects for form elements in progress cards */
+.progress-form-container input:focus,
+.progress-form-container textarea:focus,
+.progress-form-container select:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+/* Modal Fixes - Ensure modals stay in fixed position */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-fixed {
+    position: relative;
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 20px;
+    border: none;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Progress Card Styles for Faculty */
+.progress-card-item {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.progress-card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.progress-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+.progress-card-header h4 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.exam-type {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.progress-card-details {
+    margin-bottom: 15px;
+}
+
+.progress-card-details p {
+    margin: 5px 0;
+    opacity: 0.9;
+}
+
+.subjects-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.subject-mark {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+/* Progress Card Form Styles */
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.subject-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.subject-item label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.subject-item input {
+    padding: 10px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.subject-item input:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Student Progress Card Styles */
+.my-progress-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.my-progress-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.percentage {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.percentage.pass {
+    background: rgba(40, 167, 69, 0.3);
+    color: #28a745;
+}
+
+.percentage.fail {
+    background: rgba(220, 53, 69, 0.3);
+    color: #dc3545;
+}
+
+.card-body p {
+    margin: 8px 0;
+    opacity: 0.9;
+}
+
+.card-footer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.card-footer small {
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.no-progress-card {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    color: #6c757d;
+    font-size: 1.1em;
+}
+
+/* Progress Card Detail Modal */
+.progress-card-detail {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.student-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    margin: -20px -20px 20px -20px;
+}
+
+.student-info h4 {
+    margin: 0 0 15px 0;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.student-info p {
+    margin: 8px 0;
+    opacity: 0.9;
+}
+
+.marks-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.summary-item h5 {
+    margin: 0 0 10px 0;
+    color: #6c757d;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-item .marks,
+.summary-item .percentage,
+.summary-item .grade {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+}
+
+.summary-item .percentage.pass,
+.summary-item .grade.pass {
+    color: #28a745;
+}
+
+.summary-item .percentage.fail,
+.summary-item .grade.fail {
+    color: #dc3545;
+}
+
+.subjects-detail h5 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 1.2em;
+    font-weight: 600;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 8px;
+}
+
+.subjects-detail .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.subject-detail {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.subject-name {
+    font-weight: 600;
+    color: #333;
+    flex: 1;
+}
+
+.subject-marks {
+    font-weight: bold;
+    color: #495057;
+    margin: 0 10px;
+}
+
+.subject-percentage {
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.85em;
+}
+
+.subject-percentage.pass {
+    background: #d4edda;
+    color: #155724;
+}
+
+.subject-percentage.fail {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.card-date {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+    color: #6c757d;
+}
+
+/* Button Styles */
+.primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Error and Success Messages */
+.error-msg {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    border: 1px solid #f5c6cb;
+}
+
+.success-msg {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    border: 1px solid #c3e6cb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-fixed {
+        width: 95%;
+        margin: 5% auto;
+        padding: 15px;
+        max-height: 85vh;
+    }
+    
+    .subjects-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .marks-summary {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .progress-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .subjects-display {
+        justify-content: flex-start;
+    }
+    
+    .subject-detail {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-fixed {
+        width: 98%;
+        margin: 2% auto;
+        padding: 10px;
+    }
+    
+    .student-info {
+        margin: -10px -10px 15px -10px;
+        padding: 20px 15px;
+    }
+    
+    .student-info h4 {
+        font-size: 1.3em;
+    }
+    
+    .percentage {
+        font-size: 1.2em;
+        padding: 6px 12px;
+    }
+}
+
+/* Loading and Error States */
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #f5c6cb;
+}
+
+/* Animation for progress cards */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.my-progress-card,
+.progress-card-item {
+    animation: slideInUp 0.5s ease forwards;
+}
+
+/* Print Styles for Progress Cards */
+@media print {
+    .progress-card-detail {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .student-info {
+        background: #f8f9fa !important;
+        color: #333 !important;
+    }
+    
+    .modal-fixed {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .primary-btn,
+    .danger-btn {
+        display: none;
+    }
+}
+.faculty-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.info-btn {
+    background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3) !important;
+}
+
+.info-btn:hover {
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4) !important;
+}
+.avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.avatar-upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+}
+
+.avatar:hover .avatar-upload-overlay {
+    opacity: 1;
+}
+
+.avatar-upload-overlay i {
+    font-size: 1.2rem;
+    color: white;
+}
+
+#profilePicInput {
+    display: none;
+}
+        /* Notification Badge */
+        .notification-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .notification-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .notification-badge .bell-icon {
+            font-size: 28px;
+            position: relative;
+        }
+
+        .notification-badge .count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            border: 2px solid white;
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+            50% {
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 0 15px rgba(102, 126, 234, 0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 420px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notification-panel.active {
+            right: 0;
+        }
+
+        .notification-panel-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-panel-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mark-read-btn, .close-panel-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .mark-read-btn:hover, .close-panel-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .close-panel-btn {
+            font-size: 18px;
+            padding: 6px 10px;
+            font-weight: bold;
+        }
+
+        .notification-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        /* Notification Item in Panel */
+        .notification-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .notification-item.unread {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            border-left: 4px solid #667eea;
+        }
+
+        .notification-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .notification-type {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .notification-type.holiday {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .notification-type.keyinfo {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .notification-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .notification-content {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .notification-file {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #667eea;
+            text-decoration: none;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .notification-file:hover {
+            background: #e9ecef;
+            transform: translateX(3px);
+        }
+
+        .notification-date {
+            font-size: 11px;
+            color: #999;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-expiry {
+            color: #ff4757;
+            font-weight: 600;
+        }
+
+        /* Toast Notifications */
+        .notification-toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 10001;
+            max-width: 400px;
+            width: calc(100% - 40px);
+        }
+
+        .notification-toast {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.4s ease, fadeOut 0.4s ease 19.6s;
+            animation-fill-mode: forwards;
+        }
+
+        .notification-toast::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            animation: progress 20s linear;
+        }
+
+        @keyframes progress {
+            0% { width: 100%; }
+            100% { width: 0%; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+        }
+
+        .notification-toast-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .notification-toast-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .notification-toast-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .notification-toast-close {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .notification-toast-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .notification-toast-body {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* Badge for multiple notifications */
+        .notification-group-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ff4757;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .notification-panel {
+                width: 100%;
+                right: -100%;
+            }
+
+            .notification-badge {
+                width: 50px;
+                height: 50px;
+            }
+
+            .notification-badge .bell-icon {
+                font-size: 24px;
+            }
+
+            .notification-toast-container {
+                max-width: calc(100% - 40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Badge -->
+    <div class="notification-badge" id="notificationBadge" onclick="toggleNotificationPanel()" style="display: none; position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); z-index: 1000; transition: transform 0.3s;">
+        <span class="bell-icon" style="font-size: 24px;">🔔</span>
+        <span class="count" id="notificationCount" style="position: absolute; top: 5px; right: 5px; background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span>
+    </div>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel" style="display: none; position: fixed; top: 90px; right: 20px; width: 400px; max-height: 600px; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 999; overflow: hidden;">
+        <div class="notification-panel-header" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-size: 18px;">📢 Admin Notifications</h3>
+            <div class="notification-actions" style="display: flex; gap: 10px;">
+                <button onclick="markAllAsRead()" class="mark-read-btn" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">Mark All Read</button>
+                <button onclick="toggleNotificationPanel()" class="close-panel-btn" style="background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 18px;">✕</button>
+            </div>
+        </div>
+        <div class="notification-panel-body" id="notificationPanelBody" style="max-height: 500px; overflow-y: auto; padding: 10px;">
+            <p style="text-align: center; color: #999; padding: 40px 20px;">No new notifications</p>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div class="notification-toast-container" id="notificationToastContainer" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px;"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="faculty-profile">
+                <div class="avatar" id="facultyAvatar" onclick="triggerProfilePicUpload()">
+                    <span id="avatarText">F</span>
+                    <img id="profileImage" style="display: none;">
+                    <div class="avatar-upload-overlay">
+                        <span>📷</span>
+                    </div>
+                </div>
+                <input type="file" id="profilePicInput" accept="image/*" onchange="handleProfilePicUpload(event)" style="display: none;">
+                <div class="profile-info">
+                    <h1>Faculty Dashboard</h1>
+                    <div id="facultyInfo"></div>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <button onclick="updateFacultyProfile()" class="info-btn">Update Profile</button>
+                <button onclick="window.location.href='index.html'" class="danger-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- ===== NEW NOTIFICATION SECTION ===== -->
+        <div class="section" id="notificationsSection" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 0; overflow: hidden; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);">
+            <div style="padding: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="color: white; margin: 0; font-size: 24px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 32px;">📢</span>
+                        Admin Notifications
+                    </h2>
+                    <button onclick="refreshNotifications()" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s; backdrop-filter: blur(10px);" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+                        🔄 Refresh
+                    </button>
+                </div>
+                
+                <div id="notificationsDisplay" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.8); font-size: 16px;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">📭</div>
+                        <p style="margin: 0;">Loading notifications...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Year Attendance Section -->
+        <div class="section">
+            <h2>Academic Year Attendance Management (June - April)</h2>
+            <button class="primary-btn" onclick="showMonthlyAttendanceForm()">Post Monthly Attendance</button>
+            <button onclick="viewPostedMonthlyAttendance()" class="success-btn">View Academic Year Attendance</button>
+        </div>
+
+        <!-- MCQ Assignment Section -->
+        <div class="section">
+            <h2>MCQ Assignment Management</h2>
+            <button class="warning-btn" onclick="showAssignmentCreator()">Create New MCQ Assignment</button>
+            <button onclick="viewAssignmentResults()" class="primary-btn">View Assignment Results</button>
+            <button onclick="viewActiveAssignments()" class="success-btn">View Active Assignments</button>
+            <button onclick="deleteAssignments()" class="danger-btn">Delete Assignments</button>
+        </div>
+
+        <!-- Digital Progress Card Section -->
+        <div class="section">
+            <h2>Digital Progress Card Management</h2>
+            <button class="primary-btn" onclick="showProgressCardCreator()">Create/Update Progress Card</button>
+            <button onclick="viewAllProgressCards()" class="success-btn">View All Progress Cards</button>
+        </div>
+
+        <!-- Regular Posts Section -->
+        <div class="section">
+            <h2>Post to Your Students</h2>
+            <div class="section">
+                <h3>Post Homework</h3>
+                <form id="homeworkForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="homeworkText">Homework Details:</label>
+                        <textarea id="homeworkText" name="text" placeholder="Enter homework details" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="homeworkFile">Attach File (optional):</label>
+                        <input type="file" id="homeworkFile" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+                    </div>
+                    <div class="form-group">
+                        <label for="homeworkDays">Display for (days):</label>
+                        <input type="number" id="homeworkDays" name="displayDays" placeholder="Enter number of days (optional)" min="1">
+                    </div>
+                    <button type="submit">Post Homework</button>
+                </form>
+            </div>
+            <div class="section">
+                <h3>Post Online Assignment</h3>
+                <form id="assignmentForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="assignmentText">Assignment Details:</label>
+                        <textarea id="assignmentText" name="text" placeholder="Enter online assignment details" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignmentFile">Attach File (optional):</label>
+                        <input type="file" id="assignmentFile" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+                    </div>
+                    <div class="form-group">
+                        <label for="assignmentDays">Display for (days):</label>
+                        <input type="number" id="assignmentDays" name="displayDays" placeholder="Enter number of days (optional)" min="1">
+                    </div>
+                    <button type="submit">Post Assignment</button>
+                </form>
+            </div>
+            <div class="section">
+                <h3>Post Subject Information</h3>
+                <form id="subjectForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="subjectText">Subject Information:</label>
+                        <textarea id="subjectText" name="text" placeholder="Enter subject information" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectFile">Attach File (optional):</label>
+                        <input type="file" id="subjectFile" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif">
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectDays">Display for (days):</label>
+                        <input type="number" id="subjectDays" name="displayDays" placeholder="Enter number of days (optional)" min="1">
+                    </div>
+                    <button type="submit">Post Subject Info</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Your Posts Section (Admin Announcements REMOVED) -->
+        <div class="section">
+            <h2>Your Posts to Students</h2>
+            <button onclick="loadData()">Refresh</button>
+            <div id="facultyPosts"></div>
+        </div>
+    </div>
+
+    <!-- All Modals remain the same... -->
+    <!-- Monthly Attendance Form Modal -->
+    <div id="monthlyAttendanceModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Post Monthly Attendance - Academic Year (June - April)</h3>
+            <div id="monthlyAttendanceStatusMessage"></div>
+            <form id="monthlyAttendanceForm">
+                <div class="form-group">
+                    <label for="attendanceMonth">Month:</label>
+                    <select id="attendanceMonth" required>
+                        <option value="">Select Month</option>
+                        <option value="6">June (Start of Academic Year)</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April (End of Academic Year)</option>
+                        <option value="5">May (Summer Break)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="attendanceYear">Year:</label>
+                    <select id="attendanceYear" required>
+                        <option value="">Select Year</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="studentName">Student Name:</label>
+                    <input type="text" id="studentName" placeholder="Enter student full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentRoll">Student Roll Number:</label>
+                    <input type="text" id="studentRoll" placeholder="Enter roll number (1-60)" required>
+                </div>
+                <div class="form-group">
+                    <label for="totalWorkingDays">Total Working Days:</label>
+                    <input type="number" id="totalWorkingDays" min="1" max="31" placeholder="Enter total working days in month" required>
+                </div>
+                <div class="form-group">
+                    <label for="attendedDays">Days Attended:</label>
+                    <input type="number" id="attendedDays" min="0" placeholder="Enter days attended" required>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit" class="success-btn">Post Monthly Attendance</button>
+                    <button type="button" onclick="closeMonthlyAttendanceModal()" class="danger-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Posted Monthly Attendance Modal -->
+    <div id="viewMonthlyAttendanceModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Academic Year Attendance Records (June - April)</h3>
+            <div id="monthlyAttendanceViewContent"></div>
+            <button onclick="closeViewMonthlyAttendance()" class="danger-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Assignment Creator Modal -->
+    <div id="assignmentModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Create MCQ Assignment</h3>
+            <div id="statusMessage"></div>
+            
+            <div class="form-group">
+                <label for="targetClass">Select Target Class:</label>
+                <select id="targetClass" required>
+                    <option value="">Select Class</option>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <option value="3">Class 3</option>
+                    <option value="4">Class 4</option>
+                    <option value="5">Class 5</option>
+                    <option value="6">Class 6</option>
+                    <option value="7">Class 7</option>
+                    <option value="8">Class 8</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="assignmentTitle">Assignment Title:</label>
+                <input type="text" id="assignmentTitle" placeholder="Enter assignment title" required>
+            </div>
+            <div class="form-group">
+                <label for="assignmentDate">Assignment Date:</label>
+                <input type="date" id="assignmentDate" required>
+            </div>
+            <div class="form-group">
+                <label for="questionCount">Number of Questions:</label>
+                <input type="number" id="questionCount" min="1" max="20" placeholder="Enter number of questions (1-20)" required>
+                <button type="button" onclick="generateQuestionFields()">Generate Question Fields</button>
+            </div>
+            <div class="form-group">
+                <label for="assignmentDisplayDays">Display for (days):</label>
+                <input type="number" id="assignmentDisplayDays" placeholder="Enter number of days (optional)" min="1">
+            </div>
+            <div id="questionsContainer"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="button" onclick="createAssignment()" style="display:none;" id="submitAssignmentBtn" class="success-btn">Create Assignment</button>
+                <button type="button" onclick="closeAssignmentModal()" class="danger-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Card Creator Modal -->
+    <div id="progressCardModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Create/Update Progress Card</h3>
+            <div id="progressStatusMessage"></div>
+            <div class="form-group">
+                <label for="studentRollNumber">Student Roll Number:</label>
+                <input type="text" id="studentRollNumber" placeholder="Enter student roll number (1-60)" required>
+            </div>
+            <div class="form-group">
+                <label for="studentFullName">Student Full Name:</label>
+                <input type="text" id="studentFullName" placeholder="Enter student full name" required>
+            </div>
+            <div class="form-group">
+                <label for="fatherName">Father's Name:</label>
+                <input type="text" id="fatherName" placeholder="Enter father's name" required>
+            </div>
+            <div class="form-group">
+                <label for="examType">Exam Type:</label>
+                <input type="text" id="examType" placeholder="Enter exam type (e.g., Unit Test 1, Mid Term, Final)" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="subjectSelect">Add Subject:</label>
+                <select id="subjectSelect">
+                    <option value="">Choose a subject</option>
+                    <option value="telugu">Telugu</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="english">English</option>
+                    <option value="mathematics">Mathematics</option>
+                    <option value="science">Science</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="biology">Biology</option>
+                    <option value="general knowledge">General Knowledge</option>
+                    <option value="evs">EVS</option>
+                    <option value="artsandcrafts">Arts and Crafts</option>
+                    <option value="social">Social</option>
+                    <option value="computers">Computers</option>
+                    <option value="history">History</option>
+
+                </select>
+            </div>
+
+            <div id="subjectMarksContainer" style="margin: 20px 0;">
+                <h4>Subject-wise Marks:</h4>
+                <div id="subjectMarksList"></div>
+                <button type="button" onclick="addSubjectWithMarks()" class="primary-btn" style="margin-top: 10px;">Add Subject</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="postingDate">Posting Date:</label>
+                <input type="date" id="postingDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="displayDays">Display for (days, max 90):</label>
+                <input type="number" id="displayDays" min="1" max="90" placeholder="Enter days (1-90)" required>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="button" onclick="createProgressCard()" class="success-btn">Save Progress Card</button>
+                <button type="button" onclick="closeProgressCardModal()" class="danger-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Cards View Modal -->
+    <div id="progressCardsModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>All Progress Cards</h3>
+            <div id="progressCardsContent"></div>
+            <button onclick="closeProgressCards()" class="danger-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Assignment Results Modal -->
+    <div id="resultsModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Assignment Results</h3>
+            <div id="resultsContent"></div>
+            <button onclick="closeResults()" class="danger-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Active Assignments Modal -->
+    <div id="activeAssignmentsModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Active Assignments</h3>
+            <div id="activeAssignmentsContent"></div>
+            <button onclick="closeActiveAssignments()" class="danger-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Delete Assignments Modal -->
+    <div id="deleteAssignmentsModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Delete Assignments</h3>
+            <div id="deleteAssignmentsContent"></div>
+            <button onclick="closeDeleteAssignments()" class="danger-btn">Close</button>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content modal-fixed">
+            <h3>Faculty History (Last 30 Days)</h3>
+            <div id="historyContent"></div>
+            <button onclick="closeHistory()" class="danger-btn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== NOTIFICATION SYSTEM - SCRIPT TAG 1 =====
+        
+        let notifications = [];
+        let lastCheckedTime = Date.now();
+        let notificationCheckInterval;
+        let facultyCode = '';
+        let facultyClass = '';
+        let facultyType = '';
+
+        const API_BASE = `${window.location.origin}/api`;
+
+        // Initialize notification system
+        function initializeNotificationSystem() {
+            if (!facultyCode) {
+                console.error('Cannot initialize notifications: facultyCode not set');
+                return;
+            }
+
+            console.log('✅ Initializing notification system for:', facultyCode);
+
+            if (notificationCheckInterval) {
+                clearInterval(notificationCheckInterval);
+            }
+
+            notificationCheckInterval = setInterval(checkForNewNotifications, 30000);
+            checkForNewNotifications();
+        }
+
+        // Check for new notifications
+        async function checkForNewNotifications() {
+            try {
+                if (!facultyCode) {
+                    console.error('❌ facultyCode not available');
+                    return;
+                }
+
+                const response = await fetch(`${API_BASE}/faculty/${facultyCode}/notifications`);
+                if (!response.ok) {
+                    console.error('❌ API response not OK:', response.status);
+                    return;
+                }
+                
+                const apiNotifications = await response.json();
+                console.log('📩 Received notifications from API:', apiNotifications.length);
+                
+                const newNotifications = apiNotifications.filter(apiNotif => 
+                    !apiNotif.isRead && !notifications.some(n => n.id === apiNotif.id)
+                );
+
+                if (newNotifications.length > 0) {
+                    console.log('🔔 Found new notifications:', newNotifications.length);
+                    
+                    if (newNotifications.length >= 2) {
+                        showGroupedNotificationToast(newNotifications);
+                    } else {
+                        newNotifications.forEach(notif => {
+                            showNotificationToast(notif);
+                        });
+                    }
+                }
+
+                notifications = apiNotifications;
+                updateNotificationBadge();
+                displayNotifications();
+            } catch (error) {
+                console.error('❌ Error checking notifications:', error);
+            }
+        }
+
+        // Display notifications in the main section
+        function displayNotifications() {
+            const container = document.getElementById('notificationsDisplay');
+            
+            if (!notifications || notifications.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.8); font-size: 16px;">
+                        <div style="font-size: 48px; margin-bottom: 15px;">📭</div>
+                        <p style="margin: 0;">No notifications available</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            notifications.forEach(notif => {
+                const isUnread = !notif.isRead;
+                const createdDate = new Date(notif.createdAt).toLocaleString('en-IN');
+                const expiryDate = notif.expiryDate ? new Date(notif.expiryDate).toLocaleString('en-IN') : 'No expiry';
+                
+                const typeIcons = {
+                    general: '📌',
+                    urgent: '🚨',
+                    info: 'ℹ️',
+                    event: '📅',
+                    holiday: '🏖️',
+                    exam: '📝'
+                };
+                
+                const priorityColors = {
+                    low: 'rgba(16, 185, 129, 0.2)',
+                    normal: 'rgba(251, 191, 36, 0.2)',
+                    high: 'rgba(249, 115, 22, 0.2)',
+                    urgent: 'rgba(239, 68, 68, 0.2)'
+                };
+                
+                const icon = typeIcons[notif.type] || '📢';
+                const bgColor = isUnread ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.7)';
+                const borderColor = isUnread ? '#fbbf24' : 'rgba(255, 255, 255, 0.3)';
+                
+                html += `
+                    <div style="background: ${bgColor}; border: 2px solid ${borderColor}; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s; position: relative; ${isUnread ? 'border-left: 5px solid #fbbf24;' : ''}" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'">
+                        ${isUnread ? '<div style="position: absolute; top: 10px; right: 10px; width: 12px; height: 12px; background: #fbbf24; border-radius: 50%; animation: pulse 2s infinite;"></div>' : ''}
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                    <span style="font-size: 24px;">${icon}</span>
+                                    <h4 style="margin: 0; color: #1f2937; font-size: 18px; font-weight: 700;">${notif.title}</h4>
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+                                    <span style="background: ${priorityColors[notif.priority] || 'rgba(156, 163, 175, 0.2)'}; color: #1f2937; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase;">${notif.priority}</span>
+                                    <span style="background: rgba(59, 130, 246, 0.2); color: #1f2937; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;">${notif.type}</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteNotification('${notif.id}')" style="background: #ef4444; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+                                🗑️ Delete
+                            </button>
+                        </div>
+                        
+                        <p style="margin: 0 0 15px 0; color: #4b5563; line-height: 1.6; font-size: 14px;">${notif.message}</p>
+                        
+                        ${notif.file ? `
+                            <div style="background: #f3f4f6; padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+                                <span style="color: #6b7280; font-size: 12px; font-weight: 600;">📎 Attachment: </span>
+                                <a href="${notif.file}" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 600; font-size: 13px;">${notif.fileName || 'View File'}</a>
+                            </div>
+                        ` : ''}
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #6b7280; padding-top: 10px; border-top: 1px solid #e5e7eb;">
+                            <span>📅 ${createdDate}</span>
+                            <span>⏰ Expires: ${expiryDate}</span>
+                        </div>
+                        
+                        ${isUnread ? `
+                            <div style="margin-top: 15px;">
+                                <button onclick="markAsRead('${notif.id}')" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; width: 100%; transition: all 0.3s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                                    ✓ Mark as Read
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Update notification badge
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.isRead).length;
+            const badge = document.getElementById('notificationBadge');
+            const countElement = document.getElementById('notificationCount');
+            
+            if (unreadCount > 0) {
+                badge.style.display = 'flex';
+                countElement.textContent = unreadCount > 99 ? '99+' : unreadCount;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // Toggle notification panel
+        function toggleNotificationPanel() {
+            const panel = document.getElementById('notificationPanel');
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                panel.style.display = 'block';
+                updateNotificationPanelBody();
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+
+        // Update notification panel body
+        function updateNotificationPanelBody() {
+            const container = document.getElementById('notificationPanelBody');
+            
+            if (!notifications || notifications.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999; padding: 40px 20px;">No notifications</p>';
+                return;
+            }
+
+            let html = '';
+            notifications.slice(0, 5).forEach(notif => {
+                const isUnread = !notif.isRead;
+                const icon = notif.type === 'urgent' ? '🚨' : notif.type === 'exam' ? '📝' : '📢';
+                
+                html += `
+                    <div style="padding: 15px; border-bottom: 1px solid #e5e7eb; ${isUnread ? 'background: #fef3c7;' : ''} cursor: pointer; transition: background 0.3s;" onclick="markAsRead('${notif.id}')" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='${isUnread ? '#fef3c7' : 'transparent'}'">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 5px;">
+                            <strong style="color: #1f2937; font-size: 14px;">${icon} ${notif.title}</strong>
+                            ${isUnread ? '<span style="width: 8px; height: 8px; background: #fbbf24; border-radius: 50%; display: block;"></span>' : ''}
+                        </div>
+                        <p style="margin: 5px 0; color: #6b7280; font-size: 12px; line-height: 1.4;">${notif.message.substring(0, 100)}${notif.message.length > 100 ? '...' : ''}</p>
+                        <small style="color: #9ca3af; font-size: 11px;">${new Date(notif.createdAt).toLocaleString('en-IN')}</small>
+                    </div>
+                `;
+            });
+
+            if (notifications.length > 5) {
+                html += `<div style="text-align: center; padding: 10px;"><small style="color: #6b7280;">Scroll down in main section to see all notifications</small></div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Show notification toast
+        function showNotificationToast(notif) {
+            const container = document.getElementById('notificationToastContainer');
+            const toast = document.createElement('div');
+            
+            const icon = notif.type === 'urgent' ? '🚨' : notif.type === 'exam' ? '📝' : '📢';
+            
+            toast.style.cssText = `
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+                min-width: 300px;
+                max-width: 400px;
+                animation: slideInDown 0.5s ease;
+            `;
+            
+            toast.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                    <strong style="font-size: 14px;">${icon} ${notif.title}</strong>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; line-height: 1;">×</button>
+                </div>
+                <p style="margin: 0; font-size: 13px; line-height: 1.4; opacity: 0.95;">${notif.message.substring(0, 80)}${notif.message.length > 80 ? '...' : ''}</p>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.animation = 'slideOutUp 0.5s ease';
+                    setTimeout(() => toast.remove(), 500);
+                }
+            }, 5000);
+        }
+
+        // Show grouped notification toast
+        function showGroupedNotificationToast(notifs) {
+            const container = document.getElementById('notificationToastContainer');
+            const toast = document.createElement('div');
+            
+            toast.style.cssText = `
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+                min-width: 300px;
+                max-width: 400px;
+                animation: slideInDown 0.5s ease;
+            `;
+            
+            toast.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                    <strong style="font-size: 14px;">🔔 ${notifs.length} New Notifications</strong>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; line-height: 1;">×</button>
+                </div>
+                <p style="margin: 0; font-size: 13px; line-height: 1.4; opacity: 0.95;">You have ${notifs.length} new notifications from admin. Check them out!</p>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.animation = 'slideOutUp 0.5s ease';
+                    setTimeout(() => toast.remove(), 500);
+                }
+            }, 5000);
+        }
+
+        // Mark notification as read
+        async function markAsRead(notificationId) {
+            try {
+                const response = await fetch(`${API_BASE}/notifications/${notificationId}/read`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userCode: facultyCode
+                    })
+                });
+
+                if (response.ok) {
+                    const notif = notifications.find(n => n.id === notificationId);
+                    if (notif) {
+                        notif.isRead = true;
+                    }
+                    updateNotificationBadge();
+                    displayNotifications();
+                    updateNotificationPanelBody();
+                }
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+        }
+
+        // Mark all as read
+        async function markAllAsRead() {
+            try {
+                const response = await fetch(`${API_BASE}/notifications/read-all`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userCode: facultyCode,
+                        userType: 'faculty'
+                    })
+                });
+
+                if (response.ok) {
+                    notifications.forEach(n => n.isRead = true);
+                    updateNotificationBadge();
+                    displayNotifications();
+                    updateNotificationPanelBody();
+                    alert('All notifications marked as read!');
+                }
+            } catch (error) {
+                console.error('Error marking all as read:', error);
+                alert('Error marking all as read');
+            }
+        }
+
+        // Delete notification
+        async function deleteNotification(notificationId) {
+            if (!confirm('Are you sure you want to delete this notification?')) {
+                return;
+            }
+
+            try {
+                // Note: Faculty cannot delete admin notifications, but we can hide them locally
+                notifications = notifications.filter(n => n.id !== notificationId);
+                updateNotificationBadge();
+                displayNotifications();
+                updateNotificationPanelBody();
+                
+                // Optional: You can add an API call if backend supports faculty hiding notifications
+                alert('Notification removed from your view!');
+            } catch (error) {
+                console.error('Error deleting notification:', error);
+                alert('Error deleting notification');
+            }
+        }
+
+        // Refresh notifications
+        async function refreshNotifications() {
+            await checkForNewNotifications();
+            alert('Notifications refreshed!');
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (notificationCheckInterval) {
+                clearInterval(notificationCheckInterval);
+            }
+        });
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInDown {
+                from {
+                    transform: translateY(-100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutUp {
+                from {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateY(-100%);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes pulse {
+                0%, 100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.5;
+                }
+            }
+            
+            .notification-badge:hover {
+                transform: scale(1.1) !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['assignmentModal', 'resultsModal', 'activeAssignmentsModal', 'deleteAssignmentsModal', 'historyModal', 'progressCardModal', 'progressCardsModal', 'monthlyAttendanceModal', 'viewMonthlyAttendanceModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+    <script>
+        
+        let selectedSubjectsWithMarks = []; // Changed to store subjects with marks
+     
+        // Updated faculty initialization
+        function initializeFaculty() {
+            facultyCode = sessionStorage.getItem('facultyCode') || '';
+            const facultyName = sessionStorage.getItem('userName') || '';
+            
+            if (!facultyCode) {
+                alert('Please login first');
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            let displayClass = '';
+            let displayInfo = '';
+            
+            if (facultyCode === 'CB25N') {
+                facultyType = 'preprimary';
+                facultyClass = 'nursery';
+                displayClass = 'Nursery';
+                displayInfo = 'Pre-Primary Section';
+            } else if (facultyCode === 'CB25L') {
+                facultyType = 'preprimary';
+                facultyClass = 'lkg';
+                displayClass = 'LKG';
+                displayInfo = 'Pre-Primary Section';
+            } else if (facultyCode === 'CB25U') {
+                facultyType = 'preprimary';
+                facultyClass = 'ukg';
+                displayClass = 'UKG';
+                displayInfo = 'Pre-Primary Section';
+            } else if (/^CB25(0[1-9]|10)$/.test(facultyCode)) {
+                const match = facultyCode.match(/^CB25(0[1-9]|10)$/);
+                if (match) {
+                    facultyType = 'classes';
+                    const classNum = parseInt(match[1]);
+                    facultyClass = classNum.toString();
+                    displayClass = `Class ${classNum}`;
+                    displayInfo = 'Primary/Secondary Section';
+                }
+            } else {
+                facultyType = 'general';
+                facultyClass = 'general';
+                displayClass = 'General';
+                displayInfo = 'Faculty';
+            }
+            
+            let displayContent = `<h2>Welcome Faculty - ${displayClass}</h2>`;
+            
+            if (facultyName) {
+                displayContent += `<p><strong>Name:</strong> ${facultyName}</p>`;
+            }
+            
+            displayContent += `<p><strong>Faculty Code:</strong> ${facultyCode}</p>`;
+            displayContent += `<p><strong>Section:</strong> ${displayInfo}</p>`;
+            
+            document.getElementById('facultyInfo').innerHTML = displayContent;
+            
+            const avatarText = facultyName ? facultyName.charAt(0).toUpperCase() : displayClass.charAt(0);
+            document.getElementById('avatarText').textContent = avatarText;
+            
+            loadProfilePicture();
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('postingDate').value = today;
+            
+            return true;
+        }
+
+        // Profile picture functions
+        function triggerProfilePicUpload() {
+            document.getElementById('profilePicInput').click();
+        }
+
+        function handleProfilePicUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select a valid image file');
+                    return;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size should be less than 5MB');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    const profilePicKey = `profilePic_${facultyCode}`;
+                    sessionStorage.setItem(profilePicKey, imageData);
+                    updateAvatarDisplay(imageData);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateAvatarDisplay(imageData) {
+            const avatar = document.getElementById('facultyAvatar');
+            const avatarText = document.getElementById('avatarText');
+            const profileImage = document.getElementById('profileImage');
+            
+            if (imageData) {
+                profileImage.src = imageData;
+                profileImage.style.display = 'block';
+                avatarText.style.display = 'none';
+            } else {
+                profileImage.style.display = 'none';
+                avatarText.style.display = 'flex';
+            }
+        }
+
+        function loadProfilePicture() {
+            const profilePicKey = `profilePic_${facultyCode}`;
+            const savedImage = sessionStorage.getItem(profilePicKey);
+            
+            if (savedImage) {
+                updateAvatarDisplay(savedImage);
+            }
+        }
+
+        function removeProfilePicture() {
+            if (confirm('Are you sure you want to remove your profile picture?')) {
+                const profilePicKey = `profilePic_${facultyCode}`;
+                sessionStorage.removeItem(profilePicKey);
+                updateAvatarDisplay(null);
+            }
+        }
+
+        // NEW: Subject with marks management for progress card
+        function addSubjectWithMarks() {
+            const selectElement = document.getElementById('subjectSelect');
+            const selectedValue = selectElement.value;
+            const selectedText = selectElement.options[selectElement.selectedIndex].text;
+            
+            if (!selectedValue) {
+                alert('Please select a subject first');
+                return;
+            }
+            
+            if (selectedSubjectsWithMarks.some(s => s.subject === selectedValue)) {
+                alert('This subject is already added');
+                return;
+            }
+            
+            // Prompt for marks
+            const maxMarks = prompt(`Enter maximum marks for ${selectedText}:`, '100');
+            if (!maxMarks || isNaN(maxMarks) || parseFloat(maxMarks) <= 0) {
+                alert('Please enter valid maximum marks');
+                return;
+            }
+            
+            const obtainedMarks = prompt(`Enter marks obtained in ${selectedText}:`, '0');
+            if (obtainedMarks === null || isNaN(obtainedMarks) || parseFloat(obtainedMarks) < 0) {
+                alert('Please enter valid obtained marks');
+                return;
+            }
+            
+            if (parseFloat(obtainedMarks) > parseFloat(maxMarks)) {
+                alert('Obtained marks cannot be greater than maximum marks');
+                return;
+            }
+            
+            const subjectObj = {
+                subject: selectedValue,
+                name: selectedText,
+                maxMarks: parseFloat(maxMarks),
+                obtainedMarks: parseFloat(obtainedMarks)
+            };
+            
+            selectedSubjectsWithMarks.push(subjectObj);
+            updateSubjectsWithMarksList();
+            selectElement.value = '';
+        }
+
+        function removeSubjectWithMarks(index) {
+            selectedSubjectsWithMarks.splice(index, 1);
+            updateSubjectsWithMarksList();
+        }
+
+        function updateSubjectsWithMarksList() {
+            const container = document.getElementById('subjectMarksList');
+            let html = '';
+            
+            if (selectedSubjectsWithMarks.length === 0) {
+                html = '<p style="color: #666; font-style: italic;">No subjects added yet</p>';
+            } else {
+                let totalMax = 0;
+                let totalObtained = 0;
+                
+                html += '<table style="width: 100%; border-collapse: collapse; margin: 10px 0;">';
+                html += '<thead><tr style="background: #f0f0f0;">';
+                html += '<th style="padding: 8px; border: 1px solid #ddd;">Subject</th>';
+                html += '<th style="padding: 8px; border: 1px solid #ddd;">Max Marks</th>';
+                html += '<th style="padding: 8px; border: 1px solid #ddd;">Obtained</th>';
+                html += '<th style="padding: 8px; border: 1px solid #ddd;">Percentage</th>';
+                html += '<th style="padding: 8px; border: 1px solid #ddd;">Action</th>';
+                html += '</tr></thead><tbody>';
+                
+                selectedSubjectsWithMarks.forEach((subject, index) => {
+                    const percentage = ((subject.obtainedMarks / subject.maxMarks) * 100).toFixed(2);
+                    totalMax += subject.maxMarks;
+                    totalObtained += subject.obtainedMarks;
+                    
+                    html += `<tr>`;
+                    html += `<td style="padding: 8px; border: 1px solid #ddd;">${subject.name}</td>`;
+                    html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${subject.maxMarks}</td>`;
+                    html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${subject.obtainedMarks}</td>`;
+                    html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${percentage}%</td>`;
+                    html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">
+                        <button type="button" onclick="removeSubjectWithMarks(${index})" style="background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">Remove</button>
+                    </td>`;
+                    html += `</tr>`;
+                });
+                
+                const overallPercentage = totalMax > 0 ? ((totalObtained / totalMax) * 100).toFixed(2) : 0;
+                
+                html += '</tbody><tfoot>';
+                html += `<tr style="background: #e9ecef; font-weight: bold;">`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd;">TOTAL</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${totalMax}</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${totalObtained}</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd; text-align: center;">${overallPercentage}%</td>`;
+                html += `<td style="padding: 8px; border: 1px solid #ddd;"></td>`;
+                html += `</tr></tfoot></table>`;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function generateStudentCodeForFaculty(rollNumber) {
+            if (facultyType === 'classes') {
+                const classNum = parseInt(facultyClass);
+                const formattedClass = classNum.toString().padStart(2, '0');
+                const rollNum = parseInt(rollNumber);
+                
+                if (rollNum >= 1 && rollNum <= 60) {
+                    return `CB25-${formattedClass}-${rollNum}`;
+                }
+            } else if (facultyType === 'preprimary') {
+                const rollNum = parseInt(rollNumber);
+                if (rollNum >= 1 && rollNum <= 999) {
+                    const formattedRoll = rollNum.toString().padStart(3, '0');
+                    return `${facultyCode}${formattedRoll}`;
+                }
+            }
+            return null;
+        }
+
+        function validateRollNumber(rollNumber) {
+            const roll = parseInt(rollNumber);
+            
+            if (facultyType === 'classes') {
+                return roll >= 1 && roll <= 60;
+            } else if (facultyType === 'preprimary') {
+                return roll >= 1 && roll <= 999;
+            }
+            
+            return roll >= 1 && roll <= 100;
+        }
+
+        function updateFacultyProfile() {
+            const currentName = sessionStorage.getItem('userName') || '';
+            const action = prompt(`Choose action:\n1. Update Name (current: ${currentName})\n2. Remove Profile Picture\n\nEnter 1 or 2:`);
+            
+            if (action === '1') {
+                const name = prompt('Enter your full name:', currentName);
+                if (name && name.trim()) {
+                    sessionStorage.setItem('userName', name.trim());
+                    initializeFaculty();
+                }
+            } else if (action === '2') {
+                removeProfilePicture();
+            }
+        }
+
+        // NEW: Calculate performance grade based on percentage
+        function calculatePerformance(percentage) {
+            if (percentage >= 90) return { grade: 'SUPER', color: '#28a745', emoji: '🌟' };
+            if (percentage >= 75) return { grade: 'EXCELLENT', color: '#17a2b8', emoji: '⭐' };
+            if (percentage >= 60) return { grade: 'GOOD', color: '#007bff', emoji: '👍' };
+            if (percentage >= 50) return { grade: 'AVERAGE', color: '#ffc107', emoji: '📚' };
+            if (percentage >= 35) return { grade: 'BELOW AVERAGE', color: '#fd7e14', emoji: '📖' };
+            return { grade: 'NEEDS IMPROVEMENT', color: '#dc3545', emoji: '💪' };
+        }
+
+        // Monthly Attendance Functions
+        function showMonthlyAttendanceForm() {
+            document.getElementById('monthlyAttendanceModal').style.display = 'block';
+            const now = new Date();
+            const currentMonth = now.getMonth() + 1;
+            
+            if (currentMonth >= 6) {
+                document.getElementById('attendanceMonth').value = currentMonth;
+            } else if (currentMonth <= 4) {
+                document.getElementById('attendanceMonth').value = currentMonth;
+            }
+            
+            document.getElementById('attendanceYear').value = now.getFullYear();
+            clearMonthlyAttendanceStatusMessage();
+        }
+
+        function closeMonthlyAttendanceModal() {
+            document.getElementById('monthlyAttendanceModal').style.display = 'none';
+            document.getElementById('monthlyAttendanceForm').reset();
+            clearMonthlyAttendanceStatusMessage();
+        }
+
+        function clearMonthlyAttendanceStatusMessage() {
+            document.getElementById('monthlyAttendanceStatusMessage').innerHTML = '';
+        }
+
+        function showMonthlyAttendanceStatusMessage(message, isError = false) {
+            const statusDiv = document.getElementById('monthlyAttendanceStatusMessage');
+            statusDiv.innerHTML = `<div class="${isError ? 'error-msg' : 'success-msg'}">${message}</div>`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const monthlyAttendanceForm = document.getElementById('monthlyAttendanceForm');
+            if (monthlyAttendanceForm) {
+                monthlyAttendanceForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    await postMonthlyAttendance();
+                });
+            }
+        });
+
+        async function postMonthlyAttendance() {
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Posting...';
+
+            try {
+                const month = parseInt(document.getElementById('attendanceMonth').value);
+                const year = parseInt(document.getElementById('attendanceYear').value);
+                const studentName = document.getElementById('studentName').value.trim();
+                const studentRoll = document.getElementById('studentRoll').value.trim();
+                const totalWorkingDays = parseInt(document.getElementById('totalWorkingDays').value);
+                const attendedDays = parseInt(document.getElementById('attendedDays').value);
+
+                if (!month || !year || !studentName || !studentRoll || !totalWorkingDays || attendedDays === '') {
+                    throw new Error('Please fill all required fields');
+                }
+
+                if (!validateRollNumber(studentRoll)) {
+                    const maxRoll = facultyType === 'classes' ? 60 : 999;
+                    throw new Error(`Roll number must be between 1 and ${maxRoll}`);
+                }
+
+                if (attendedDays < 0 || attendedDays > totalWorkingDays) {
+                    throw new Error('Days attended cannot be negative or greater than total working days');
+                }
+
+                const studentCode = generateStudentCodeForFaculty(studentRoll);
+
+                const response = await fetch(`${API_BASE}/post-monthly-attendance`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        classCode: facultyClass,
+                        facultyCode: facultyCode,
+                        facultyType: facultyType,
+                        month: month,
+                        year: year,
+                        studentName: studentName,
+                        studentRoll: studentRoll,
+                        studentCode: studentCode,
+                        totalWorkingDays: totalWorkingDays,
+                        attendedDays: attendedDays
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showMonthlyAttendanceStatusMessage('Monthly attendance posted successfully!');
+                    setTimeout(() => {
+                        closeMonthlyAttendanceModal();
+                    }, 2000);
+                } else {
+                    throw new Error(result.error || 'Failed to post monthly attendance');
+                }
+            } catch (error) {
+                console.error('Monthly attendance post error:', error);
+                showMonthlyAttendanceStatusMessage('Error: ' + error.message, true);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+       async function viewPostedMonthlyAttendance() {
+    try {
+        const response = await fetch(`${API_BASE}/monthly-attendance/${facultyClass}`);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const attendanceRecords = await response.json();
+        let html = '';
+
+        if (attendanceRecords.length > 0) {
+            const groupedByAcademicYear = {};
+            
+            attendanceRecords.forEach(record => {
+                let academicYear;
+                if (record.month >= 6) {
+                    academicYear = `${record.year}-${record.year + 1}`;
+                } else {
+                    academicYear = `${record.year - 1}-${record.year}`;
+                }
+                
+                if (!groupedByAcademicYear[academicYear]) {
+                    groupedByAcademicYear[academicYear] = {};
+                }
+                
+                const monthKey = `${record.month}-${record.year}`;
+                if (!groupedByAcademicYear[academicYear][monthKey]) {
+                    groupedByAcademicYear[academicYear][monthKey] = {
+                        month: record.month,
+                        year: record.year,
+                        records: []
+                    };
+                }
+                groupedByAcademicYear[academicYear][monthKey].records.push(record);
+            });
+
+            Object.keys(groupedByAcademicYear).sort((a, b) => b.localeCompare(a)).forEach(academicYear => {
+                html += `
+                    <div class="academic-year-group" style="margin: 30px 0; padding: 20px; border: 2px solid #007bff; border-radius: 10px; background: #f8f9ff;">
+                        <h3 style="margin: 0 0 20px 0; color: #007bff; text-align: center;">Academic Year: ${academicYear}</h3>
+                `;
+                
+                const yearData = groupedByAcademicYear[academicYear];
+                const monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June',
+                                 'July', 'August', 'September', 'October', 'November', 'December'];
+                
+                const monthOrder = [6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5];
+                
+                Object.keys(yearData).sort((a, b) => {
+                    const monthA = parseInt(a.split('-')[0]);
+                    const monthB = parseInt(b.split('-')[0]);
+                    return monthOrder.indexOf(monthA) - monthOrder.indexOf(monthB);
+                }).forEach(monthKey => {
+                    const monthData = yearData[monthKey];
+                    const monthName = monthNames[monthData.month];
+                    const monthRecords = monthData.records;
+                    
+                    html += `
+                        <div class="month-section" style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background: #fff;">
+                            <h4 style="margin: 0 0 15px 0; color: #333; padding: 10px; background: #f8f9fa; border-radius: 5px; text-align: center;">
+                                ${monthName} ${monthData.year} - Total Students: ${monthRecords.length}
+                            </h4>
+                            
+                            <div style="overflow-x: auto;">
+                                <table class="attendance-table" style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px;">
+                                    <thead>
+                                        <tr style="background: #007bff; color: white;">
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Roll No.</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: left; font-weight: bold;">Student Name</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Student Code</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Working Days</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Days Present</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Percentage</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Status</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Posted Date</th>
+                                            <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                    `;
+                    
+                    monthRecords.sort((a, b) => {
+                        const rollA = parseInt(a.studentRoll) || 0;
+                        const rollB = parseInt(b.studentRoll) || 0;
+                        return rollA - rollB;
+                    }).forEach((record, index) => {
+                        const percentage = record.percentage;
+                        let statusColor = '#dc3545';
+                        let statusText = 'Poor';
+                        let bgColor = '#fff';
+                        
+                        if (percentage >= 75) {
+                            statusColor = '#28a745';
+                            statusText = 'Good';
+                            bgColor = '#f8fff9';
+                        } else if (percentage >= 50) {
+                            statusColor = '#ffc107';
+                            statusText = 'Average';
+                            bgColor = '#fffbf0';
+                        } else {
+                            bgColor = '#fff5f5';
+                        }
+                        
+                        html += `
+                            <tr style="background: ${bgColor}; ${index % 2 === 0 ? 'background: rgba(0, 123, 255, 0.05);' : ''}">
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-weight: bold;">${record.studentRoll}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: left;">${record.studentName}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 12px; color: #666;">${record.studentCode || 'N/A'}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${record.totalWorkingDays}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${record.attendedDays}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-weight: bold; color: ${statusColor};">${percentage}%</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                    <span style="background: ${statusColor}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;">
+                                        ${statusText}
+                                    </span>
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 12px; color: #666;">
+                                    ${new Date(record.postedAt).toLocaleDateString()}
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                    <button onclick="deleteAttendanceRecord('${record.id}', '${record.studentName}')" style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.3s;" onmouseover="this.style.background='#c82333'" onmouseout="this.style.background='#dc3545'">
+                                        🗑️ Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    const totalStudents = monthRecords.length;
+                    const totalWorkingDays = monthRecords.length > 0 ? monthRecords[0].totalWorkingDays : 0;
+                    const avgAttendance = monthRecords.reduce((sum, record) => sum + record.percentage, 0) / totalStudents;
+                    const goodAttendance = monthRecords.filter(record => record.percentage >= 75).length;
+                    const poorAttendance = monthRecords.filter(record => record.percentage < 50).length;
+                    
+                    html += `
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="background: #f8f9fa; font-weight: bold;">
+                                            <td colspan="3" style="border: 1px solid #ddd; padding: 12px; text-align: center;">
+                                                <strong>Month Summary</strong>
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">${totalWorkingDays}</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">-</td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center; color: #007bff;">
+                                                ${avgAttendance.toFixed(1)}%
+                                            </td>
+                                            <td style="border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 12px;">
+                                                <span style="color: #28a745;">Good: ${goodAttendance}</span><br>
+                                                <span style="color: #dc3545;">Poor: ${poorAttendance}</span>
+                                            </td>
+                                            <td colspan="2" style="border: 1px solid #ddd; padding: 12px; text-align: center;">-</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            });
+        } else {
+            html = '<p style="text-align: center; padding: 40px; color: #666; font-size: 16px;">No monthly attendance records found for your class.</p>';
+        }
+
+        document.getElementById('monthlyAttendanceViewContent').innerHTML = html;
+        document.getElementById('viewMonthlyAttendanceModal').style.display = 'block';
+    } catch (error) {
+        console.error('Error loading monthly attendance:', error);
+        alert('Error loading monthly attendance: ' + error.message);
+    }
+}
+
+// Delete attendance record function - ADD THIS AFTER viewPostedMonthlyAttendance
+async function deleteAttendanceRecord(recordId, studentName) {
+    if (!confirm(`Are you sure you want to delete the attendance record for ${studentName}?\n\nThis action cannot be undone and will remove the record from student dashboards.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/delete-monthly-attendance/${recordId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                facultyCode: facultyCode
+            })
+        });
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server response:', errorText);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const result = await response.json();
+        if (result.success) {
+            alert(`Attendance record for ${studentName} deleted successfully!`);
+            // Refresh the attendance view
+            viewPostedMonthlyAttendance();
+        } else {
+            throw new Error(result.error || 'Failed to delete attendance record');
+        }
+    } catch (error) {
+        console.error('Error deleting attendance record:', error);
+        alert('Error deleting attendance record: ' + error.message);
+    }
+}
+
+        function closeViewMonthlyAttendance() {
+            document.getElementById('viewMonthlyAttendanceModal').style.display = 'none';
+        }
+
+        // Assignment Creator Functions
+        function showAssignmentCreator() {
+            document.getElementById('assignmentModal').style.display = 'block';
+            
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('assignmentDate').value = formattedDate;
+            
+            clearStatusMessage();
+        }
+
+        function closeAssignmentModal() {
+            document.getElementById('assignmentModal').style.display = 'none';
+            document.getElementById('targetClass').value = '';
+            document.getElementById('assignmentTitle').value = '';
+            document.getElementById('assignmentDate').value = '';
+            document.getElementById('questionCount').value = '';
+            document.getElementById('assignmentDisplayDays').value = '';
+            document.getElementById('questionsContainer').innerHTML = '';
+            document.getElementById('submitAssignmentBtn').style.display = 'none';
+            clearStatusMessage();
+        }
+
+        function clearStatusMessage() {
+            document.getElementById('statusMessage').innerHTML = '';
+        }
+
+        function showStatusMessage(message, isError = false) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.innerHTML = `<div class="${isError ? 'error-msg' : 'success-msg'}">${message}</div>`;
+        }
+
+        function generateQuestionFields() {
+            const count = parseInt(document.getElementById('questionCount').value);
+            const targetClass = document.getElementById('targetClass').value;
+            
+            if (!targetClass) {
+                showStatusMessage('Please select target class first', true);
+                return;
+            }
+            
+            if (!count || count < 1 || count > 20) {
+                showStatusMessage('Please enter a valid number of questions (1-20)', true);
+                return;
+            }
+            let html = '';
+            for (let i = 1; i <= count; i++) {
+                html += `
+                    <div class="question-item">
+                        <h4>Question ${i}</h4>
+                        <div class="form-group">
+                            <label>Question:</label>
+                            <textarea id="question_${i}" placeholder="Enter question ${i}" required rows="2"></textarea>
+                        </div>
+                        <div class="options-grid">
+                            <div class="form-group">
+                                <label>Option A:</label>
+                                <input type="text" id="option_${i}_a" placeholder="Enter option A" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Option B:</label>
+                                <input type="text" id="option_${i}_b" placeholder="Enter option B" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Option C:</label>
+                                <input type="text" id="option_${i}_c" placeholder="Enter option C" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Option D:</label>
+                                <input type="text" id="option_${i}_d" placeholder="Enter option D" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Correct Answer:</label>
+                            <select id="correct_${i}" required>
+                                <option value="">Select correct answer</option>
+                                <option value="a">Option A</option>
+                                <option value="b">Option B</option>
+                                <option value="c">Option C</option>
+                                <option value="d">Option D</option>
+                            </select>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('questionsContainer').innerHTML = html;
+            document.getElementById('submitAssignmentBtn').style.display = 'inline-block';
+            showStatusMessage(`${count} question fields generated successfully for Class ${targetClass}!`);
+        }
+
+        async function createAssignment() {
+            const submitBtn = document.getElementById('submitAssignmentBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating...';
+            try {
+                const targetClass = document.getElementById('targetClass').value;
+                const title = document.getElementById('assignmentTitle').value.trim();
+                const assignmentDate = document.getElementById('assignmentDate').value;
+                const questionCount = parseInt(document.getElementById('questionCount').value);
+                const displayDays = document.getElementById('assignmentDisplayDays').value;
+                
+                if (!targetClass) {
+                    throw new Error('Please select target class');
+                }
+                
+                if (!title) {
+                    throw new Error('Please enter assignment title');
+                }
+                
+                if (!assignmentDate) {
+                    throw new Error('Please select assignment date');
+                }
+                
+                if (!questionCount || questionCount < 1 || questionCount > 20) {
+                    throw new Error('Please enter a valid number of questions (1-20)');
+                }
+                const questions = [];
+                let hasError = false;
+                let errorMessage = '';
+                for (let i = 1; i <= questionCount; i++) {
+                    const questionText = document.getElementById(`question_${i}`);
+                    const optionA = document.getElementById(`option_${i}_a`);
+                    const optionB = document.getElementById(`option_${i}_b`);
+                    const optionC = document.getElementById(`option_${i}_c`);
+                    const optionD = document.getElementById(`option_${i}_d`);
+                    const correctAnswer = document.getElementById(`correct_${i}`);
+                    
+                    if (!questionText || !optionA || !optionB || !optionC || !optionD || !correctAnswer) {
+                        hasError = true;
+                        errorMessage = `Question ${i} fields are missing. Please generate question fields first.`;
+                        break;
+                    }
+                    
+                    if (!questionText.value.trim()) {
+                        hasError = true;
+                        errorMessage = `Please enter text for Question ${i}`;
+                        break;
+                    }
+                    
+                    if (!optionA.value.trim() || !optionB.value.trim() || !optionC.value.trim() || !optionD.value.trim()) {
+                        hasError = true;
+                        errorMessage = `Please fill all options for Question ${i}`;
+                        break;
+                    }
+                    
+                    if (!correctAnswer.value) {
+                        hasError = true;
+                        errorMessage = `Please select correct answer for Question ${i}`;
+                        break;
+                    }
+                    
+                    questions.push({
+                        question: questionText.value.trim(),
+                        options: {
+                            a: optionA.value.trim(),
+                            b: optionB.value.trim(),
+                            c: optionC.value.trim(),
+                            d: optionD.value.trim()
+                        },
+                        correctAnswer: correctAnswer.value
+                    });
+                }
+                if (hasError) {
+                    throw new Error(errorMessage);
+                }
+                
+                const response = await fetch(`${API_BASE}/create-assignment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        classCode: targetClass,
+                        facultyCode: facultyCode,
+                        facultyType: facultyType,
+                        title: title,
+                        assignmentDate: assignmentDate,
+                        questions: questions,
+                        displayDays: displayDays ? parseInt(displayDays) : null
+                    })
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const result = await response.json();
+                if (result.success) {
+                    showStatusMessage(`Assignment created successfully for Class ${targetClass}! Students can now access it.`);
+                    setTimeout(() => {
+                        closeAssignmentModal();
+                        loadData();
+                    }, 2000);
+                } else {
+                    throw new Error(result.error || 'Failed to create assignment');
+                }
+            } catch (error) {
+                console.error('Assignment creation error:', error);
+                showStatusMessage('Error: ' + error.message, true);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // NEW: Progress Card Functions with Subject-wise Marks
+        function showProgressCardCreator() {
+            document.getElementById('progressCardModal').style.display = 'block';
+            selectedSubjectsWithMarks = [];
+            updateSubjectsWithMarksList();
+            clearProgressStatusMessage();
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('postingDate').value = today;
+        }
+
+        function closeProgressCardModal() {
+            document.getElementById('progressCardModal').style.display = 'none';
+            document.getElementById('studentRollNumber').value = '';
+            document.getElementById('studentFullName').value = '';
+            document.getElementById('fatherName').value = '';
+            document.getElementById('examType').value = '';
+            document.getElementById('postingDate').value = '';
+            document.getElementById('displayDays').value = '';
+            selectedSubjectsWithMarks = [];
+            updateSubjectsWithMarksList();
+            clearProgressStatusMessage();
+        }
+
+        function clearProgressStatusMessage() {
+            document.getElementById('progressStatusMessage').innerHTML = '';
+        }
+
+        function showProgressStatusMessage(message, isError = false) {
+            const statusDiv = document.getElementById('progressStatusMessage');
+            statusDiv.innerHTML = `<div class="${isError ? 'error-msg' : 'success-msg'}">${message}</div>`;
+        }
+
+        async function createProgressCard() {
+            const submitBtn = event.target;
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving...';
+            
+            try {
+                const rollNumber = document.getElementById('studentRollNumber').value.trim();
+                const fullName = document.getElementById('studentFullName').value.trim();
+                const fatherName = document.getElementById('fatherName').value.trim();
+                const examType = document.getElementById('examType').value.trim();
+                const postingDate = document.getElementById('postingDate').value;
+                const displayDays = parseInt(document.getElementById('displayDays').value);
+                
+                if (!rollNumber || !fullName || !fatherName || !examType || !postingDate || !displayDays) {
+                    throw new Error('Please fill all required fields');
+                }
+
+                if (!validateRollNumber(rollNumber)) {
+                    const maxRoll = facultyType === 'classes' ? 60 : 999;
+                    throw new Error(`Roll number must be between 1 and ${maxRoll}`);
+                }
+
+                if (selectedSubjectsWithMarks.length === 0) {
+                    throw new Error('Please add at least one subject with marks');
+                }
+
+                if (displayDays < 1 || displayDays > 90) {
+                    throw new Error('Display days must be between 1 and 90');
+                }
+
+                const studentCode = generateStudentCodeForFaculty(rollNumber);
+                
+                let totalMaxMarks = 0;
+                let totalObtainedMarks = 0;
+                
+                const subjectsData = {};
+                selectedSubjectsWithMarks.forEach(subject => {
+                    subjectsData[subject.subject] = {
+                        maxMarks: subject.maxMarks,
+                        obtainedMarks: subject.obtainedMarks,
+                        percentage: ((subject.obtainedMarks / subject.maxMarks) * 100).toFixed(2)
+                    };
+                    totalMaxMarks += subject.maxMarks;
+                    totalObtainedMarks += subject.obtainedMarks;
+                });
+                
+                const overallPercentage = totalMaxMarks > 0 ? Math.round((totalObtainedMarks / totalMaxMarks) * 100) : 0;
+                const performance = calculatePerformance(overallPercentage);
+                
+                const now = new Date();
+                const expiryDate = new Date(now.getTime() + (displayDays * 24 * 60 * 60 * 1000));
+                
+                const response = await fetch(`${API_BASE}/create-progress-card`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        classCode: facultyClass,
+                        facultyCode: facultyCode,
+                        facultyType: facultyType,
+                        rollNumber: rollNumber,
+                        studentCode: studentCode,
+                        fullName: fullName,
+                        fatherName: fatherName,
+                        examType: examType,
+                        subjects: subjectsData,
+                        totalMarks: totalMaxMarks,
+                        obtainedMarks: totalObtainedMarks,
+                        percentage: overallPercentage,
+                        performance: performance,
+                        postingDate: postingDate,
+                        displayDays: displayDays,
+                        expiryDate: expiryDate.toISOString()
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                if (result.success) {
+                    showProgressStatusMessage(`Progress card created successfully! Performance: ${performance.grade} ${performance.emoji}`);
+                    setTimeout(() => {
+                        closeProgressCardModal();
+                    }, 2000);
+                } else {
+                    throw new Error(result.error || 'Failed to create progress card');
+                }
+            } catch (error) {
+                console.error('Progress card creation error:', error);
+                showProgressStatusMessage('Error: ' + error.message, true);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // NEW: View All Progress Cards with Delete Button and Performance Display
+        async function viewAllProgressCards() {
+            try {
+                const response = await fetch(`${API_BASE}/progress-cards/${facultyClass}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const progressCards = await response.json();
+                let html = '';
+                
+                if (progressCards.length > 0) {
+                    progressCards.forEach(card => {
+                        const performance = card.performance || calculatePerformance(card.percentage);
+                        
+                        html += `
+                            <div class="progress-card-item" style="margin: 20px 0; padding: 20px; border: 2px solid ${performance.color}; border-radius: 10px; background: #fff; position: relative;">
+                                <div style="position: absolute; top: 10px; right: 10px;">
+                                    <button onclick="deleteProgressCard('${card.id}')" class="danger-btn" style="padding: 6px 12px; font-size: 12px;">Delete</button>
+                                </div>
+                                <div class="progress-card-header" style="margin-bottom: 15px;">
+                                    <h4 style="margin: 0 0 10px 0; color: #333;">Roll No: ${card.rollNumber} - ${card.fullName}</h4>
+                                    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                                        <span class="exam-type" style="background: #007bff; color: white; padding: 6px 12px; border-radius: 5px; font-weight: bold;">${card.examType}</span>
+                                        <span style="background: ${performance.color}; color: white; padding: 6px 12px; border-radius: 5px; font-weight: bold; font-size: 16px;">
+                                            ${performance.emoji} ${performance.grade}
+                                        </span>
+                                        <span style="color: #666; font-size: 14px;">Posted: ${new Date(card.postingDate || card.date).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                                <div class="progress-card-details" style="margin-bottom: 15px;">
+                                    <p style="margin: 5px 0;color:black;"><strong>Father's Name:</strong> ${card.fatherName}</p>
+                                    <p style="margin: 5px 0;color:black;"><strong>Class:</strong> ${card.classCode.toUpperCase()}</p>
+                                    ${card.studentCode ? `<p style="margin: 5px 0;color:black;"><strong>Student Code:</strong> ${card.studentCode}</p>` : ''}
+                                    <p style="margin: 5px 0;color:black;"><strong>Overall: </strong> ${card.obtainedMarks}/${card.totalMarks} <span style="color: ${performance.color}; font-weight: bold; font-size: 18px;">(${card.percentage}%)</span></p>
+                                    ${card.expiryDate ? `<p style="margin: 5px 0; color: #666;"><strong>Expires on:</strong> ${new Date(card.expiryDate).toLocaleDateString()}</p>` : ''}
+                                </div>
+                                <div class="subjects-display" style="margin-top: 15px;">
+                                    <h5 style="margin: 0 0 10px 0; color: #333;">Subject-wise Performance:</h5>
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                                        <thead>
+                                            <tr style="background: #f0f0f0;">
+                                                <th style="padding: 8px;color:black; border: 1px solid #ddd; text-align: left;">Subject</th>
+                                                <th style="padding: 8px;color:black; border: 1px solid #ddd; text-align: center;">Max Marks</th>
+                                                <th style="padding: 8px;color:black; border: 1px solid #ddd; text-align: center;">Obtained</th>
+                                                <th style="padding: 8px;color:black; border: 1px solid #ddd; text-align: center;">Percentage</th>
+                                                <th style="padding: 8px;color:black; border: 1px solid #ddd; text-align: center;">Grade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                        `;
+                        
+                        if (card.subjects && typeof card.subjects === 'object') {
+                            Object.entries(card.subjects).forEach(([subject, data]) => {
+                                if (typeof data === 'object' && data.maxMarks !== undefined) {
+                                    const subjectPerf = calculatePerformance(parseFloat(data.percentage));
+                                    html += `
+                                        <tr>
+                                            <td style="padding: 8px;color:grey; border: 1px solid #ddd; text-transform: capitalize;">${subject}</td>
+                                            <td style="padding: 8px;color:grey; border: 1px solid #ddd; text-align: center;">${data.maxMarks}</td>
+                                            <td style="padding: 8px;color:grey; border: 1px solid #ddd; text-align: center;">${data.obtainedMarks}</td>
+                                            <td style="padding: 8px;color:grey; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${subjectPerf.color};">${data.percentage}%</td>
+                                            <td style="padding: 8px;color:grey; border: 1px solid #ddd; text-align: center;">
+                                                <span style="background: ${subjectPerf.color}; color: white; padding: 3px 8px; border-radius: 10px; font-size: 11px;">
+                                                    ${subjectPerf.grade}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }
+                            });
+                        }
+                        
+                        html += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html = '<p style="text-align: center; padding: 40px; color: #666; font-size: 16px;">No progress cards created yet</p>';
+                }
+                
+                document.getElementById('progressCardsContent').innerHTML = html;
+                document.getElementById('progressCardsModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading progress cards:', error);
+                alert('Error loading progress cards: ' + error.message);
+            }
+        }
+
+        // NEW: Delete Progress Card Function
+        async function deleteProgressCard(cardId) {
+            if (!confirm('Are you sure you want to delete this progress card? This action cannot be undone.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/delete-progress-card/${cardId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        facultyCode: facultyCode,
+                        classCode: facultyClass
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                if (result.success) {
+                    alert('Progress card deleted successfully');
+                    viewAllProgressCards(); // Refresh the list
+                } else {
+                    throw new Error(result.error || 'Failed to delete progress card');
+                }
+            } catch (error) {
+                console.error('Error deleting progress card:', error);
+                alert('Error deleting progress card: ' + error.message);
+            }
+        }
+
+        function closeProgressCards() {
+            document.getElementById('progressCardsModal').style.display = 'none';
+        }
+
+        // View Assignment Results
+        async function viewAssignmentResults() {
+            try {
+                const response = await fetch(`${API_BASE}/data`);
+                const data = await response.json();
+                
+                let html = '';
+                let facultyAssignments = [];
+                
+                if (data.assignments) {
+                    Object.keys(data.assignments).forEach(classCode => {
+                        const classAssignments = data.assignments[classCode] || [];
+                        classAssignments.forEach(assignment => {
+                            if (assignment.facultyCode === facultyCode) {
+                                facultyAssignments.push(assignment);
+                            }
+                        });
+                    });
+                }
+                
+                if (facultyAssignments.length > 0) {
+                    for (const assignment of facultyAssignments) {
+                        const resultsResponse = await fetch(`${API_BASE}/assignment-results/${assignment.id}`);
+                        const results = await resultsResponse.json();
+                        
+                        html += `
+                            <div class="assignment-results-card" style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9;">
+                                <h4 style="color: #007bff; margin-bottom: 15px;">${assignment.title}</h4>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                                    <div><strong>Target Class:</strong> ${assignment.classCode.toUpperCase()}</div>
+                                    <div><strong>Created by:</strong> ${assignment.facultyCode}</div>
+                                    <div><strong>Questions:</strong> ${assignment.questions.length}</div>
+                                    <div><strong>Submissions:</strong> <span class="badge ${results.length > 0 ? 'badge-success' : 'badge-warning'}">${results.length}</span></div>
+                                    <div><strong>Assignment Date:</strong> ${assignment.assignmentDate ? new Date(assignment.assignmentDate).toLocaleDateString() : 'N/A'}</div>
+                                    <div><strong>Created:</strong> ${new Date(assignment.date).toLocaleDateString()}</div>
+                                </div>
+                        `;
+                        
+                        if (results.length > 0) {
+                            html += `
+                                <h5 style="margin: 20px 0 10px 0; color: #333;">Student Results:</h5>
+                                <div style="overflow-x: auto;">
+                                    <table style="width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px; background: white;">
+                                        <thead>
+                                            <tr style="background: #007bff; color: white;">
+                                                <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Student Code</th>
+                                                <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Score</th>
+                                                <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Percentage</th>
+                                                <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Grade</th>
+                                                <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Submitted At</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                            `;
+                            
+                            results.sort((a, b) => b.percentage - a.percentage).forEach((result, index) => {
+                                const percentage = result.percentage;
+                                let grade = 'F', gradeColor = '#dc3545';
+                                if (percentage >= 90) { grade = 'A+'; gradeColor = '#28a745'; }
+                                else if (percentage >= 80) { grade = 'A'; gradeColor = '#28a745'; }
+                                else if (percentage >= 70) { grade = 'B'; gradeColor = '#17a2b8'; }
+                                else if (percentage >= 60) { grade = 'C'; gradeColor = '#ffc107'; }
+                                else if (percentage >= 50) { grade = 'D'; gradeColor = '#fd7e14'; }
+                                
+                                const rowBg = index % 2 === 0 ? '#f8f9fa' : '#ffffff';
+                                
+                                html += `
+                                    <tr style="background: ${rowBg};">
+                                        <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-weight: bold;">${result.studentCode}</td>
+                                        <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${result.score}/${result.totalQuestions}</td>
+                                        <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-weight: bold; color: ${gradeColor};">${percentage}%</td>
+                                        <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                            <span style="background: ${gradeColor}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                                                ${grade}
+                                            </span>
+                                        </td>
+                                        <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 12px;">${new Date(result.submittedAt).toLocaleString()}</td>
+                                    </tr>
+                                `;
+                            });
+                            
+                            html += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            `;
+                            
+                            const avgScore = results.reduce((acc, r) => acc + r.score, 0) / results.length;
+                            const avgPercentage = Math.round((avgScore / assignment.questions.length) * 100);
+                            const highestScore = Math.max(...results.map(r => r.score));
+                            const lowestScore = Math.min(...results.map(r => r.score));
+                            
+                            html += `
+                                <div style="margin-top: 15px; padding: 15px; background: #e9ecef; border-radius: 5px; border-left: 4px solid #007bff;">
+                                    <h6 style="margin: 0 0 10px 0; color: #333;">Statistics Summary:</h6>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; font-size: 14px;">
+                                        <div><strong>Average Score:</strong> ${avgScore.toFixed(1)}/${assignment.questions.length} (${avgPercentage}%)</div>
+                                        <div><strong>Highest Score:</strong> ${highestScore}/${assignment.questions.length}</div>
+                                        <div><strong>Lowest Score:</strong> ${lowestScore}/${assignment.questions.length}</div>
+                                        <div><strong>Pass Rate:</strong> ${results.filter(r => r.percentage >= 60).length}/${results.length} (${Math.round((results.filter(r => r.percentage >= 60).length / results.length) * 100)}%)</div>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            html += '<p style="color: #666; font-style: italic; padding: 20px; text-align: center; background: #f8f9fa; border-radius: 5px;">No submissions yet</p>';
+                        }
+                        html += '</div>';
+                    }
+                } else {
+                    html = '<p style="text-align: center; padding: 40px; color: #666; font-size: 16px;">No assignments created by you yet</p>';
+                }
+                document.getElementById('resultsContent').innerHTML = html;
+                document.getElementById('resultsModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading results:', error);
+                alert('Error loading results: ' + error.message);
+            }
+        }
+
+        function closeResults() {
+            document.getElementById('resultsModal').style.display = 'none';
+        }
+
+        async function viewActiveAssignments() {
+            try {
+                const response = await fetch(`${API_BASE}/data`);
+                const data = await response.json();
+                
+                let html = '';
+                let facultyAssignments = [];
+                
+                if (data.assignments) {
+                    Object.keys(data.assignments).forEach(classCode => {
+                        const classAssignments = data.assignments[classCode] || [];
+                        classAssignments.forEach(assignment => {
+                            if (assignment.facultyCode === facultyCode && assignment.isActive) {
+                                facultyAssignments.push(assignment);
+                            }
+                        });
+                    });
+                }
+                
+                if (facultyAssignments.length > 0) {
+                    html += `
+                        <div style="overflow-x: auto; margin: 20px 0;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 14px; background: white;">
+                                <thead>
+                                    <tr style="background: #28a745; color: white;">
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: left; font-weight: bold;">Assignment Title</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Target Class</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Questions</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Assignment Date</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Created Date</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Submissions</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    for (let i = 0; i < facultyAssignments.length; i++) {
+                        const assignment = facultyAssignments[i];
+                        const resultsResponse = await fetch(`${API_BASE}/assignment-results/${assignment.id}`);
+                        const results = await resultsResponse.json();
+                        const rowBg = i % 2 === 0 ? '#f8f9fa' : '#ffffff';
+                        
+                        html += `
+                            <tr style="background: ${rowBg};">
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: left; font-weight: bold; color: #007bff;">${assignment.title}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${assignment.classCode.toUpperCase()}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${assignment.questions.length}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${assignment.assignmentDate ? new Date(assignment.assignmentDate).toLocaleDateString() : 'N/A'}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${new Date(assignment.date).toLocaleDateString()}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                    <span style="background: ${results.length > 0 ? '#28a745' : '#ffc107'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                                        ${results.length}
+                                    </span>
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                    <span style="background: #28a745; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                                        Active
+                                    </span>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                    
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 5px; border-left: 4px solid #28a745;">
+                            <h6 style="margin: 0 0 10px 0; color: #333;">Active Assignments Summary:</h6>
+                            <p style="margin: 0; font-size: 14px;"><strong>Total Active Assignments:</strong> ${facultyAssignments.length}</p>
+                        </div>
+                    `;
+                } else {
+                    html = '<p style="text-align: center; padding: 40px; color: #666; font-size: 16px;">No active assignments created by you</p>';
+                }
+                
+                document.getElementById('activeAssignmentsContent').innerHTML = html;
+                document.getElementById('activeAssignmentsModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading assignments:', error);
+                alert('Error loading assignments: ' + error.message);
+            }
+        }
+
+        function closeActiveAssignments() {
+            document.getElementById('activeAssignmentsModal').style.display = 'none';
+        }
+
+        async function deleteAssignments() {
+            try {
+                const response = await fetch(`${API_BASE}/data`);
+                const data = await response.json();
+                
+                let html = '';
+                let facultyAssignments = [];
+                
+                if (data.assignments) {
+                    Object.keys(data.assignments).forEach(classCode => {
+                        const classAssignments = data.assignments[classCode] || [];
+                        classAssignments.forEach(assignment => {
+                            if (assignment.facultyCode === facultyCode) {
+                                facultyAssignments.push({ ...assignment, classCode });
+                            }
+                        });
+                    });
+                }
+                
+                if (facultyAssignments.length > 0) {
+                    html += `
+                        <div style="margin-bottom: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px;">
+                            <h6 style="margin: 0 0 10px 0; color: #856404;">⚠️ Warning</h6>
+                            <p style="margin: 0; font-size: 14px; color: #856404;">Deleting assignments will permanently remove them and all associated student submissions. This action cannot be undone.</p>
+                        </div>
+                        
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 14px; background: white;">
+                                <thead>
+                                    <tr style="background: #dc3545; color: white;">
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Select</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: left; font-weight: bold;">Assignment Title</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Class</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Questions</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Created</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Status</th>
+                                        <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-weight: bold;">Submissions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    for (let i = 0; i < facultyAssignments.length; i++) {
+                        const assignment = facultyAssignments[i];
+                        const resultsResponse = await fetch(`${API_BASE}/assignment-results/${assignment.id}`);
+                        const results = await resultsResponse.json();
+                        const rowBg = i % 2 === 0 ? '#f8f9fa' : '#ffffff';
+                        
+                        html += `
+                            <tr style="background: ${rowBg};">
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                    <input type="checkbox" id="delete_${assignment.id}" value="${assignment.id}" style="transform: scale(1.2);">
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: left; font-weight: bold;">${assignment.title}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${assignment.classCode.toUpperCase()}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">${assignment.questions.length}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center; font-size: 12px;">${new Date(assignment.date).toLocaleDateString()}</td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                    <span style="background: ${assignment.isActive ? '#28a745' : '#6c757d'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                                        ${assignment.isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                </td>
+                                <td style="border: 1px solid #ddd; padding: 10px; text-align: center;">
+                                    <span style="background: ${results.length > 0 ? '#dc3545' : '#28a745'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                                        ${results.length} ${results.length > 0 ? '(⚠️)' : ''}
+                                    </span>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                    
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div style="margin-top: 20px; text-align: center;">
+                            <button onclick="selectAllAssignments()" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 5px; margin-right: 10px; cursor: pointer;">Select All</button>
+                            <button onclick="deselectAllAssignments()" style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 5px; margin-right: 10px; cursor: pointer;">Deselect All</button>
+                            <button onclick="confirmDeleteSelectedAssignments()" style="background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">Delete Selected</button>
+                        </div>
+                    `;
+                } else {
+                    html = '<p style="text-align: center; padding: 40px; color: #666; font-size: 16px;">No assignments found to delete</p>';
+                }
+                
+                document.getElementById('deleteAssignmentsContent').innerHTML = html;
+                document.getElementById('deleteAssignmentsModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading assignments for deletion:', error);
+                alert('Error loading assignments: ' + error.message);
+            }
+        }
+
+        function selectAllAssignments() {
+            const checkboxes = document.querySelectorAll('#deleteAssignmentsContent input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = true);
+        }
+
+        function deselectAllAssignments() {
+            const checkboxes = document.querySelectorAll('#deleteAssignmentsContent input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+        }
+
+        async function confirmDeleteSelectedAssignments() {
+            const checkboxes = document.querySelectorAll('#deleteAssignmentsContent input[type="checkbox"]:checked');
+            const selectedIds = Array.from(checkboxes).map(cb => cb.value);
+            
+            if (selectedIds.length === 0) {
+                alert('Please select at least one assignment to delete');
+                return;
+            }
+            
+            const confirmMessage = `Are you sure you want to delete ${selectedIds.length} assignment(s)?\n\nThis will permanently remove:\n- The assignment(s)\n- All student submissions\n- All results data\n\nThis action cannot be undone.`;
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            try {
+                let deletedCount = 0;
+                
+                for (const assignmentId of selectedIds) {
+                    const response = await fetch(`${API_BASE}/delete-assignment/${assignmentId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            facultyCode: facultyCode
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        deletedCount++;
+                    } else {
+                        console.error(`Failed to delete assignment ${assignmentId}`);
+                    }
+                }
+                
+                if (deletedCount > 0) {
+                    alert(`Successfully deleted ${deletedCount} assignment(s)`);
+                    closeDeleteAssignments();
+                    loadData();
+                } else {
+                    alert('Failed to delete any assignments. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error deleting assignments:', error);
+                alert('Error deleting assignments: ' + error.message);
+            }
+        }
+
+        function closeDeleteAssignments() {
+            document.getElementById('deleteAssignmentsModal').style.display = 'none';
+        }
+
+        // Regular form submissions
+        document.getElementById('homeworkForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await postFacultyData('homework', this);
+        });
+        document.getElementById('assignmentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await postFacultyData('assignment', this);
+        });
+        document.getElementById('subjectForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            await postFacultyData('subject', this);
+        });
+
+        async function postFacultyData(type, form) {
+            const formData = new FormData(form);
+            formData.append('classCode', facultyClass);
+            formData.append('facultyType', facultyType);
+            formData.append('type', type);
+            formData.append('facultyCode', facultyCode);
+            try {
+                const response = await fetch(`${API_BASE}/faculty-posts`, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Server response:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const result = await response.json();
+                if (result.success) {
+                    alert(`${type.charAt(0).toUpperCase() + type.slice(1)} posted successfully!`);
+                    form.reset();
+                    loadData();
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                alert('Network error: ' + error.message);
+            }
+        }
+
+        async function loadData() {
+    try {
+        const response = await fetch(`${API_BASE}/data`);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        const data = await response.json();
+        displayFacultyPosts(data);  // Only load faculty posts now
+    } catch (error) {
+        console.error('Error loading data:', error);
+        document.getElementById('facultyPosts').innerHTML = '<p class="error">Error loading posts</p>';
+    }
+}
+
+        function displayAdminPosts(data) {
+    // Admin posts are now handled by the notification system
+    // This function is kept for compatibility but does nothing
+}
+
+        function displayFacultyPosts(data) {
+            let html = '';
+            if (data.facultyPosts && data.facultyPosts[facultyClass]) {
+                const classPosts = data.facultyPosts[facultyClass];
+                
+                html += '<h3>Homework Posts</h3>';
+                if (classPosts.homework && classPosts.homework.length > 0) {
+                    classPosts.homework.slice().reverse().forEach(post => {
+                        html += `<div class="post-item">
+                            <strong>${post.date}:</strong> ${post.text}
+                            ${post.file ? `<br><a href="${post.file}" target="_blank" class="file-link">${post.fileName}</a>` : ''}
+                            ${post.expiryDate ? `<br><small>Expires: ${new Date(post.expiryDate).toLocaleString()}</small>` : ''}
+                        </div>`;
+                    });
+                } else {
+                    html += '<p>No homework posts yet</p>';
+                }
+                
+                html += '<h3>Assignment Posts</h3>';
+                if (classPosts.assignment && classPosts.assignment.length > 0) {
+                    classPosts.assignment.slice().reverse().forEach(post => {
+                        html += `<div class="post-item">
+                            <strong>${post.date}:</strong> ${post.text}
+                            ${post.file ? `<br><a href="${post.file}" target="_blank" class="file-link">${post.fileName}</a>` : ''}
+                            ${post.expiryDate ? `<br><small>Expires: ${new Date(post.expiryDate).toLocaleString()}</small>` : ''}
+                        </div>`;
+                    });
+                } else {
+                    html += '<p>No assignment posts yet</p>';
+                }
+                
+                html += '<h3>Subject Information Posts</h3>';
+                if (classPosts.subject && classPosts.subject.length > 0) {
+                    classPosts.subject.slice().reverse().forEach(post => {
+                        html += `<div class="post-item">
+                            <strong>${post.date}:</strong> ${post.text}
+                            ${post.file ? `<br><a href="${post.file}" target="_blank" class="file-link">${post.fileName}</a>` : ''}
+                            ${post.expiryDate ? `<br><small>Expires: ${new Date(post.expiryDate).toLocaleString()}</small>` : ''}
+                        </div>`;
+                    });
+                } else {
+                    html += '<p>No subject information posts yet</p>';
+                }
+            } else {
+                html = '<p>No posts found for your class</p>';
+            }
+            document.getElementById('facultyPosts').innerHTML = html;
+        }
+
+        async function showHistory() {
+            try {
+                const response = await fetch(`${API_BASE}/history/faculty/${facultyCode}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const history = await response.json();
+                let html = '';
+                if (history.length > 0) {
+                    history.reverse().forEach(post => {
+                        html += `<div class="post-item">
+                            <strong>Type:</strong> ${post.type}<br>
+                            <strong>Date:</strong> ${post.date}<br>
+                            <strong>Content:</strong> ${post.text || post.title || 'N/A'}
+                            ${post.file ? `<br><a href="${post.file}" target="_blank" class="file-link">${post.fileName}</a>` : ''}
+                        </div>`;
+                    });
+                } else {
+                    html = '<p>No history found for the last 30 days.</p>';
+                }
+                document.getElementById('historyContent').innerHTML = html;
+                document.getElementById('historyModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading history:', error);
+                alert('Error loading history: ' + error.message);
+            }
+        }
+
+        function closeHistory() {
+            document.getElementById('historyModal').style.display = 'none';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['assignmentModal', 'resultsModal', 'activeAssignmentsModal', 'deleteAssignmentsModal', 'historyModal', 'progressCardModal', 'progressCardsModal', 'monthlyAttendanceModal', 'viewMonthlyAttendanceModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // At the end of Script Tag 2
+window.onload = function() {
+    if (initializeFaculty()) {
+        loadData();
+        
+        // ADD THIS LINE - Initialize notification system AFTER facultyCode is set
+        initializeNotificationSystem();
+    }
+};
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Login System - Viswbharathi High School</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: slideUp 1s ease-out 0.6s both;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 3rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* QR Code Generation Section */
+        .qr-generator {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        /* QR Code Display */
+        .qr-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .qr-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .qr-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .qr-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .qr-code-container {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .qr-code {
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .qr-info {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #64748b;
+            border-left: 4px solid #6366f1;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Pre-made QR Codes */
+        .predefined-qr {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .role-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid;
+        }
+
+        .role-card.admin {
+            border-left-color: #ef4444;
+        }
+
+        .role-card.faculty {
+            border-left-color: #f59e0b;
+        }
+
+        .role-card.student {
+            border-left-color: #10b981;
+        }
+
+        .role-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .role-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+
+        .role-icon.admin { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .role-icon.faculty { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .role-icon.student { background: linear-gradient(135deg, #10b981, #059669); }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header h1 { font-size: 2rem; }
+            .tab-content { padding: 2rem 1.5rem; }
+            .tabs { flex-wrap: wrap; }
+            .tab-btn { padding: 0.8rem 1.5rem; font-size: 0.9rem; }
+        }
+
+        @media (max-width: 480px) {
+            .qr-display, .predefined-qr {
+                grid-template-columns: 1fr;
+            }
+            .tabs { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-qrcode"></i> QR Code Login System</h1>
+            <p>Viswbharathi High School - Instant Access Portal</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('predefined')">
+                <i class="fas fa-users"></i>
+                Pre-made QR Codes
+            </button>
+            <button class="tab-btn" onclick="showTab('generator')">
+                <i class="fas fa-plus-circle"></i>
+                Generate Custom QR
+            </button>
+            <button class="tab-btn" onclick="showTab('instructions')">
+                <i class="fas fa-info-circle"></i>
+                How to Use
+            </button>
+        </div>
+
+        <div class="content">
+            <!-- Pre-made QR Codes Tab -->
+            <div id="predefined" class="tab-content active">
+                <h2 class="section-title">Ready-to-Use QR Codes</h2>
+                <div class="predefined-qr">
+                    <!-- Admin QR -->
+                    <div class="role-card admin">
+                        <div class="role-icon admin">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Admin Access</h3>
+                        <div class="qr-code-container">
+                            <canvas id="adminQR" class="qr-code"></canvas>
+                        </div>
+                        <div class="qr-info">
+                            <strong>Code:</strong> 222p1a0521<br>
+                            <strong>Role:</strong> Administrator
+                        </div>
+                        <button class="download-btn" onclick="downloadQR('adminQR', 'Admin_QR_Code')">
+                            <i class="fas fa-download"></i>
+                            Download QR Code
+                        </button>
+                    </div>
+
+                    <!-- Faculty Sample QR -->
+                    <div class="role-card faculty">
+                        <div class="role-icon faculty">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>Faculty Sample</h3>
+                        <div class="qr-code-container">
+                            <canvas id="facultySampleQR" class="qr-code"></canvas>
+                        </div>
+                        <div class="qr-info">
+                            <strong>Code:</strong> 222p-101a (Sample)<br>
+                            <strong>Role:</strong> Faculty Member
+                        </div>
+                        <button class="download-btn" onclick="downloadQR('facultySampleQR', 'Faculty_Sample_QR')">
+                            <i class="fas fa-download"></i>
+                            Download QR Code
+                        </button>
+                    </div>
+
+                    <!-- Student Sample QR -->
+                    <div class="role-card student">
+                        <div class="role-icon student">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>Student Sample</h3>
+                        <div class="qr-code-container">
+                            <canvas id="studentSampleQR" class="qr-code"></canvas>
+                        </div>
+                        <div class="qr-info">
+                            <strong>Code:</strong> 222p-1a-10 (Sample)<br>
+                            <strong>Role:</strong> Student
+                        </div>
+                        <button class="download-btn" onclick="downloadQR('studentSampleQR', 'Student_Sample_QR')">
+                            <i class="fas fa-download"></i>
+                            Download QR Code
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Generator Tab -->
+            <div id="generator" class="tab-content">
+                <h2 class="section-title">Generate Custom QR Codes</h2>
+                
+                <div class="qr-generator">
+                    <div class="form-group">
+                        <label for="roleSelect">Select Role:</label>
+                        <select id="roleSelect" class="form-input" onchange="updatePlaceholder()">
+                            <option value="">Choose a role...</option>
+                            <option value="admin">Admin</option>
+                            <option value="faculty">Faculty</option>
+                            <option value="student">Student</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codeInput">Login Code:</label>
+                        <input type="text" id="codeInput" class="form-input" placeholder="Enter login code">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nameInput">Name/Description (Optional):</label>
+                        <input type="text" id="nameInput" class="form-input" placeholder="e.g., John Doe, Math Teacher">
+                    </div>
+
+                    <button class="generate-btn" onclick="generateCustomQR()">
+                        <i class="fas fa-magic"></i>
+                        Generate QR Code
+                    </button>
+                </div>
+
+                <div id="customQRDisplay" class="qr-display"></div>
+            </div>
+
+            <!-- Instructions Tab -->
+            <div id="instructions" class="tab-content">
+                <h2 class="section-title">How to Use QR Code Login</h2>
+                
+                <div style="background: #f8fafc; padding: 2rem; border-radius: 15px; line-height: 1.8; color: #374151;">
+                    <h3 style="color: #1f2937; margin-bottom: 1rem;"><i class="fas fa-user-shield" style="color: #ef4444;"></i> For Administrators:</h3>
+                    <p>• Use the pre-generated Admin QR code</p>
+                    <p>• Scan with any QR code scanner app</p>
+                    <p>• Direct access to admin dashboard</p>
+                    
+                    <h3 style="color: #1f2937; margin: 2rem 0 1rem;"><i class="fas fa-chalkboard-teacher" style="color: #f59e0b;"></i> For Faculty Members:</h3>
+                    <p>• Generate individual QR codes using the "Generate Custom QR" tab</p>
+                    <p>• Use format: <code style="background: #e5e7eb; padding: 0.2rem 0.5rem; border-radius: 4px;">222p-[numbers][letter]</code></p>
+                    <p>• Example: 222p-101a, 222p-205b</p>
+                    <p>• Each faculty member gets a unique QR code</p>
+                    
+                    <h3 style="color: #1f2937; margin: 2rem 0 1rem;"><i class="fas fa-user-graduate" style="color: #10b981;"></i> For Students:</h3>
+                    <p>• Generate individual QR codes for each student</p>
+                    <p>• Use format: <code style="background: #e5e7eb; padding: 0.2rem 0.5rem; border-radius: 4px;">222p-[year][section]-[roll]</code></p>
+                    <p>• Example: 222p-1a-10 (1st year, section A, roll 10)</p>
+                    <p>• Each student gets a unique QR code</p>
+                    
+                    <h3 style="color: #1f2937; margin: 2rem 0 1rem;"><i class="fas fa-mobile-alt" style="color: #6366f1;"></i> Using QR Codes:</h3>
+                    <p>1. Open any QR scanner app on your phone</p>
+                    <p>2. Point camera at the QR code</p>
+                    <p>3. Tap the notification/link that appears</p>
+                    <p>4. You'll be automatically logged in!</p>
+                    
+                    <div style="background: #dbeafe; border-left: 4px solid #3b82f6; padding: 1rem; margin-top: 2rem; border-radius: 0 8px 8px 0;">
+                        <strong style="color: #1e40af;">💡 Pro Tip:</strong> Print QR codes on ID cards, desk nameplates, or distribute digitally for easy access!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Your website base URL - CHANGE THIS TO YOUR ACTUAL DOMAIN
+        const BASE_URL = 'https://yourschool.com/schoollogin.html';
+        
+        // Initialize pre-made QR codes
+        window.onload = function() {
+            generatePredefinedQRs();
+        };
+
+        function generatePredefinedQRs() {
+            // Admin QR
+            const adminQR = new QRious({
+                element: document.getElementById('adminQR'),
+                value: `${BASE_URL}?role=admin&code=222p1a0521`,
+                size: 200,
+                level: 'M',
+                background: 'white',
+                foreground: '#1f2937'
+            });
+
+            // Faculty Sample QR
+            const facultyQR = new QRious({
+                element: document.getElementById('facultySampleQR'),
+                value: `${BASE_URL}?role=faculty&code=222p-101a`,
+                size: 200,
+                level: 'M',
+                background: 'white',
+                foreground: '#1f2937'
+            });
+
+            // Student Sample QR
+            const studentQR = new QRious({
+                element: document.getElementById('studentSampleQR'),
+                value: `${BASE_URL}?role=student&code=222p-1a-10`,
+                size: 200,
+                level: 'M',
+                background: 'white',
+                foreground: '#1f2937'
+            });
+        }
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all tab buttons
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function updatePlaceholder() {
+            const role = document.getElementById('roleSelect').value;
+            const codeInput = document.getElementById('codeInput');
+            
+            const placeholders = {
+                admin: '222p1a0521',
+                faculty: '222p-101a (example)',
+                student: '222p-1a-10 (example)'
+            };
+            
+            codeInput.placeholder = placeholders[role] || 'Enter login code';
+            codeInput.value = '';
+        }
+
+        function generateCustomQR() {
+            const role = document.getElementById('roleSelect').value;
+            const code = document.getElementById('codeInput').value.trim();
+            const name = document.getElementById('nameInput').value.trim();
+
+            if (!role) {
+                alert('Please select a role');
+                return;
+            }
+
+            if (!code) {
+                alert('Please enter a login code');
+                return;
+            }
+
+            // Validate code format
+            if (!validateCode(role, code)) {
+                return;
+            }
+
+            // Generate QR code
+            const qrUrl = `${BASE_URL}?role=${role}&code=${encodeURIComponent(code)}`;
+            const displayName = name || `${role.charAt(0).toUpperCase() + role.slice(1)} User`;
+            
+            const qrDisplay = document.getElementById('customQRDisplay');
+            const qrId = 'customQR_' + Date.now();
+            
+            const qrCard = `
+                <div class="qr-card">
+                    <h3>
+                        <i class="fas fa-${role === 'admin' ? 'user-shield' : role === 'faculty' ? 'chalkboard-teacher' : 'user-graduate'}"></i>
+                        ${displayName}
+                    </h3>
+                    <div class="qr-code-container">
+                        <canvas id="${qrId}" class="qr-code"></canvas>
+                    </div>
+                    <div class="qr-info">
+                        <strong>Code:</strong> ${code}<br>
+                        <strong>Role:</strong> ${role.charAt(0).toUpperCase() + role.slice(1)}<br>
+                        <strong>URL:</strong> <small>${qrUrl}</small>
+                    </div>
+                    <button class="download-btn" onclick="downloadQR('${qrId}', '${displayName.replace(/\s+/g, '_')}_QR_Code')">
+                        <i class="fas fa-download"></i>
+                        Download QR Code
+                    </button>
+                </div>
+            `;
+
+            qrDisplay.innerHTML = qrCard;
+
+            // Generate the QR code
+            setTimeout(() => {
+                new QRious({
+                    element: document.getElementById(qrId),
+                    value: qrUrl,
+                    size: 200,
+                    level: 'M',
+                    background: 'white',
+                    foreground: '#1f2937'
+                });
+            }, 100);
+
+            // Clear form
+            document.getElementById('codeInput').value = '';
+            document.getElementById('nameInput').value = '';
+        }
+
+        function validateCode(role, code) {
+            let isValid = false;
+            let errorMessage = '';
+
+            switch(role) {
+                case 'admin':
+                    isValid = code === '222p1a0521';
+                    errorMessage = 'Admin code must be: 222p1a0521';
+                    break;
+                case 'faculty':
+                    isValid = /^222p-\d+[a-z]$/i.test(code);
+                    errorMessage = 'Faculty code format: 222p-[numbers][letter] (e.g., 222p-101a)';
+                    break;
+                case 'student':
+                    isValid = /^222p-\d+[a-z]-\d+$/i.test(code);
+                    errorMessage = 'Student code format: 222p-[year][section]-[roll] (e.g., 222p-1a-10)';
+                    break;
+            }
+
+            if (!isValid) {
+                alert(errorMessage);
+            }
+
+            return isValid;
+        }
+
+        function downloadQR(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename + '.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>

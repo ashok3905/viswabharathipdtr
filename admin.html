@@ -1,0 +1,3158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: rgb(52,164,220);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    padding: 1rem;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Animated background particles */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 60% 30%, rgba(16, 185, 129, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 30% 70%, rgba(236, 72, 153, 0.1) 2px, transparent 2px);
+    background-size: 50px 50px, 80px 80px, 60px 60px, 70px 70px;
+    animation: particleFloat 20s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes particleFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-20px) rotate(-1deg); }
+    75% { transform: translateY(-10px) rotate(0.5deg); }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    animation: slideUp 0.8s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.08),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4, #10b981);
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e293b, #475569);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sections */
+.section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 25px -5px rgba(0, 0, 0, 0.08),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInScale 0.8s ease-out;
+    animation-fill-mode: both;
+}
+
+.section:nth-child(2) { animation-delay: 0.2s; }
+.section:nth-child(3) { animation-delay: 0.4s; }
+.section:nth-child(4) { animation-delay: 0.6s; }
+.section:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.section:hover::before {
+    transform: scaleX(1);
+}
+
+.section h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section h2::before {
+    content: '📋';
+    font-size: 1.2em;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-5px); }
+    60% { transform: translateY(-3px); }
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    transform: translateY(-1px);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Button styling */
+button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0.25rem;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0px);
+}
+
+/* Primary button */
+button[type="submit"], button:not([class]) {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+button[type="submit"]:hover, button:not([class]):hover {
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* History button */
+.history-btn {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.history-btn:hover {
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Logout button */
+button[onclick*="index.html"] {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+}
+
+button[onclick*="index.html"]:hover {
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Post items */
+.post-item {
+    background: rgba(248, 250, 252, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #6366f1;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #6366f1, #8b5cf6);
+    transition: width 0.3s ease;
+}
+
+.post-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.post-item:hover::before {
+    width: 8px;
+}
+
+/* File links */
+.file-link {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.file-link:hover {
+    color: #4f46e5;
+    transform: translateX(3px);
+}
+
+/* Modal styling */
+#historyModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+#historyModal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#historyModal > div {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    min-width: 300px;
+    transform: scale(0.9) translateY(50px);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+#historyModal.show > div {
+    transform: scale(1) translateY(0);
+}
+
+/* Loading animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .section {
+        padding: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+    }
+    
+    .container {
+        padding: 0;
+    }
+    
+    .header {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+    
+    .section {
+        padding: 1.25rem;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .header-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    button {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    input, textarea, select {
+        padding: 0.875rem;
+        font-size: 0.95rem;
+    }
+    
+    .post-item {
+        padding: 1.25rem;
+    }
+    
+    #historyModal > div {
+        padding: 1.5rem;
+        border-radius: 16px;
+        min-width: unset;
+        width: 95%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 1rem;
+        border-radius: 12px;
+    }
+    
+    .section {
+        padding: 1rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+    
+    .section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    button {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    input, textarea, select {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+    
+    .post-item {
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    #historyModal > div {
+        padding: 1rem;
+        border-radius: 12px;
+        width: 98%;
+        max-height: 85%;
+    }
+}
+
+@media (max-width: 320px) {
+    h1 {
+        font-size: 1.4rem;
+    }
+    
+    .section h2 {
+        font-size: 1.2rem;
+    }
+    
+    button {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .section {
+        padding: 0.75rem;
+    }
+    
+    .header {
+        padding: 0.75rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    body::before,
+    body::after {
+        display: none;
+    }
+    
+    .section {
+        background: white;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    button {
+        display: none;
+    }
+}
+/* Bulk Step Indicator Styles */
+.bulk-step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.bulk-step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.bulk-step-item.active .bulk-step-circle {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.bulk-step-item.completed .bulk-step-circle {
+    background: #10b981;
+    color: white;
+}
+
+.bulk-step-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-align: center;
+    font-weight: 500;
+}
+
+.bulk-step-item.active .bulk-step-label {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+.bulk-step-item.completed .bulk-step-label {
+    color: #10b981;
+}
+
+.bulk-step-line {
+    height: 2px;
+    background: #e5e7eb;
+    flex: 1;
+    margin: 0 1rem;
+    align-self: flex-start;
+    margin-top: 20px;
+}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <div class="header-buttons">
+                <button onclick="showNotificationSection()" style="background: linear-gradient(135deg, #3b82f6, #2563eb) !important;">📢 Notifications</button>
+                <button onclick="showQRGenerator()">QR Code Generator</button>
+                <button onclick="showIssueHallTickets()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;">🎫 Hall Tickets Management</button>
+                <button onclick="showViewFeeCertificates()" style="background: linear-gradient(135deg, #f59e0b, #d97706) !important;">💰 Fee Certificates Management</button>
+                <button onclick="window.location.href='index.html'">Logout</button>
+            </div>
+        </div>
+
+        <!-- Notification Management Section -->
+        <div class="section" id="notificationSection" style="display: none;">
+            <h2>📢 Notification Management</h2>
+            <div style="background: #f8fafc; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #e2e8f0;">
+                
+                <!-- Create Notification Form -->
+                <div style="background: white; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; border: 2px solid #3b82f6;">
+                    <h3 style="color: #3b82f6; margin-bottom: 1.5rem;">✏️ Create New Notification</h3>
+                    <form id="notificationForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="notifTitle">Notification Title:</label>
+                            <input type="text" id="notifTitle" name="title" placeholder="Enter notification title" required maxlength="200" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notifMessage">Message:</label>
+                            <textarea id="notifMessage" name="message" placeholder="Enter notification message" rows="4" required maxlength="1000" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;"></textarea>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="notifType">Notification Type:</label>
+                                <select id="notifType" name="type" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                                    <option value="general">📌 General</option>
+                                    <option value="urgent">🚨 Urgent</option>
+                                    <option value="info">ℹ️ Information</option>
+                                    <option value="event">📅 Event</option>
+                                    <option value="holiday">🏖️ Holiday</option>
+                                    <option value="exam">📝 Exam</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notifPriority">Priority:</label>
+                                <select id="notifPriority" name="priority" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                                    <option value="low">🟢 Low</option>
+                                    <option value="normal" selected>🟡 Normal</option>
+                                    <option value="high">🟠 High</option>
+                                    <option value="urgent">🔴 Urgent</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="notifAudience">Target Audience:</label>
+                                <select id="notifAudience" name="targetAudience" onchange="updateTargetClass()" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                                    <option value="all">👥 Everyone (Faculty + Students)</option>
+                                    <option value="faculty">👩‍🏫 Faculty Only</option>
+                                    <option value="students">🎓 Students Only</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notifTargetClass">Target Class:</label>
+                                <select id="notifTargetClass" name="targetClass" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                                    <option value="all">All Classes</option>
+                                    <option value="nursery">Nursery</option>
+                                    <option value="lkg">LKG</option>
+                                    <option value="ukg">UKG</option>
+                                    <option value="1">Class 1</option>
+                                    <option value="2">Class 2</option>
+                                    <option value="3">Class 3</option>
+                                    <option value="4">Class 4</option>
+                                    <option value="5">Class 5</option>
+                                    <option value="6">Class 6</option>
+                                    <option value="7">Class 7</option>
+                                    <option value="8">Class 8</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="10">Class 10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="notifFile">Attach File (optional):</label>
+                                <input type="file" id="notifFile" name="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.gif" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                                <small style="color: #6b7280; font-size: 0.875rem;">Max 10MB - PDF, DOC, DOCX, Images</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notifDays">Display Duration (days):</label>
+                                <input type="number" id="notifDays" name="displayDays" placeholder="Enter number of days" min="1" max="365" required style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                                <small style="color: #6b7280; font-size: 0.875rem;">Notification will auto-expire after this period</small>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <button type="submit" style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 0.875rem 2rem; border-radius: 10px; font-weight: 600; cursor: pointer; flex: 1; font-size: 1rem;">
+                                📤 Send Notification
+                            </button>
+                            <button type="button" onclick="document.getElementById('notificationForm').reset()" style="background: #6b7280; color: white; border: none; padding: 0.875rem 2rem; border-radius: 10px; font-weight: 600; cursor: pointer; flex: 1; font-size: 1rem;">
+                                🔄 Reset Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Notifications Display -->
+                <div style="background: white; border-radius: 12px; padding: 2rem; border: 2px solid #e5e7eb;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem;">
+                        <h3 style="color: #1f2937; margin: 0;">📋 All Notifications</h3>
+                        <div style="display: flex; gap: 1rem;">
+                            <button onclick="loadAllNotifications()" style="background: #10b981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                🔄 Refresh
+                            </button>
+                            <button onclick="deleteAllNotifications()" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                🗑️ Delete All
+                            </button>
+                        </div>
+                    </div>
+                    <div id="notificationsDisplay">
+                        <div style="text-align: center; padding: 3rem; color: #64748b;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📢</div>
+                            <p>Click "Refresh" to load notifications</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="hideNotificationSection()" style="background: rgba(100, 116, 139, 0.1); color: #64748b; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">
+                ✕ Close Notification Section
+            </button>
+        </div>
+
+        <!-- Hall Tickets Management Section -->
+        <div class="section" id="issueHallTicketsSection" style="display: none;">
+            <h2>🎫 Hall Tickets Management</h2>
+            <div style="background: #f8fafc; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #e2e8f0;">
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                    <button onclick="showAdminGenerateHallTicket()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        ✏️ Generate Single Hall Ticket
+                    </button>
+                    <button onclick="showAdminBulkHallTicket()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        📋 Bulk Hall Ticket Generation
+                    </button>
+                    <button onclick="loadAllHallTickets()" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        🔄 Refresh All
+                    </button>
+                    <button onclick="deleteAllHallTickets()" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        🗑️ Delete All
+                    </button>
+                    <button onclick="hideIssueHallTicketsSection()" style="background: rgba(100, 116, 139, 0.1); color: #64748b; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        ✕ Close
+                    </button>
+                </div>
+
+                <!-- Hall Tickets Display -->
+                <div id="hallTicketsDisplay">
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                        <p>Click "Refresh All" to load hall tickets</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fee Certificates Management Section (NEW IMPLEMENTATION) -->
+        <div class="section" id="viewFeeCertSection" style="display: none;">
+            <h2>💰 Fee Certificates Management</h2>
+            
+            <!-- Tab Navigation -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0;">
+                <button id="pendingFeeCertTab" onclick="switchFeeCertTab('pending')" 
+                    style="padding: 0.75rem 1.5rem; border: none; background: none; cursor: pointer; 
+                    font-weight: 600; border-bottom: 3px solid #3b82f6; color: #3b82f6;">
+                    ⏳ Pending (<span id="pendingFeeCertCount">0</span>)
+                </button>
+                <button id="issuedFeeCertTab" onclick="switchFeeCertTab('issued')" 
+                    style="padding: 0.75rem 1.5rem; border: none; background: none; cursor: pointer; 
+                    font-weight: 600; border-bottom: 3px solid transparent; color: #6b7280;">
+                    ✅ Issued (<span id="issuedFeeCertCount">0</span>)
+                </button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <button onclick="loadFeeCertificates()" class="primary-btn" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">🔄 Refresh</button>
+                <button onclick="deleteAllFeeCertificates()" class="danger-btn" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">🗑️ Delete All</button>
+                <button onclick="hideViewFeeCertSection()" class="secondary-btn" style="background: rgba(100, 116, 139, 0.1); color: #64748b; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">✕ Close</button>
+            </div>
+
+            <!-- Pending Certificates Content -->
+            <div id="pendingFeeCertContent">
+                <div id="pendingFeeCertificatesDisplay"></div>
+            </div>
+
+            <!-- Issued Certificates Content -->
+            <div id="issuedFeeCertContent" style="display: none;">
+                <div id="issuedFeeCertificatesDisplay"></div>
+            </div>
+        </div>
+
+        <!-- Admin Generate Single Hall Ticket Modal -->
+        <div id="adminGenerateHallTicketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; align-items: center; justify-content: center;">
+            <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 800px; width: 90%; max-height: 90%; overflow-y: auto;" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0;">✏️ Generate Single Hall Ticket</h3>
+                    <button onclick="closeAdminGenerateHallTicketModal()" style="background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">×</button>
+                </div>
+
+                <!-- Step 1: Basic Details -->
+                <div id="hallTicketStep1">
+                    <form id="adminGenerateHallTicketBasicForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adminHallExamName">Exam Name:</label>
+                                <input type="text" id="adminHallExamName" name="examName" placeholder="e.g., Mid Term, Final Exam" required maxlength="100">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adminHallFromDate">Exam From Date:</label>
+                                <input type="date" id="adminHallFromDate" name="fromDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="adminHallToDate">Exam To Date:</label>
+                                <input type="date" id="adminHallToDate" name="toDate" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adminHallStudentName">Student Name:</label>
+                                <input type="text" id="adminHallStudentName" name="studentName" placeholder="Enter student name" required maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label for="adminHallStudentRoll">Roll Number:</label>
+                                <input type="number" id="adminHallStudentRoll" name="studentRoll" placeholder="Enter roll number" min="1" max="999" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="adminHallStudentClass">Class:</label>
+                                <select id="adminHallStudentClass" name="studentClass" required>
+                                    <option value="">Select class...</option>
+                                    <option value="nursery">Nursery</option>
+                                    <option value="lkg">LKG</option>
+                                    <option value="ukg">UKG</option>
+                                    <option value="1">Class 1</option>
+                                    <option value="2">Class 2</option>
+                                    <option value="3">Class 3</option>
+                                    <option value="4">Class 4</option>
+                                    <option value="5">Class 5</option>
+                                    <option value="6">Class 6</option>
+                                    <option value="7">Class 7</option>
+                                    <option value="8">Class 8</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="10">Class 10</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminHallRemarks">Instructions/Remarks:</label>
+                            <textarea id="adminHallRemarks" name="remarks" placeholder="Enter any special instructions or remarks" rows="3" maxlength="500"></textarea>
+                        </div>
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <button type="submit" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 1;">
+                                Next: Schedule Exams →
+                            </button>
+                            <button type="button" onclick="closeAdminGenerateHallTicketModal()" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 1;">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: Exam Schedule -->
+                <div id="hallTicketStep2" style="display: none;">
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
+                        <p style="margin: 0; font-weight: 600; color: #0369a1;">📅 Configure exam schedule for each date</p>
+                    </div>
+                    <div id="examScheduleContainer"></div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" onclick="goBackToStep1()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 1;">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="submitAdminHallTicket()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 1;">
+                            ✏️ Create Hall Ticket
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Bulk Hall Ticket Modal -->
+        <div id="adminBulkHallTicketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; align-items: center; justify-content: center;">
+            <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 1000px; width: 90%; max-height: 90%; overflow-y: auto;" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0;">🎫 Bulk Hall Ticket Generation</h3>
+                    <button onclick="closeAdminBulkHallTicketModal()" style="background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 20px;">×</button>
+                </div>
+                
+                <!-- Step Indicator -->
+                <div id="bulkStepIndicator" style="display: flex; justify-content: space-between; margin-bottom: 2rem; padding: 0 2rem;">
+                    <div class="bulk-step-item active" data-step="1">
+                        <div class="bulk-step-circle">1</div>
+                        <div class="bulk-step-label">Class & Exam Info</div>
+                    </div>
+                    <div class="bulk-step-line"></div>
+                    <div class="bulk-step-item" data-step="2">
+                        <div class="bulk-step-circle">2</div>
+                        <div class="bulk-step-label">Add Students</div>
+                    </div>
+                    <div class="bulk-step-line"></div>
+                    <div class="bulk-step-item" data-step="3">
+                        <div class="bulk-step-circle">3</div>
+                        <div class="bulk-step-label">Schedule Exams</div>
+                    </div>
+                </div>
+
+                <!-- Bulk Step 1: Basic Details -->
+                <div id="bulkHallTicketStep1">
+                    <form id="adminBulkHallTicketBasicForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bulkHallExamName">Exam Name:</label>
+                                <input type="text" id="bulkHallExamName" name="hallExamName" placeholder="e.g., Mid Term, Final Exam" required maxlength="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="bulkHallStudentClass">Select Class:</label>
+                                <select id="bulkHallStudentClass" name="hallStudentClass" required>
+                                    <option value="">Choose class...</option>
+                                    <option value="1">Class 1</option>
+                                    <option value="2">Class 2</option>
+                                    <option value="3">Class 3</option>
+                                    <option value="4">Class 4</option>
+                                    <option value="5">Class 5</option>
+                                    <option value="6">Class 6</option>
+                                    <option value="7">Class 7</option>
+                                    <option value="8">Class 8</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="10">Class 10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bulkHallFromDate">Exam From Date:</label>
+                                <input type="date" id="bulkHallFromDate" name="hallFromDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bulkHallToDate">Exam To Date:</label>
+                                <input type="date" id="bulkHallToDate" name="hallToDate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bulkHallRemarks">Remarks/Instructions:</label>
+                            <textarea id="bulkHallRemarks" name="hallRemarks" placeholder="Enter any general instructions for students" rows="3" maxlength="500"></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <button type="submit" class="primary-btn" style="flex: 1; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                Next: Add Students →
+                            </button>
+                            <button type="button" onclick="closeAdminBulkHallTicketModal()" style="flex: 1; background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Bulk Step 2: Add Students -->
+                <div id="bulkHallTicketStep2" style="display: none;">
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
+                        <p style="margin: 0; font-weight: 600; color: #0369a1;">👥 Add all students who will receive hall tickets for this exam</p>
+                    </div>
+
+                    <!-- Quick Add Form -->
+                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                        <h4 style="margin-top: 0;">Add Student</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bulkStudentName">Student Name:</label>
+                                <input type="text" id="bulkStudentName" placeholder="Enter full name" maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label for="bulkStudentRoll">Roll Number:</label>
+                                <input type="number" id="bulkStudentRoll" placeholder="Enter roll number" min="1" max="999">
+                            </div>
+                            <div style="display: flex; align-items: flex-end;">
+                                <button type="button" onclick="addBulkStudent()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                                    ➕ Add Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Students List -->
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 0.5rem; margin-bottom: 0.5rem;">
+                            <h4 style="margin: 0;">Students List (<span id="bulkStudentCount">0</span>)</h4>
+                            <button type="button" onclick="clearAllBulkStudents()" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.875rem;">
+                                🗑️ Clear All
+                            </button>
+                        </div>
+                        <div id="bulkStudentsList" style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1rem; max-height: 300px; overflow-y: auto;">
+                            <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyBulkStudentsMessage">
+                                No students added yet
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" onclick="goBackToBulkStep1()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 1;">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="goToBulkStep3()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 1;" id="nextToBulkScheduleBtn" disabled>
+                            Next: Schedule Exams →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bulk Step 3: Exam Schedule -->
+                <div id="bulkHallTicketStep3" style="display: none;">
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
+                        <p style="margin: 0; font-weight: 600; color: #0369a1;">📅 Configure exam schedule (same for all <span id="totalBulkStudentsCount">0</span> students)</p>
+                    </div>
+                    <div id="bulkExamScheduleContainer"></div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" onclick="goBackToBulkStep2()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 1;">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="submitAllBulkHallTickets()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; flex: 2;">
+                            📤 Create All Hall Tickets
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Code Generator Section -->
+        <div class="section" id="qrSection" style="display: none;">
+            <h2>QR Code Generator</h2>
+            <div class="qr-generator" style="background: #f8fafc; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #e2e8f0;">
+                <div class="form-group">
+                    <label for="qrType">Select QR Type:</label>
+                    <select id="qrType" class="form-input" onchange="updateQRForm()" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                        <option value="">Choose QR type...</option>
+                        <option value="common">Common Login QR</option>
+                        <option value="nursery">Nursery Student</option>
+                        <option value="lkg">LKG Student</option>
+                        <option value="ukg">UKG Student</option>
+                        <option value="classes">Class Students (1-10)</option>
+                    </select>
+                </div>
+                <div id="studentQRForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="qrStudentCode">Student Code:</label>
+                        <input type="text" id="qrStudentCode" class="form-input" placeholder="Enter student code" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                    </div>
+                    <div class="form-group">
+                        <label for="qrStudentName">Student Name (Optional):</label>
+                        <input type="text" id="qrStudentName" class="form-input" placeholder="e.g., John Doe" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" onclick="generateQRCode()">Generate QR Code</button>
+                    <button type="button" onclick="hideQRGenerator()" style="background: rgba(100, 116, 139, 0.1) !important; color: #64748b !important; box-shadow: none !important;">Close QR Generator</button>
+                </div>
+            </div>
+            <!-- QR Code Display -->
+            <div id="qrDisplay" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;"></div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:5px; max-width:80%; max-height:80%; overflow-y:auto;">
+            <h3>Admin History (Last 30 Days)</h3>
+            <div id="historyContent"></div>
+            <button onclick="closeHistory()">Close</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        const API_BASE = window.location.origin + '/api';
+        let allHallTickets = [];
+        let adminHallTicketData = {};
+        let adminExamSchedule = [];
+        let allNotifications = [];
+        let bulkHallTicketData = {};
+        let bulkStudentsList = [];
+        let bulkExamSchedule = [];
+        let currentBulkStep = 1;
+        
+        // FEE CERTIFICATES VARIABLES (NEW)
+        let currentFeeCertTab = 'pending';
+        let allFeeCertificates = [];
+
+        // Notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 2000;
+                padding: 1rem;
+                border-radius: 8px;
+                color: white;
+                font-weight: 600;
+                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : type === 'info' ? '#3b82f6' : '#ef4444'};
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 4000);
+        }
+
+        // Generate Student Code
+        function generateStudentCode(classCode, rollNum) {
+            const classStr = classCode.toString().toLowerCase();
+            const rollNumber = parseInt(rollNum);
+            if (classStr === 'nursery' && rollNumber >= 1 && rollNumber <= 999) {
+                return `CB25N${rollNumber.toString().padStart(3, '0')}`;
+            } else if (classStr === 'lkg' && rollNumber >= 1 && rollNumber <= 999) {
+                return `CB25L${rollNumber.toString().padStart(3, '0')}`;
+            } else if (classStr === 'ukg' && rollNumber >= 1 && rollNumber <= 999) {
+                return `CB25U${rollNumber.toString().padStart(3, '0')}`;
+            } else {
+                const classNum = parseInt(classCode);
+                if (classNum >= 1 && classNum <= 10 && rollNumber >= 1 && rollNumber <= 60) {
+                    const formattedClass = classNum.toString().padStart(2, '0');
+                    return `CB25-${formattedClass}-${rollNumber}`;
+                }
+            }
+            return null;
+        }
+
+        // ===== NOTIFICATION SYSTEM FUNCTIONS =====
+        
+        function showNotificationSection() {
+            document.getElementById('notificationSection').style.display = 'block';
+            document.getElementById('notificationSection').scrollIntoView({ behavior: 'smooth' });
+            loadAllNotifications();
+        }
+
+        function hideNotificationSection() {
+            document.getElementById('notificationSection').style.display = 'none';
+        }
+
+        function updateTargetClass() {
+            const audience = document.getElementById('notifAudience').value;
+            const targetClassSelect = document.getElementById('notifTargetClass');
+            
+            if (audience === 'faculty') {
+                targetClassSelect.value = 'all';
+                targetClassSelect.disabled = true;
+            } else {
+                targetClassSelect.disabled = false;
+            }
+        }
+
+        // Submit notification form
+        document.getElementById('notificationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch(`${API_BASE}/admin/notifications`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('Notification sent successfully to all recipients!');
+                    this.reset();
+                    loadAllNotifications();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to send notification'), 'error');
+                }
+            } catch (error) {
+                console.error('Error sending notification:', error);
+                showNotification('Network error: ' + error.message, 'error');
+            }
+        });
+
+        async function loadAllNotifications() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/notifications`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                allNotifications = await response.json();
+                displayNotifications();
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                document.getElementById('notificationsDisplay').innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #ef4444;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                        <p>Error loading notifications: ${error.message}</p>
+                        <button onclick="loadAllNotifications()" style="margin-top: 1rem; background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Retry</button>
+                    </div>
+                `;
+                showNotification('Error loading notifications: ' + error.message, 'error');
+            }
+        }
+
+        function displayNotifications() {
+            const container = document.getElementById('notificationsDisplay');
+            
+            if (!allNotifications || allNotifications.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📢</div>
+                        <p>No notifications available</p>
+                        <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 0.5rem;">Created notifications will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+
+            allNotifications.forEach(notif => {
+                const createdDate = new Date(notif.createdAt).toLocaleString('en-IN');
+                const expiryDate = notif.expiryDate ? new Date(notif.expiryDate).toLocaleString('en-IN') : 'No expiry';
+                
+                const typeColors = {
+                    general: '#6b7280',
+                    urgent: '#ef4444',
+                    info: '#3b82f6',
+                    event: '#8b5cf6',
+                    holiday: '#10b981',
+                    exam: '#f59e0b'
+                };
+                
+                const priorityColors = {
+                    low: '#10b981',
+                    normal: '#f59e0b',
+                    high: '#f97316',
+                    urgent: '#ef4444'
+                };
+                
+                const typeColor = typeColors[notif.type] || '#6b7280';
+                const priorityColor = priorityColors[notif.priority] || '#f59e0b';
+                
+                const audienceDisplay = notif.targetAudience === 'all' ? '👥 Everyone' : 
+                                       notif.targetAudience === 'faculty' ? '👩‍🏫 Faculty' : 
+                                       '🎓 Students';
+                
+                const classDisplay = notif.targetClass === 'all' ? 'All Classes' : 
+                                    notif.targetClass === 'nursery' ? 'Nursery' :
+                                    notif.targetClass === 'lkg' ? 'LKG' :
+                                    notif.targetClass === 'ukg' ? 'UKG' :
+                                    `Class ${notif.targetClass}`;
+
+                html += `
+                    <div style="background: #f8fafc; border-left: 4px solid ${typeColor}; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div style="flex: 1;">
+                                <h4 style="margin: 0 0 0.5rem 0; color: #1f2937; font-size: 1.125rem;">${notif.title}</h4>
+                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                                    <span style="background: ${typeColor}; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${notif.type}</span>
+                                    <span style="background: ${priorityColor}; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${notif.priority}</span>
+                                    <span style="background: #6366f1; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${audienceDisplay}</span>
+                                    <span style="background: #8b5cf6; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${classDisplay}</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteNotification('${notif.id}')" style="background: #ef4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.875rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                🗑️ Delete
+                            </button>
+                        </div>
+                        <p style="margin: 0 0 1rem 0; color: #4b5563; line-height: 1.6;">${notif.message}</p>
+                        ${notif.file ? `
+                            <div style="background: white; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                                <span style="color: #6b7280; font-size: 0.875rem;">📎 Attachment: </span>
+                                <a href="${notif.file}" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 600;">${notif.fileName || 'View File'}</a>
+                            </div>
+                        ` : ''}
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; color: #6b7280;">
+                            <span>📅 Created: ${createdDate}</span>
+                            <span>⏰ Expires: ${expiryDate}</span>
+                        </div>
+                        ${notif.readBy && notif.readBy.length > 0 ? `
+                            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e5e7eb;">
+                                <span style="font-size: 0.875rem; color: #6b7280;">✓ Read by ${notif.readBy.length} user(s)</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        async function deleteNotification(notificationId) {
+            if (!confirm('Are you sure you want to delete this notification?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/notifications/${notificationId}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('Notification deleted successfully!');
+                    loadAllNotifications();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to delete notification'), 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting notification:', error);
+                showNotification('Error deleting notification: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteAllNotifications() {
+            if (!confirm('Are you sure you want to delete ALL notifications? This action cannot be undone.')) {
+                return;
+            }
+            
+            if (!confirm('This will permanently delete all notifications. Click OK to confirm deletion.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/delete-all-notifications`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showNotification('All notifications deleted successfully!');
+                    allNotifications = [];
+                    displayNotifications();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to delete notifications'), 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting all notifications:', error);
+                showNotification('Error deleting all notifications: ' + error.message, 'error');
+            }
+        }
+
+        // ===== HALL TICKETS FUNCTIONS (PRESERVED - keeping existing code) =====
+        
+        function showIssueHallTickets() {
+            document.getElementById('issueHallTicketsSection').style.display = 'block';
+            document.getElementById('issueHallTicketsSection').scrollIntoView({ behavior: 'smooth' });
+            loadAllHallTickets();
+        }
+
+        function hideIssueHallTicketsSection() {
+            document.getElementById('issueHallTicketsSection').style.display = 'none';
+        }
+
+        async function deleteAllHallTickets() {
+            if (!confirm('Are you sure you want to delete ALL hall tickets? This action cannot be undone.')) {
+                return;
+            }
+            
+            if (!confirm('This will permanently delete all hall tickets. Click OK to confirm deletion.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/delete-all-hall-tickets`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('All hall tickets deleted successfully!');
+                    allHallTickets = [];
+                    displayHallTicketsTable();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to delete hall tickets'), 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting all hall tickets:', error);
+                showNotification('Error deleting all hall tickets: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteHallTicket(hallTicketId) {
+            if (!confirm('Are you sure you want to delete this hall ticket? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/delete-hall-ticket/${hallTicketId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('Hall ticket deleted successfully!');
+                    allHallTickets = allHallTickets.filter(ticket => ticket.hallTicketId !== hallTicketId);
+                    displayHallTicketsTable();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to delete hall ticket'), 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting hall ticket:', error);
+                showNotification('Error deleting hall ticket: ' + error.message, 'error');
+            }
+        }
+
+        async function loadAllHallTickets() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/hall-tickets`);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                allHallTickets = await response.json();
+                displayHallTicketsTable();
+            } catch (error) {
+                console.error('Error loading hall tickets:', error);
+                document.getElementById('hallTicketsDisplay').innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #ef4444;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                        <p>Error loading hall tickets: ${error.message}</p>
+                        <button onclick="loadAllHallTickets()" style="margin-top: 1rem; background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Retry</button>
+                    </div>
+                `;
+                showNotification('Error loading hall tickets: ' + error.message, 'error');
+            }
+        }
+
+        function displayHallTicketsTable() {
+            const container = document.getElementById('hallTicketsDisplay');
+            if (!allHallTickets || allHallTickets.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                        <p>No hall tickets available yet</p>
+                        <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 0.5rem;">Hall tickets from receptionist and admin will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const groupedByClass = {};
+            allHallTickets.forEach(ticket => {
+                const classKey = ticket.studentClass || 'Unknown';
+                if (!groupedByClass[classKey]) {
+                    groupedByClass[classKey] = [];
+                }
+                groupedByClass[classKey].push(ticket);
+            });
+
+            let html = '';
+            const sortedClasses = Object.keys(groupedByClass).sort((a, b) => {
+                const classOrder = ['nursery', 'lkg', 'ukg', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+                const aIndex = classOrder.indexOf(a.toLowerCase());
+                const bIndex = classOrder.indexOf(b.toLowerCase());
+                if (aIndex === -1) return 1;
+                if (bIndex === -1) return -1;
+                return aIndex - bIndex;
+            });
+
+            sortedClasses.forEach(classCode => {
+                const classDisplay = classCode === 'nursery' ? 'Nursery' : 
+                                  classCode === 'lkg' ? 'LKG' : 
+                                  classCode === 'ukg' ? 'UKG' : 
+                                  `Class ${classCode}`;
+
+                const sortedTickets = groupedByClass[classCode].sort((a, b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+
+                html += `
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 1rem; margin: 0 0 1rem 0; border-radius: 8px;">${classDisplay}</h3>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Student</th>
+                                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Roll</th>
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Exam Name</th>
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Exam Period</th>
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Source</th>
+                                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Status</th>
+                                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+                sortedTickets.forEach(ticket => {
+                    const isIssued = ticket.status === 'issued';
+                    const statusColor = isIssued ? '#10b981' : '#f59e0b';
+                    const statusBg = isIssued ? '#f0fdf4' : '#fef3c7';
+                    const statusDisplay = isIssued ? 'Issued' : 'Pending';
+                    const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN');
+                    const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN');
+                    const source = ticket.issuedBy === 'receptionist' ? 'Receptionist' : 'Admin';
+                    const sourceColor = ticket.issuedBy === 'receptionist' ? '#3b82f6' : '#10b981';
+
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${ticket.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center; font-weight: 600;">${ticket.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${ticket.examName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${fromDate} to ${toDate}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">
+                                <span style="background: ${sourceColor}20; color: ${sourceColor}; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">${source}</span>
+                            </td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <span style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${statusDisplay}</span>
+                            </td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                    ${!isIssued ? 
+                                        `<button onclick="issueHallTicketToStudent('${ticket.hallTicketId}', '${ticket.studentCode}')" style="background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Issue</button>` : 
+                                        '<span style="color: #10b981; font-weight: 600; font-size: 0.75rem;">✓ Issued</span>'
+                                    }
+                                    <button onclick="downloadHallTicket('${ticket.hallTicketId}')" style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Download</button>
+                                    <button onclick="deleteHallTicket('${ticket.hallTicketId}')" style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `</tbody></table></div></div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function downloadHallTicket(hallTicketId) {
+            try {
+                if (!allHallTickets || allHallTickets.length === 0) {
+                    showNotification('No hall tickets loaded. Please refresh the list first.', 'error');
+                    return;
+                }
+
+                const ticket = allHallTickets.find(t => t.hallTicketId === hallTicketId);
+                if (!ticket) {
+                    showNotification('Hall ticket not found. Please refresh and try again.', 'error');
+                    console.error('Ticket not found with ID:', hallTicketId);
+                    return;
+                }
+
+                if (typeof html2canvas === 'undefined') {
+                    showNotification('Image generation library not loaded. Please refresh the page.', 'error');
+                    console.error('html2canvas is not loaded');
+                    return;
+                }
+
+                showNotification('Generating hall ticket image...', 'info');
+
+                const currentDate = new Date().toLocaleDateString('en-IN');
+                const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                let examScheduleHTML = '';
+                if (ticket.examSchedule && Array.isArray(ticket.examSchedule) && ticket.examSchedule.length > 0) {
+                    examScheduleHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 10px; border: 1px solid #000;">`;
+                    examScheduleHTML += `<thead><tr>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Subject</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Date</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Day</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Timing</th>`;
+                    examScheduleHTML += `</tr></thead><tbody>`;
+                    
+                    ticket.examSchedule.forEach(schedule => {
+                        if (schedule.date && schedule.exams && Array.isArray(schedule.exams)) {
+                            const scheduleDate = new Date(schedule.date);
+                            const formattedDate = scheduleDate.toLocaleDateString('en-IN', { 
+                                day: '2-digit', 
+                                month: 'short', 
+                                year: 'numeric' 
+                            });
+                            const dayName = scheduleDate.toLocaleDateString('en-IN', { weekday: 'long' });
+                            
+                            schedule.exams.forEach(exam => {
+                                examScheduleHTML += `<tr>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${exam.examName || 'N/A'}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${formattedDate}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${dayName}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${exam.timing || 'N/A'}</td>`;
+                                examScheduleHTML += `</tr>`;
+                            });
+                        }
+                    });
+                    
+                    examScheduleHTML += `</tbody></table>`;
+                }
+
+                let classDisplay = ticket.studentClass;
+                if (ticket.studentClass === 'nursery') classDisplay = 'Nursery';
+                else if (ticket.studentClass === 'lkg') classDisplay = 'LKG';
+                else if (ticket.studentClass === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + ticket.studentClass;
+
+                const modalOverlay = document.createElement('div');
+                modalOverlay.id = 'hallTicketPreview';
+                modalOverlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                `;
+
+                const contentWrapper = document.createElement('div');
+                contentWrapper.style.cssText = `
+                    background: white;
+                    border-radius: 10px;
+                    padding: 20px;
+                    max-width: 900px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                `;
+
+                const hallTicketDiv = document.createElement('div');
+                hallTicketDiv.id = 'hallTicketContent';
+                hallTicketDiv.style.cssText = 'width: 800px; background: white; padding: 40px; font-family: "Times New Roman", serif;';
+                
+                hallTicketDiv.innerHTML = `
+                    <div style="border: 3px solid #1e40af; padding: 30px; background: white;">
+                        <div style="border-bottom: 2px solid #1e40af; padding-bottom: 15px; margin-bottom: 20px;">
+                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 15px;">
+                                <img src="logo.png" alt="School Logo" style="width: 80px; height: 80px; object-fit: contain; flex-shrink: 0;" onerror="this.style.display='none'">
+                                <div style="flex: 1; text-align: center;">
+                                    <h1 style="font-size: 24px; font-weight: bold; color: #1e40af; ">VISWA BHARATHI HIGH SCHOOL</h1>
+                                    <p style="font-size: 12px; color: #333; ">NEHRU ROAD, PRODDATUR - 516 360. Kadapa Dist. (A.P.)</p>
+                                    <p style="font-size: 12px; color: #333; ">Cell: 6301444214, 8555950709</p>
+                                </div>
+                            </div>
+                            <h2 style="text-align: center; font-size: 20px; color: #000; text-decoration: underline; margin: 15px 0 0 0;">HALL TICKET (${ticket.examName})</h2>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <div style="margin: 12px 0;">
+                                <span style="font-weight: bold; color: #000; font-size: 14px;">Student Name: </span>
+                                <span style="color: #333; font-size: 14px;">${ticket.studentName}</span>
+                            </div>
+                            
+                            <div style="margin: 12px 0;">
+                                <span style="font-weight: bold; color: #000; font-size: 14px;">Class & Sec: </span>
+                                <span style="color: #333; font-size: 14px;">${classDisplay}</span>
+                            </div>
+                            
+                            <div style="margin: 12px 0;">
+                                <span style="font-weight: bold; color: #000; font-size: 14px;">Roll No: </span>
+                                <span style="color: #333; font-size: 14px;">${ticket.studentRoll}</span>
+                            </div>
+                            
+                            ${examScheduleHTML ? `<div style="margin: 15px 0;">${examScheduleHTML}</div>` : ''}
+                            
+                            ${ticket.remarks ? `
+                            <div style="margin: 15px 0; padding: 10px; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 4px;">
+                                <p style="font-size: 12px; margin: 0;"><strong>Instructions:</strong> ${ticket.remarks}</p>
+                            </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div style="margin-top: 40px; text-align: right;">
+                            <div style="display: inline-block; text-align: center; min-width: 150px;">
+                                <div style="border-top: 2px solid #000; margin-bottom: 5px;"></div>
+                                <p style="font-size: 12px; color: #000; margin: 5px 0;">Principal</p>
+                                <p style="font-size: 12px; color: #000; margin: 5px 0;"><strong>Viswabharathi School</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = '⬇️ Download as PNG';
+                downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+                downloadBtn.onclick = function() {
+                    generateImageFromElement(hallTicketDiv, ticket);
+                };
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = '✕ Close';
+                closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+                closeBtn.onclick = function() {
+                    document.body.removeChild(modalOverlay);
+                };
+
+                buttonContainer.appendChild(downloadBtn);
+                buttonContainer.appendChild(closeBtn);
+                
+                contentWrapper.appendChild(hallTicketDiv);
+                contentWrapper.appendChild(buttonContainer);
+                modalOverlay.appendChild(contentWrapper);
+                document.body.appendChild(modalOverlay);
+
+            } catch (error) {
+                console.error('Error in downloadHallTicket:', error);
+                showNotification('Error: ' + error.message, 'error');
+            }
+        }
+
+        function generateImageFromElement(element, ticket) {
+            showNotification('Converting to image...', 'info');
+            
+            html2canvas(element, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                width: element.offsetWidth,
+                height: element.offsetHeight
+            }).then(function(canvas) {
+                console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
+                
+                canvas.toBlob(function(blob) {
+                    if (!blob) {
+                        showNotification('Failed to create image file', 'error');
+                        return;
+                    }
+                    
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    const fileName = `HallTicket_${ticket.studentName.replace(/\s+/g, '_')}_${ticket.studentRoll}.png`;
+                    link.download = fileName;
+                    link.href = url;
+                    link.click();
+                    
+                    setTimeout(() => {
+                        URL.revokeObjectURL(url);
+                    }, 100);
+                    
+                    showNotification('✅ Hall ticket downloaded successfully!');
+                    
+                    const modal = document.getElementById('hallTicketPreview');
+                    if (modal) {
+                        setTimeout(() => {
+                            document.body.removeChild(modal);
+                        }, 1000);
+                    }
+                }, 'image/png');
+                
+            }).catch(function(error) {
+                console.error('html2canvas error:', error);
+                showNotification('Failed to generate image. Error: ' + (error.message || 'Unknown'), 'error');
+            });
+        }
+
+        // ===== SINGLE HALL TICKET FUNCTIONS (PRESERVED) =====
+        
+        function showAdminGenerateHallTicket() {
+            document.getElementById('adminGenerateHallTicketModal').style.display = 'flex';
+            document.getElementById('hallTicketStep1').style.display = 'block';
+            document.getElementById('hallTicketStep2').style.display = 'none';
+            adminHallTicketData = {};
+            adminExamSchedule = [];
+        }
+
+        function closeAdminGenerateHallTicketModal() {
+            document.getElementById('adminGenerateHallTicketModal').style.display = 'none';
+            document.getElementById('adminGenerateHallTicketBasicForm').reset();
+            document.getElementById('hallTicketStep1').style.display = 'block';
+            document.getElementById('hallTicketStep2').style.display = 'none';
+            adminHallTicketData = {};
+            adminExamSchedule = [];
+        }
+
+        function goBackToStep1() {
+            document.getElementById('hallTicketStep1').style.display = 'block';
+            document.getElementById('hallTicketStep2').style.display = 'none';
+        }
+
+        document.getElementById('adminGenerateHallTicketBasicForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const fromDate = new Date(formData.get('fromDate'));
+            const toDate = new Date(formData.get('toDate'));
+            
+            if (toDate < fromDate) {
+                showNotification('End date cannot be before start date', 'error');
+                return;
+            }
+            
+            const studentClass = formData.get('studentClass');
+            const studentRoll = formData.get('studentRoll');
+            
+            adminHallTicketData = {
+                examName: formData.get('examName'),
+                fromDate: formData.get('fromDate'),
+                toDate: formData.get('toDate'),
+                studentName: formData.get('studentName'),
+                studentRoll: studentRoll,
+                studentClass: studentClass,
+                studentCode: generateStudentCode(studentClass, studentRoll),
+                remarks: formData.get('remarks') || ''
+            };
+            
+            generateAdminExamScheduleForm(fromDate, toDate);
+            document.getElementById('hallTicketStep1').style.display = 'none';
+            document.getElementById('hallTicketStep2').style.display = 'block';
+        });
+
+        function generateAdminExamScheduleForm(fromDate, toDate) {
+            const container = document.getElementById('examScheduleContainer');
+            container.innerHTML = '';
+            
+            const dates = [];
+            const currentDate = new Date(fromDate);
+            
+            while (currentDate <= toDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            dates.forEach((date, index) => {
+                const dateStr = date.toISOString().split('T')[0];
+                const displayDate = date.toLocaleDateString('en-IN', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                const dateSection = document.createElement('div');
+                dateSection.style.cssText = 'background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;';
+                dateSection.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h4 style="margin: 0; color: #1f2937;">📅 ${displayDate}</h4>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="button" onclick="setAdminExamCount('${dateStr}', 1)" 
+                                class="admin-exam-count-btn" data-date="${dateStr}" data-count="1"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                1 Exam
+                            </button>
+                            <button type="button" onclick="setAdminExamCount('${dateStr}', 2)" 
+                                class="admin-exam-count-btn" data-date="${dateStr}" data-count="2"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                2 Exams
+                            </button>
+                        </div>
+                    </div>
+                    <div id="admin-exams-${dateStr}" style="display: none; margin-top: 1rem;"></div>
+                `;
+                
+                container.appendChild(dateSection);
+            });
+        }
+
+        function setAdminExamCount(dateStr, count) {
+            const buttons = document.querySelectorAll(`button[data-date="${dateStr}"]`);
+            buttons.forEach(btn => {
+                if (parseInt(btn.dataset.count) === count) {
+                    btn.style.background = '#3b82f6';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.background = 'white';
+                    btn.style.color = '#3b82f6';
+                }
+            });
+            
+            const examsContainer = document.getElementById(`admin-exams-${dateStr}`);
+            examsContainer.style.display = 'block';
+            examsContainer.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                const examDiv = document.createElement('div');
+                examDiv.style.cssText = 'background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #cbd5e1;';
+                examDiv.innerHTML = `
+                    <h5 style="margin: 0 0 0.75rem 0; color: #475569;">${count === 1 ? 'Exam Details' : i === 1 ? '🌅 Forenoon Exam' : '🌆 Afternoon Exam'}</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Exam Name:</label>
+                            <input type="text" 
+                                id="adminExamName-${dateStr}-${i}" 
+                                placeholder="e.g., Mathematics, Science" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Timing:</label>
+                            <input type="text" 
+                                id="adminExamTiming-${dateStr}-${i}" 
+                                placeholder="e.g., 9:00 AM - 12:00 PM" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                    </div>
+                `;
+                examsContainer.appendChild(examDiv);
+            }
+        }
+
+        async function submitAdminHallTicket() {
+            try {
+                adminExamSchedule = [];
+                const fromDate = new Date(adminHallTicketData.fromDate);
+                const toDate = new Date(adminHallTicketData.toDate);
+                
+                const dates = [];
+                const currentDate = new Date(fromDate);
+                
+                while (currentDate <= toDate) {
+                    dates.push(new Date(currentDate));
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+                
+                for (const date of dates) {
+                    const dateStr = date.toISOString().split('T')[0];
+                    const examsContainer = document.getElementById(`admin-exams-${dateStr}`);
+                    
+                    if (!examsContainer || examsContainer.style.display === 'none') {
+                        showNotification(`Please configure exams for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const examInputs = examsContainer.querySelectorAll('input[id^="adminExamName-"]');
+                    if (examInputs.length === 0) {
+                        showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const dateExams = [];
+                    for (let i = 1; i <= examInputs.length; i++) {
+                        const examName = document.getElementById(`adminExamName-${dateStr}-${i}`);
+                        const examTiming = document.getElementById(`adminExamTiming-${dateStr}-${i}`);
+                        
+                        if (!examName || !examName.value.trim()) {
+                            showNotification(`Please enter exam name for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        if (!examTiming || !examTiming.value.trim()) {
+                            showNotification(`Please enter exam timing for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        dateExams.push({
+                            examName: examName.value.trim(),
+                            timing: examTiming.value.trim()
+                        });
+                    }
+                    
+                    adminExamSchedule.push({
+                        date: dateStr,
+                        exams: dateExams
+                    });
+                }
+
+                if (!adminHallTicketData.studentCode) {
+                    showNotification('Invalid class or roll number combination', 'error');
+                    return;
+                }
+
+                const hallTicketData = {
+                    hallTicketId: `HT_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    examName: adminHallTicketData.examName,
+                    fromDate: adminHallTicketData.fromDate,
+                    toDate: adminHallTicketData.toDate,
+                    studentName: adminHallTicketData.studentName,
+                    studentRoll: adminHallTicketData.studentRoll,
+                    studentClass: adminHallTicketData.studentClass,
+                    studentCode: adminHallTicketData.studentCode,
+                    examSchedule: adminExamSchedule,
+                    remarks: adminHallTicketData.remarks,
+                    issuedBy: 'admin',
+                    createdAt: new Date().toISOString(),
+                    status: 'pending'
+                };
+
+                const response = await fetch(`${API_BASE}/admin/create-hall-ticket`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(hallTicketData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('Hall Ticket created successfully!');
+                    closeAdminGenerateHallTicketModal();
+                    loadAllHallTickets();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to create hall ticket'), 'error');
+                }
+            } catch (error) {
+                console.error('Error creating hall ticket:', error);
+                showNotification('Error creating hall ticket: ' + error.message, 'error');
+            }
+        }
+
+        async function issueHallTicketToStudent(hallTicketId, studentCode) {
+            if (!confirm('Are you sure you want to issue this hall ticket to the student?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/issue-hall-ticket`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        hallTicketId: hallTicketId,
+                        studentCode: studentCode,
+                        issuedDate: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('Hall Ticket issued to student successfully!');
+                    loadAllHallTickets();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to issue hall ticket'), 'error');
+                }
+            } catch (error) {
+                console.error('Error issuing hall ticket:', error);
+                showNotification('Error issuing hall ticket: ' + error.message, 'error');
+            }
+        }
+
+        // ===== BULK HALL TICKET FUNCTIONS (keeping existing for brevity) =====
+
+        function showAdminBulkHallTicket() {
+            document.getElementById('adminBulkHallTicketModal').style.display = 'flex';
+            resetBulkHallTicketForm();
+        }
+
+        function closeAdminBulkHallTicketModal() {
+            document.getElementById('adminBulkHallTicketModal').style.display = 'none';
+            resetBulkHallTicketForm();
+        }
+
+        function resetBulkHallTicketForm() {
+            currentBulkStep = 1;
+            bulkHallTicketData = {};
+            bulkStudentsList = [];
+            bulkExamSchedule = [];
+            
+            document.getElementById('adminBulkHallTicketBasicForm').reset();
+            document.getElementById('bulkStudentName').value = '';
+            document.getElementById('bulkStudentRoll').value = '';
+            
+            document.getElementById('bulkHallTicketStep1').style.display = 'block';
+            document.getElementById('bulkHallTicketStep2').style.display = 'none';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            
+            updateBulkStepIndicator(1);
+            updateBulkStudentsList();
+        }
+
+        function updateBulkStepIndicator(step) {
+            const steps = document.querySelectorAll('.bulk-step-item');
+            steps.forEach((stepItem, index) => {
+                const stepNumber = index + 1;
+                stepItem.classList.remove('active', 'completed');
+                
+                if (stepNumber < step) {
+                    stepItem.classList.add('completed');
+                } else if (stepNumber === step) {
+                    stepItem.classList.add('active');
+                }
+            });
+        }
+
+        document.getElementById('adminBulkHallTicketBasicForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const fromDate = new Date(formData.get('hallFromDate'));
+            const toDate = new Date(formData.get('hallToDate'));
+            
+            if (toDate < fromDate) {
+                showNotification('End date cannot be before start date', 'error');
+                return;
+            }
+            
+            bulkHallTicketData = {
+                examName: formData.get('hallExamName'),
+                fromDate: formData.get('hallFromDate'),
+                toDate: formData.get('hallToDate'),
+                studentClass: formData.get('hallStudentClass'),
+                remarks: formData.get('hallRemarks') || ''
+            };
+            
+            goToBulkStep2();
+        });
+
+        function goBackToBulkStep1() {
+            currentBulkStep = 1;
+            document.getElementById('bulkHallTicketStep1').style.display = 'block';
+            document.getElementById('bulkHallTicketStep2').style.display = 'none';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            updateBulkStepIndicator(1);
+        }
+
+        function goToBulkStep2() {
+            currentBulkStep = 2;
+            document.getElementById('bulkHallTicketStep1').style.display = 'none';
+            document.getElementById('bulkHallTicketStep2').style.display = 'block';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            updateBulkStepIndicator(2);
+            updateBulkStudentsList();
+        }
+
+        function addBulkStudent() {
+            const name = document.getElementById('bulkStudentName').value.trim();
+            const roll = document.getElementById('bulkStudentRoll').value.trim();
+            
+            if (!name || !roll) {
+                showNotification('Please enter both student name and roll number', 'error');
+                return;
+            }
+            
+            if (parseInt(roll) < 1) {
+                showNotification('Roll number must be greater than 0', 'error');
+                return;
+            }
+            
+            if (bulkStudentsList.some(s => s.roll === roll)) {
+                showNotification('A student with this roll number already exists', 'error');
+                return;
+            }
+            
+            bulkStudentsList.push({
+                name: name,
+                roll: roll
+            });
+            
+            document.getElementById('bulkStudentName').value = '';
+            document.getElementById('bulkStudentRoll').value = '';
+            document.getElementById('bulkStudentName').focus();
+            
+            updateBulkStudentsList();
+            showNotification(`${name} added successfully!`);
+        }
+
+        function updateBulkStudentsList() {
+            const container = document.getElementById('bulkStudentsList');
+            const countSpan = document.getElementById('bulkStudentCount');
+            const nextBtn = document.getElementById('nextToBulkScheduleBtn');
+            
+            countSpan.textContent = bulkStudentsList.length;
+            
+            if (bulkStudentsList.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyBulkStudentsMessage">
+                        No students added yet
+                    </div>
+                `;
+                nextBtn.disabled = true;
+                return;
+            }
+            
+            nextBtn.disabled = false;
+            
+            let html = '';
+            bulkStudentsList.forEach((student, index) => {
+                html += `
+                    <div class="student-card" style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 2rem; align-items: center;">
+                            <div style="font-weight: 600; color: #1f2937; font-size: 1rem;">${student.name}</div>
+                            <div style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;">Roll: ${student.roll}</div>
+                        </div>
+                        <button onclick="removeBulkStudent(${index})" style="background: #fee2e2; color: #dc2626; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                            🗑️ Remove
+                        </button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function removeBulkStudent(index) {
+            const student = bulkStudentsList[index];
+            bulkStudentsList.splice(index, 1);
+            updateBulkStudentsList();
+            showNotification(`${student.name} removed`);
+        }
+
+        function clearAllBulkStudents() {
+            if (bulkStudentsList.length === 0) return;
+            
+            if (confirm(`Are you sure you want to remove all ${bulkStudentsList.length} students?`)) {
+                bulkStudentsList = [];
+                updateBulkStudentsList();
+                showNotification('All students removed');
+            }
+        }
+
+        function goBackToBulkStep2() {
+            currentBulkStep = 2;
+            document.getElementById('bulkHallTicketStep1').style.display = 'none';
+            document.getElementById('bulkHallTicketStep2').style.display = 'block';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            updateBulkStepIndicator(2);
+        }
+
+        function goToBulkStep3() {
+            if (bulkStudentsList.length === 0) {
+                showNotification('Please add at least one student', 'error');
+                return;
+            }
+            
+            currentBulkStep = 3;
+            document.getElementById('bulkHallTicketStep1').style.display = 'none';
+            document.getElementById('bulkHallTicketStep2').style.display = 'none';
+            document.getElementById('bulkHallTicketStep3').style.display = 'block';
+            updateBulkStepIndicator(3);
+            
+            document.getElementById('totalBulkStudentsCount').textContent = bulkStudentsList.length;
+            generateBulkExamScheduleForm();
+        }
+
+        function generateBulkExamScheduleForm() {
+            const container = document.getElementById('bulkExamScheduleContainer');
+            container.innerHTML = '';
+            
+            const fromDate = new Date(bulkHallTicketData.fromDate);
+            const toDate = new Date(bulkHallTicketData.toDate);
+            
+            const dates = [];
+            const currentDate = new Date(fromDate);
+            
+            while (currentDate <= toDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            dates.forEach((date, index) => {
+                const dateStr = date.toISOString().split('T')[0];
+                const displayDate = date.toLocaleDateString('en-IN', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                const dateSection = document.createElement('div');
+                dateSection.style.cssText = 'background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;';
+                dateSection.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h4 style="margin: 0; color: #1f2937;">📅 ${displayDate}</h4>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="button" onclick="setBulkExamCount('${dateStr}', 1)" 
+                                class="bulk-exam-count-btn" data-date="${dateStr}" data-count="1"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                1 Exam
+                            </button>
+                            <button type="button" onclick="setBulkExamCount('${dateStr}', 2)" 
+                                class="bulk-exam-count-btn" data-date="${dateStr}" data-count="2"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                2 Exams
+                            </button>
+                        </div>
+                    </div>
+                    <div id="bulk-exams-${dateStr}" style="display: none; margin-top: 1rem;"></div>
+                `;
+                
+                container.appendChild(dateSection);
+            });
+        }
+
+        function setBulkExamCount(dateStr, count) {
+            const buttons = document.querySelectorAll(`button[data-date="${dateStr}"]`);
+            buttons.forEach(btn => {
+                if (parseInt(btn.dataset.count) === count) {
+                    btn.style.background = '#3b82f6';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.background = 'white';
+                    btn.style.color = '#3b82f6';
+                }
+            });
+            
+            const examsContainer = document.getElementById(`bulk-exams-${dateStr}`);
+            examsContainer.style.display = 'block';
+            examsContainer.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                const examDiv = document.createElement('div');
+                examDiv.style.cssText = 'background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #cbd5e1;';
+                examDiv.innerHTML = `
+                    <h5 style="margin: 0 0 0.75rem 0; color: #475569;">${count === 1 ? 'Exam Details' : i === 1 ? '🌅 Forenoon Exam' : '🌆 Afternoon Exam'}</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Exam Name:</label>
+                            <input type="text" 
+                                id="bulkExamName-${dateStr}-${i}" 
+                                placeholder="e.g., Mathematics, Science" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Timing:</label>
+                            <input type="text" 
+                                id="bulkExamTiming-${dateStr}-${i}" 
+                                placeholder="e.g., 9:00 AM - 12:00 PM" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                    </div>
+                `;
+                examsContainer.appendChild(examDiv);
+            }
+        }
+
+        async function submitAllBulkHallTickets() {
+            try {
+                bulkExamSchedule = [];
+                const fromDate = new Date(bulkHallTicketData.fromDate);
+                const toDate = new Date(bulkHallTicketData.toDate);
+                
+                const dates = [];
+                const currentDate = new Date(fromDate);
+                
+                while (currentDate <= toDate) {
+                    dates.push(new Date(currentDate));
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+                
+                for (const date of dates) {
+                    const dateStr = date.toISOString().split('T')[0];
+                    const examsContainer = document.getElementById(`bulk-exams-${dateStr}`);
+                    
+                    if (!examsContainer || examsContainer.style.display === 'none') {
+                        showNotification(`Please configure exams for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const examInputs = examsContainer.querySelectorAll('input[id^="bulkExamName-"]');
+                    if (examInputs.length === 0) {
+                        showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const dateExams = [];
+                    for (let i = 1; i <= examInputs.length; i++) {
+                        const examName = document.getElementById(`bulkExamName-${dateStr}-${i}`);
+                        const examTiming = document.getElementById(`bulkExamTiming-${dateStr}-${i}`);
+                        
+                        if (!examName || !examName.value.trim()) {
+                            showNotification(`Please enter exam name for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        if (!examTiming || !examTiming.value.trim()) {
+                            showNotification(`Please enter exam timing for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        dateExams.push({
+                            examName: examName.value.trim(),
+                            timing: examTiming.value.trim()
+                        });
+                    }
+                    
+                    bulkExamSchedule.push({
+                        date: dateStr,
+                        exams: dateExams
+                    });
+                }
+                
+                let successCount = 0;
+                let failCount = 0;
+                
+                showNotification(`Generating ${bulkStudentsList.length} hall tickets...`, 'info');
+                
+                for (const student of bulkStudentsList) {
+                    const studentCode = generateStudentCode(bulkHallTicketData.studentClass, student.roll);
+                    
+                    if (!studentCode) {
+                        failCount++;
+                        console.error(`Invalid code for ${student.name}`);
+                        continue;
+                    }
+                    
+                    const hallTicket = {
+                        hallTicketId: `HT_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                        examName: bulkHallTicketData.examName,
+                        fromDate: bulkHallTicketData.fromDate,
+                        toDate: bulkHallTicketData.toDate,
+                        studentName: student.name,
+                        studentRoll: student.roll,
+                        studentClass: bulkHallTicketData.studentClass,
+                        studentCode: studentCode,
+                        examSchedule: bulkExamSchedule,
+                        remarks: bulkHallTicketData.remarks,
+                        issuedBy: 'admin',
+                        createdAt: new Date().toISOString(),
+                        status: 'pending'
+                    };
+                    
+                    try {
+                        const response = await fetch(`${API_BASE}/admin/create-hall-ticket`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(hallTicket)
+                        });
+
+                        if (response.ok) {
+                            successCount++;
+                        } else {
+                            failCount++;
+                            console.error(`Failed for ${student.name}:`, await response.text());
+                        }
+                    } catch (error) {
+                        failCount++;
+                        console.error(`Error for ${student.name}:`, error);
+                    }
+                }
+                
+                if (successCount > 0) {
+                    showNotification(`✅ ${successCount} hall tickets created successfully!`);
+                }
+                
+                if (failCount > 0) {
+                    showNotification(`⚠️ ${failCount} hall tickets failed to create`, 'error');
+                }
+                
+                if (successCount === bulkStudentsList.length) {
+                    setTimeout(() => {
+                        closeAdminBulkHallTicketModal();
+                        loadAllHallTickets();
+                    }, 1500);
+                }
+                
+            } catch (error) {
+                console.error('Bulk hall ticket submission error:', error);
+                showNotification('Error creating hall tickets: ' + error.message, 'error');
+            }
+        }
+
+        // ===== FEE CERTIFICATES FUNCTIONS (NEW IMPLEMENTATION) =====
+        
+        function showViewFeeCertificates() {
+            document.getElementById('viewFeeCertSection').style.display = 'block';
+            document.getElementById('viewFeeCertSection').scrollIntoView({ behavior: 'smooth' });
+            loadFeeCertificates();
+        }
+
+        function hideViewFeeCertSection() {
+            document.getElementById('viewFeeCertSection').style.display = 'none';
+        }
+
+        // Switch between tabs
+        function switchFeeCertTab(tab) {
+            currentFeeCertTab = tab;
+            
+            // Update tab styling
+            document.getElementById('pendingFeeCertTab').style.borderBottom = 
+                tab === 'pending' ? '3px solid #3b82f6' : '3px solid transparent';
+            document.getElementById('pendingFeeCertTab').style.color = 
+                tab === 'pending' ? '#3b82f6' : '#6b7280';
+            
+            document.getElementById('issuedFeeCertTab').style.borderBottom = 
+                tab === 'issued' ? '3px solid #3b82f6' : '3px solid transparent';
+            document.getElementById('issuedFeeCertTab').style.color = 
+                tab === 'issued' ? '#3b82f6' : '#6b7280';
+            
+            // Show/hide content
+            document.getElementById('pendingFeeCertContent').style.display = 
+                tab === 'pending' ? 'block' : 'none';
+            document.getElementById('issuedFeeCertContent').style.display = 
+                tab === 'issued' ? 'block' : 'none';
+            
+            displayFeeCertificatesByTab();
+        }
+
+        // Load all certificates from API
+        async function loadFeeCertificates() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/fee-certificates`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                allFeeCertificates = await response.json();
+                displayFeeCertificatesByTab();
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                showNotification('Error loading certificates: ' + error.message, 'error');
+            }
+        }
+
+        // Display certificates based on current tab
+        function displayFeeCertificatesByTab() {
+            const pendingCerts = allFeeCertificates.filter(c => c.status === 'pending');
+            const issuedCerts = allFeeCertificates.filter(c => c.status === 'issued');
+            
+            document.getElementById('pendingFeeCertCount').textContent = pendingCerts.length;
+            document.getElementById('issuedFeeCertCount').textContent = issuedCerts.length;
+            
+            if (currentFeeCertTab === 'pending') {
+                displayPendingFeeCertificates(pendingCerts);
+            } else {
+                displayIssuedFeeCertificates(issuedCerts);
+            }
+        }
+
+        // Display pending certificates (with Issue + Delete buttons)
+        function displayPendingFeeCertificates(certificates) {
+            const container = document.getElementById('pendingFeeCertificatesDisplay');
+            
+            if (certificates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                        <p>No pending fee certificates</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group by class (like hall tickets)
+            const groupedByClass = {};
+            certificates.forEach(cert => {
+                if (!groupedByClass[cert.studentClass]) {
+                    groupedByClass[cert.studentClass] = [];
+                }
+                groupedByClass[cert.studentClass].push(cert);
+            });
+            
+            let html = '';
+            Object.keys(groupedByClass).sort().forEach(classCode => {
+                const classCerts = groupedByClass[classCode].sort((a,b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+                
+                html += `
+                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
+                        border-left: 4px solid #f59e0b;">Class ${classCode}</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem;">
+                        <thead>
+                            <tr style="background: #f8fafc;">
+                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
+                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                classCerts.forEach(cert => {
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>${cert.studentCode}</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${cert.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right;">₹${cert.totalFee.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981;">₹${cert.amountPaid.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444;">₹${cert.remainingDue.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                    <button onclick="issueFeeCertificateToStudent('${cert.id}', '${cert.studentCode}')" 
+                                        style="background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600;">
+                                        Issue to Student
+                                    </button>
+                                    <button onclick="deleteFeeCertificate('${cert.id}')" 
+                                        style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600;">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Display issued certificates (with Download + Delete buttons)
+        function displayIssuedFeeCertificates(certificates) {
+            const container = document.getElementById('issuedFeeCertificatesDisplay');
+            
+            if (certificates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                        <p>No issued fee certificates</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group by class
+            const groupedByClass = {};
+            certificates.forEach(cert => {
+                if (!groupedByClass[cert.studentClass]) {
+                    groupedByClass[cert.studentClass] = [];
+                }
+                groupedByClass[cert.studentClass].push(cert);
+            });
+            
+            let html = '';
+            Object.keys(groupedByClass).sort().forEach(classCode => {
+                const classCerts = groupedByClass[classCode].sort((a,b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+                
+                html += `
+                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
+                        border-left: 4px solid #10b981;">Class ${classCode}</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem;">
+                        <thead>
+                            <tr style="background: #f8fafc;">
+                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
+                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                classCerts.forEach(cert => {
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>${cert.studentCode}</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${cert.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right;">₹${cert.totalFee.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981;">₹${cert.amountPaid.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444;">₹${cert.remainingDue.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                    <button onclick="downloadFeeCertificateImage('${cert.id}')" 
+                                        style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600;">
+                                        Download
+                                    </button>
+                                    <button onclick="deleteFeeCertificate('${cert.id}')" 
+                                        style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600;">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Issue certificate to student
+        async function issueFeeCertificateToStudent(certificateId, studentCode) {
+    if (!confirm('Issue this fee certificate to the student?')) return;
+    
+    try {
+        const response = await fetch(`${API_BASE}/admin/issue-fee-certificate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                certificateId: certificateId,
+                studentCode: studentCode,
+                issuedDate: new Date().toISOString()
+            })
+        });
+        
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const result = await response.json();
+        if (result.success) {
+            showNotification('Fee certificate issued to student successfully!');
+            // IMPORTANT: Reload certificates to update local array
+            await loadFeeCertificates();
+            // Switch to issued tab to show the newly issued certificate
+            switchFeeCertTab('issued');
+        }
+    } catch (error) {
+        console.error('Error issuing certificate:', error);
+        showNotification('Error issuing certificate: ' + error.message, 'error');
+    }
+}
+
+        // Delete individual certificate
+        async function deleteFeeCertificate(certificateId) {
+            if (!confirm('Delete this fee certificate? This action cannot be undone.')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/admin/delete-fee-certificate/${certificateId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('Fee certificate deleted successfully!');
+                    loadFeeCertificates();
+                }
+            } catch (error) {
+                showNotification('Error deleting certificate: ' + error.message, 'error');
+            }
+        }
+
+        // Delete all certificates
+        async function deleteAllFeeCertificates() {
+            if (!confirm('Delete ALL fee certificates? This action cannot be undone.')) return;
+            if (!confirm('This will permanently delete all certificates. Click OK to confirm.')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/admin/delete-all-fee-certificates`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const result = await response.json();
+                if (result.success) {
+                    showNotification(`All ${result.deletedCount} certificates deleted successfully!`);
+                    allFeeCertificates = [];
+                    displayFeeCertificatesByTab();
+                }
+            } catch (error) {
+                showNotification('Error deleting certificates: ' + error.message, 'error');
+            }
+        }
+
+       // Download fee certificate as image
+function downloadFeeCertificateImage(certificateId) {
+    try {
+        const certificate = allFeeCertificates.find(c => c.id === certificateId);
+        if (!certificate) {
+            showNotification('Certificate not found. Please refresh the page and try again.', 'error');
+            console.error('Certificate ID not found:', certificateId);
+            console.log('Available certificates:', allFeeCertificates);
+            return;
+        }
+
+        if (typeof html2canvas === 'undefined') {
+            showNotification('Image generation library not loaded. Please refresh the page.', 'error');
+            console.error('html2canvas is not loaded');
+            return;
+        }
+
+        showNotification('Generating certificate image...', 'info');
+
+        const currentDate = new Date().toLocaleDateString('en-IN');
+        
+        // Ensure all required fields have default values
+        const academicYear = certificate.academicYear || '2024-2025';
+        const fatherName = certificate.fatherName || 'N/A';
+        const remarks = certificate.remarks || 'No remarks';
+        const generatedBy = certificate.generatedBy || 'receptionist';
+        
+        let classDisplay = certificate.studentClass;
+        if (certificate.studentClass === 'nursery') classDisplay = 'Nursery';
+        else if (certificate.studentClass === 'lkg') classDisplay = 'LKG';
+        else if (certificate.studentClass === 'ukg') classDisplay = 'UKG';
+        else classDisplay = 'Class ' + certificate.studentClass;
+
+        // Create modal preview (similar to hall ticket download)
+        const modalOverlay = document.createElement('div');
+        modalOverlay.id = 'feeCertificatePreview';
+        modalOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        `;
+
+        const contentWrapper = document.createElement('div');
+        contentWrapper.style.cssText = `
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        `;
+
+        const certificateDiv = document.createElement('div');
+        certificateDiv.id = 'feeCertificateContent';
+        certificateDiv.style.cssText = 'width: 800px; background: white; padding: 40px; font-family: "Times New Roman", serif;';
+        
+        certificateDiv.innerHTML = `
+    <div style="border: 3px solid #2c3e50; padding: 30px; background: white;">
+        <div style="border-bottom: 3px solid #2c3e50; padding-bottom: 15px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 15px;">
+                <img src="logo.png" alt="School Logo" style="width: 100px; height: 100px; object-fit: contain; flex-shrink: 0;" onerror="this.style.display='none'">
+                <div style="flex: 1; text-align: center; background: white;">
+                    <h1 style="font-size: 26px; font-weight: bold; color: #2c3e50; margin: 0; background: white;">VISWA BHARATHI HIGH SCHOOL</h1>
+                    <p style="font-size: 13px; color: #666; margin: 8px 0; background: white;">NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)</p>
+                    <p style="font-size: 13px; color: #666; margin: 8px 0; background: white;">Cell: 6301444214, 8555950709</p>
+                </div>
+            </div>
+            <h2 style="text-align: center; font-size: 22px; color: #2c3e50; margin: 15px 0 0 0; text-decoration: underline; background: white;">FEE CERTIFICATE</h2>
+        </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Certificate No:</strong> FC${certificate.id || Date.now()}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Date of Issue:</strong> ${currentDate}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Academic Year:</strong> ${academicYear}</p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="border-bottom: 2px solid #2c3e50; padding-bottom: 8px; font-size: 16px; color: #2c3e50;">STUDENT DETAILS</h3>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Student Name:</strong> ${certificate.studentName}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Student Code:</strong> ${certificate.studentCode}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Roll Number:</strong> ${certificate.studentRoll}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Father's Name:</strong> ${fatherName}</p>
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Class:</strong> ${classDisplay}</p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="border-bottom: 2px solid #2c3e50; padding-bottom: 8px; font-size: 16px; color: #2c3e50;">FEE DETAILS</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <tr>
+                            <th style="border: 1px solid #2c3e50; padding: 12px; text-align: left; background-color: #ecf0f1; font-size: 14px;">Description</th>
+                            <th style="border: 1px solid #2c3e50; padding: 12px; text-align: right; background-color: #ecf0f1; font-size: 14px;">Amount (₹)</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #2c3e50; padding: 12px; font-size: 14px;">Total Fee Amount</td>
+                            <td style="border: 1px solid #2c3e50; padding: 12px; text-align: right; font-size: 14px;">${certificate.totalFee.toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #2c3e50; padding: 12px; font-size: 14px;">Amount Paid</td>
+                            <td style="border: 1px solid #2c3e50; padding: 12px; text-align: right; font-size: 14px; color: #27ae60;">${certificate.amountPaid.toFixed(2)}</td>
+                        </tr>
+                        <tr style="background-color: #ecf0f1; font-weight: bold;">
+                            <td style="border: 1px solid #2c3e50; padding: 12px; font-size: 14px;">Remaining Due</td>
+                            <td style="border: 1px solid #2c3e50; padding: 12px; text-align: right; font-size: 14px; color: ${certificate.remainingDue > 0 ? '#e74c3c' : '#27ae60'};">${certificate.remainingDue.toFixed(2)}</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <p style="margin: 10px 0; font-size: 14px;"><strong>Remarks:</strong> ${remarks}</p>
+                    
+                </div>
+                
+                <div style="text-align: right; margin-top: 40px;">
+                    <div style="display: inline-block; text-align: center; min-width: 180px;">
+                        <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
+                        <p style="margin: 5px 0; font-size: 13px; font-weight: 600;">Correspondent</p>
+                        <p style="margin: 5px 0; font-size: 13px;"><strong>Viswa Bharathi High School</strong></p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
+        
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = '⬇️ Download as PNG';
+        downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+        downloadBtn.onclick = function() {
+            generateFeeCertificateImage(certificateDiv, certificate);
+        };
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕ Close';
+        closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+        closeBtn.onclick = function() {
+            document.body.removeChild(modalOverlay);
+        };
+
+        buttonContainer.appendChild(downloadBtn);
+        buttonContainer.appendChild(closeBtn);
+        
+        contentWrapper.appendChild(certificateDiv);
+        contentWrapper.appendChild(buttonContainer);
+        modalOverlay.appendChild(contentWrapper);
+        document.body.appendChild(modalOverlay);
+
+    } catch (error) {
+        console.error('Error in downloadFeeCertificateImage:', error);
+        showNotification('Error preparing certificate: ' + error.message, 'error');
+    }
+}
+
+// *** ADD THIS NEW FUNCTION RIGHT HERE ***
+// Generate image from certificate element
+function generateFeeCertificateImage(element, certificate) {
+    showNotification('Converting to image...', 'info');
+    
+    html2canvas(element, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        width: element.offsetWidth,
+        height: element.offsetHeight
+    }).then(function(canvas) {
+        console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
+        
+        canvas.toBlob(function(blob) {
+            if (!blob) {
+                showNotification('Failed to create image file', 'error');
+                return;
+            }
+            
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const fileName = `FeeCertificate_${certificate.studentName.replace(/\s+/g, '_')}_${certificate.studentCode}.png`;
+            link.download = fileName;
+            link.href = url;
+            link.click();
+            
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showNotification('✅ Fee certificate downloaded successfully!');
+            
+            const modal = document.getElementById('feeCertificatePreview');
+            if (modal) {
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                }, 1000);
+            }
+        }, 'image/png');
+        
+    }).catch(function(error) {
+        console.error('html2canvas error:', error);
+        showNotification('Failed to generate image. Error: ' + (error.message || 'Unknown'), 'error');
+    });
+}
+
+
+        // ===== QR CODE FUNCTIONS (PRESERVED) =====
+        
+        function showQRGenerator() {
+            document.getElementById('qrSection').style.display = 'block';
+            document.getElementById('qrSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideQRGenerator() {
+            document.getElementById('qrSection').style.display = 'none';
+            document.getElementById('qrType').value = '';
+            document.getElementById('qrStudentCode').value = '';
+            document.getElementById('qrStudentName').value = '';
+            document.getElementById('qrDisplay').innerHTML = '';
+            document.getElementById('studentQRForm').style.display = 'none';
+        }
+
+        function updateQRForm() {
+            const qrType = document.getElementById('qrType').value;
+            const studentForm = document.getElementById('studentQRForm');
+            if (qrType && qrType !== 'common') {
+                studentForm.style.display = 'block';
+            } else {
+                studentForm.style.display = 'none';
+            }
+        }
+
+        function generateQRCode() {
+            const qrType = document.getElementById('qrType').value;
+            if (!qrType) {
+                alert('Please select a QR type');
+                return;
+            }
+            const currentDomain = window.location.origin;
+            let qrUrl = '';
+            let displayName = '';
+            if (qrType === 'common') {
+                qrUrl = `${currentDomain}/schoollogin.html`;
+                displayName = 'Common Login';
+            } else {
+                const code = document.getElementById('qrStudentCode').value.trim().toUpperCase();
+                const name = document.getElementById('qrStudentName').value.trim();
+                if (!code) {
+                    alert('Please enter student code');
+                    return;
+                }
+                displayName = name || `${qrType.toUpperCase()} Student`;
+                qrUrl = `${currentDomain}/schoollogin.html?role=student&code=${encodeURIComponent(code)}`;
+            }
+            const qrDisplay = document.getElementById('qrDisplay');
+            const qrId = 'qr_' + Date.now();
+            const qrCard = `<div style="background: white; border-radius: 15px; padding: 2rem; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <h3 style="margin-bottom: 1rem; color: #374151;">${displayName}</h3>
+                <div style="margin: 1.5rem 0; padding: 1rem; background: #f8fafc; border-radius: 10px;">
+                    <canvas id="${qrId}"></canvas>
+                </div>
+                <button onclick="downloadQR('${qrId}', '${displayName}')" style="background: #10b981; color: white; border: none; padding: 0.7rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Download QR</button>
+            </div>`;
+            qrDisplay.innerHTML = qrCard;
+            setTimeout(() => {
+                if (typeof QRious !== 'undefined') {
+                    new QRious({
+                        element: document.getElementById(qrId),
+                        value: qrUrl,
+                        size: 200,
+                        level: 'M',
+                        background: 'white',
+                        foreground: '#1f2937'
+                    });
+                }
+            }, 100);
+        }
+
+        function downloadQR(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = filename + '.png';
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            console.log('Admin Dashboard loaded successfully');
+        };
+    </script>
+</body>
+</html>
