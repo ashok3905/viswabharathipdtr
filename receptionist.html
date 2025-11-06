@@ -1304,115 +1304,120 @@
     });
 
     function loadFeeOverview() {
-        const container = document.getElementById('feeOverview');
+    const container = document.getElementById('feeOverview');
+    
+    try {
+        const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
+        const studentsList = Object.values(students);
         
-        try {
-            const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-            const studentsList = Object.values(students);
-            
-            if (studentsList.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">👥</div>
-                        <p>No students registered yet</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const groupedByClass = {};
-            studentsList.forEach(student => {
-                if (!groupedByClass[student.studentClass]) {
-                    groupedByClass[student.studentClass] = [];
-                }
-                groupedByClass[student.studentClass].push(student);
-            });
-
-            let html = '';
-            Object.keys(groupedByClass).sort((a, b) => parseInt(a) - parseInt(b)).forEach(classCode => {
-                const students = groupedByClass[classCode].sort((a, b) => a.studentRoll - b.studentRoll);
-                
-                html += `<h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1.5rem 0 0.5rem 0; border-left: 4px solid #6366f1;">Class ${classCode}</h3>`;
-                
-                html += `<table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
-                    <thead><tr style="background: #f8fafc;">
-                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
-                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
-                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
-                        <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
-                        <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
-                        <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
-                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Status</th>
-                    </tr></thead>
-                    <tbody>`;
-
-                students.forEach(student => {
-                    const status = student.remainingDue === 0 ? 'Paid' : student.amountPaid > 0 ? 'Partial' : 'Unpaid';
-                    const statusColor = student.remainingDue === 0 ? '#10b981' : student.amountPaid > 0 ? '#f59e0b' : '#ef4444';
-                    const statusBg = student.remainingDue === 0 ? '#f0fdf4' : student.amountPaid > 0 ? '#fef3c7' : '#fef2f2';
-
-                    html += `<tr>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>${student.studentCode}</strong></td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${student.studentName}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${student.studentRoll}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right;">₹${student.totalFee.toLocaleString()}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981;">₹${student.amountPaid.toLocaleString()}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444;">₹${student.remainingDue.toLocaleString()}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                            <span style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">${status}</span>
-                        </td>
-                    </tr>`;
-                });
-
-                html += '</tbody></table>';
-            });
-
-            container.innerHTML = html;
-        } catch (error) {
-            console.error('Error loading fee overview:', error);
+        if (studentsList.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <div class="icon">⚠️</div>
-                    <p>Error loading fee overview</p>
+                    <div class="icon">👥</div>
+                    <p>No students registered yet</p>
                 </div>
             `;
+            return;
         }
-    }
 
-    function loadPaymentHistory() {
-        const container = document.getElementById('paymentHistory');
-        
-        try {
-            const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-            const allInstallments = [];
+        const groupedByClass = {};
+        studentsList.forEach(student => {
+            if (!groupedByClass[student.studentClass]) {
+                groupedByClass[student.studentClass] = [];
+            }
+            groupedByClass[student.studentClass].push(student);
+        });
+
+        let html = '';
+        Object.keys(groupedByClass).sort((a, b) => parseInt(a) - parseInt(b)).forEach(classCode => {
+            const students = groupedByClass[classCode].sort((a, b) => a.studentRoll - b.studentRoll);
             
-            Object.values(students).forEach(student => {
-                if (student.installments && student.installments.length > 0) {
-                    student.installments.forEach(installment => {
-                        allInstallments.push({
-                            ...installment,
-                            studentCode: student.studentCode,
-                            studentName: student.studentName,
-                            studentRoll: student.studentRoll
-                        });
-                    });
-                }
+            html += `<h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1.5rem 0 0.5rem 0; border-left: 4px solid #6366f1;">Class ${classCode}</h3>`;
+            
+            html += `
+                <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; min-width: 700px;">
+                        <thead>
+                            <tr style="background: #f8fafc;">
+                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
+                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
+                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
+                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+            students.forEach(student => {
+                const status = student.remainingDue === 0 ? 'Paid' : student.amountPaid > 0 ? 'Partial' : 'Unpaid';
+                const statusColor = student.remainingDue === 0 ? '#10b981' : student.amountPaid > 0 ? '#f59e0b' : '#ef4444';
+                const statusBg = student.remainingDue === 0 ? '#f0fdf4' : student.amountPaid > 0 ? '#fef3c7' : '#fef2f2';
+
+                html += `<tr>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${student.studentCode}</strong></td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${student.studentName}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${student.studentRoll}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${student.totalFee.toLocaleString()}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${student.amountPaid.toLocaleString()}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${student.remainingDue.toLocaleString()}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                        <span style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${status}</span>
+                    </td>
+                </tr>`;
             });
 
-            if (allInstallments.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">💳</div>
-                        <p>No payment transactions yet</p>
-                    </div>
-                `;
-                return;
+            html += '</tbody></table></div>';
+        });
+
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading fee overview:', error);
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">⚠️</div>
+                <p>Error loading fee overview</p>
+            </div>
+        `;
+    }
+}
+
+    function loadPaymentHistory() {
+    const container = document.getElementById('paymentHistory');
+    
+    try {
+        const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
+        const allInstallments = [];
+        
+        Object.values(students).forEach(student => {
+            if (student.installments && student.installments.length > 0) {
+                student.installments.forEach(installment => {
+                    allInstallments.push({
+                        ...installment,
+                        studentCode: student.studentCode,
+                        studentName: student.studentName,
+                        studentRoll: student.studentRoll
+                    });
+                });
             }
+        });
 
-            allInstallments.sort((a, b) => new Date(b.paymentDate) - new Date(a.paymentDate));
+        if (allInstallments.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">💳</div>
+                    <p>No payment transactions yet</p>
+                </div>
+            `;
+            return;
+        }
 
-            let html = `
-                <table style="width: 100%; border-collapse: collapse;">
+        allInstallments.sort((a, b) => new Date(b.paymentDate) - new Date(a.paymentDate));
+
+        let html = `
+            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                <table style="width: 100%; border-collapse: collapse; min-width: 900px;">
                     <thead>
                         <tr style="background: #f8fafc;">
                             <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Payment ID</th>
@@ -1426,80 +1431,81 @@
                         </tr>
                     </thead>
                     <tbody>
-            `;
+        `;
 
-            allInstallments.slice(0, 20).forEach(installment => {
-                const paymentDate = new Date(installment.paymentDate);
-                html += `
-                    <tr>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><code style="font-size: 0.75rem;">${installment.id}</code></td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><strong>${installment.studentCode}</strong></td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${installment.studentName}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${installment.studentRoll}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; font-weight: 600;">₹${installment.amount.toLocaleString()}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;"><span style="background: #ddd6fe; color: #5b21b6; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">${installment.paymentMethod.toUpperCase()}</span></td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${paymentDate.toLocaleDateString()} ${paymentDate.toLocaleTimeString()}</td>
-                        <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${installment.remarks || '-'}</td>
-                    </tr>
-                `;
-            });
-
-            html += '</tbody></table>';
-            container.innerHTML = html;
-        } catch (error) {
-            console.error('Error loading payment history:', error);
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="icon">⚠️</div>
-                    <p>Error loading payment history</p>
-                </div>
+        allInstallments.slice(0, 20).forEach(installment => {
+            const paymentDate = new Date(installment.paymentDate);
+            html += `
+                <tr>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><code style="font-size: 0.75rem;">${installment.id}</code></td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${installment.studentCode}</strong></td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${installment.studentName}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${installment.studentRoll}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; font-weight: 600; white-space: nowrap;">₹${installment.amount.toLocaleString()}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><span style="background: #ddd6fe; color: #5b21b6; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">${installment.paymentMethod.toUpperCase()}</span></td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${paymentDate.toLocaleDateString()} ${paymentDate.toLocaleTimeString()}</td>
+                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${installment.remarks || '-'}</td>
+                </tr>
             `;
-        }
+        });
+
+        html += '</tbody></table></div>';
+        container.innerHTML = html;
+    } catch (error) {
+        console.error('Error loading payment history:', error);
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="icon">⚠️</div>
+                <p>Error loading payment history</p>
+            </div>
+        `;
     }
+}
 
     // ========== FEE HISTORY MODAL ==========
     function viewFeeHistory() {
-        const modal = document.getElementById('feeRecordsModal');
-        const content = document.getElementById('feeRecordsContent');
+    const modal = document.getElementById('feeRecordsModal');
+    const content = document.getElementById('feeRecordsContent');
+    
+    try {
+        const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
+        const studentsList = Object.values(students);
         
-        try {
-            const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-            const studentsList = Object.values(students);
-            
-            if (studentsList.length === 0) {
-                content.innerHTML = `
-                    <div style="text-align: center; padding: 2rem;">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
-                        <p>No fee records available yet</p>
-                    </div>
-                `;
-                modal.style.display = 'flex';
-                return;
-            }
+        if (studentsList.length === 0) {
+            content.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                    <p>No fee records available yet</p>
+                </div>
+            `;
+            modal.style.display = 'flex';
+            return;
+        }
 
-            let html = `
-                <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem; text-align: center;">
-                        <div>
-                            <div style="color: #6b7280;">Total Students</div>
-                            <div style="font-size: 1.25rem; color: #1f2937; font-weight: 600;">${studentsList.length}</div>
-                        </div>
-                        <div>
-                            <div style="color: #6b7280;">Total Fees</div>
-                            <div style="font-size: 1.25rem; color: #1f2937; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.totalFee, 0).toLocaleString()}</div>
-                        </div>
-                        <div>
-                            <div style="color: #6b7280;">Total Collected</div>
-                            <div style="font-size: 1.25rem; color: #10b981; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.amountPaid, 0).toLocaleString()}</div>
-                        </div>
-                        <div>
-                            <div style="color: #6b7280;">Total Due</div>
-                            <div style="font-size: 1.25rem; color: #ef4444; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.remainingDue, 0).toLocaleString()}</div>
-                        </div>
+        let html = `
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; text-align: center;">
+                    <div>
+                        <div style="color: #6b7280;">Total Students</div>
+                        <div style="font-size: 1.25rem; color: #1f2937; font-weight: 600;">${studentsList.length}</div>
+                    </div>
+                    <div>
+                        <div style="color: #6b7280;">Total Fees</div>
+                        <div style="font-size: 1.25rem; color: #1f2937; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.totalFee, 0).toLocaleString()}</div>
+                    </div>
+                    <div>
+                        <div style="color: #6b7280;">Total Collected</div>
+                        <div style="font-size: 1.25rem; color: #10b981; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.amountPaid, 0).toLocaleString()}</div>
+                    </div>
+                    <div>
+                        <div style="color: #6b7280;">Total Due</div>
+                        <div style="font-size: 1.25rem; color: #ef4444; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.remainingDue, 0).toLocaleString()}</div>
                     </div>
                 </div>
+            </div>
 
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 800px;">
                     <thead>
                         <tr style="background: #f8fafc;">
                             <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Code</th>
@@ -1513,31 +1519,31 @@
                         </tr>
                     </thead>
                     <tbody>
+        `;
+
+        studentsList.forEach(student => {
+            html += `
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;"><code style="font-size: 0.75rem;">${student.studentCode}</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;">${student.studentName}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;">${student.fatherName}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.studentClass}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.studentRoll}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;">₹${student.totalFee.toLocaleString()}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; color: #10b981; white-space: nowrap;">₹${student.amountPaid.toLocaleString()}</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; color: #ef4444; white-space: nowrap;">₹${student.remainingDue.toLocaleString()}</td>
+                </tr>
             `;
+        });
 
-            studentsList.forEach(student => {
-                html += `
-                    <tr>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;"><code style="font-size: 0.75rem;">${student.studentCode}</code></td>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.studentName}</td>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.fatherName}</td>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.studentClass}</td>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.studentRoll}</td>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">₹${student.totalFee.toLocaleString()}</td>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; color: #10b981;">₹${student.amountPaid.toLocaleString()}</td>
-                        <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; color: #ef4444;">₹${student.remainingDue.toLocaleString()}</td>
-                    </tr>
-                `;
-            });
-
-            html += '</tbody></table>';
-            content.innerHTML = html;
-            modal.style.display = 'flex';
-        } catch (error) {
-            console.error('Error loading fee history:', error);
-            showNotification('Error loading fee history', 'error');
-        }
+        html += '</tbody></table></div>';
+        content.innerHTML = html;
+        modal.style.display = 'flex';
+    } catch (error) {
+        console.error('Error loading fee history:', error);
+        showNotification('Error loading fee history', 'error');
     }
+}
 
     function closeFeeRecordsModal() {
         document.getElementById('feeRecordsModal').style.display = 'none';
@@ -1719,175 +1725,295 @@
     }
 
     // ========== DOWNLOAD FEE CERTIFICATE (SAME AS ADMIN) ==========
-    function downloadFeeCertificateImage(certificateId) {
-        try {
-            const certificate = allCertificatesGlobal.find(c => c.id === certificateId);
-            if (!certificate) {
-                showNotification('Certificate not found. Please refresh the page and try again.', 'error');
-                console.error('Certificate ID not found:', certificateId);
-                return;
-            }
+    // ========== DOWNLOAD FEE CERTIFICATE (FIXED VERSION) ==========
+function downloadFeeCertificateImage(certificateId) {
+    try {
+        const certificate = allCertificatesGlobal.find(c => c.id === certificateId);
+        if (!certificate) {
+            showNotification('Certificate not found. Please refresh the page and try again.', 'error');
+            console.error('Certificate ID not found:', certificateId);
+            return;
+        }
 
-            if (typeof html2canvas === 'undefined') {
-                showNotification('Image generation library not loaded. Please refresh the page.', 'error');
-                console.error('html2canvas is not loaded');
-                return;
-            }
+        if (typeof html2canvas === 'undefined') {
+            showNotification('Image generation library not loaded. Please refresh the page.', 'error');
+            console.error('html2canvas is not loaded');
+            return;
+        }
 
-            showNotification('Generating certificate image...', 'info');
+        showNotification('Generating certificate image...', 'info');
 
-            const currentDate = new Date().toLocaleDateString('en-IN');
-            
-            // Ensure all required fields have default values
-            const academicYear = certificate.academicYear || '2024-2025';
-            const fatherName = certificate.fatherName || 'N/A';
-            const remarks = certificate.remarks || 'No remarks';
-            const generatedBy = certificate.generatedBy || 'receptionist';
-            
-            let classDisplay = certificate.studentClass;
-            if (certificate.studentClass === 'nursery') classDisplay = 'Nursery';
-            else if (certificate.studentClass === 'lkg') classDisplay = 'LKG';
-            else if (certificate.studentClass === 'ukg') classDisplay = 'UKG';
-            else classDisplay = 'Class ' + certificate.studentClass;
+        const currentDate = new Date().toLocaleDateString('en-IN');
+        
+        const academicYear = certificate.academicYear || '2024-2025';
+        const fatherName = certificate.fatherName || 'N/A';
+        const remarks = certificate.remarks || 'No remarks';
+        
+        let classDisplay = certificate.studentClass;
+        if (certificate.studentClass === 'nursery') classDisplay = 'Nursery';
+        else if (certificate.studentClass === 'lkg') classDisplay = 'LKG';
+        else if (certificate.studentClass === 'ukg') classDisplay = 'UKG';
+        else classDisplay = 'Class ' + certificate.studentClass;
 
-            // Create modal preview
-            const modalOverlay = document.createElement('div');
-            modalOverlay.id = 'feeCertificatePreview';
-            modalOverlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.8);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-            `;
+        // Create modal preview
+        const modalOverlay = document.createElement('div');
+        modalOverlay.id = 'feeCertificatePreview';
+        modalOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        `;
 
-            const contentWrapper = document.createElement('div');
-            contentWrapper.style.cssText = `
-                background: white;
-                border-radius: 10px;
-                padding: 20px;
-                max-width: 900px;
-                max-height: 90vh;
-                overflow-y: auto;
-            `;
+        const contentWrapper = document.createElement('div');
+        contentWrapper.style.cssText = `
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        `;
 
-            const certificateDiv = document.createElement('div');
-            certificateDiv.id = 'feeCertificateContent';
-            certificateDiv.style.cssText = 'width: 800px; background: white; padding: 40px; font-family: "Times New Roman", serif;';
-            
-            certificateDiv.innerHTML = `
-                <div style="border: 3px solid #2c3e50; padding: 30px; background: white;">
-                    <div style="border-bottom: 3px solid #2c3e50; padding-bottom: 15px; margin-bottom: 20px;">
-                        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 15px;">
-                            <img src="logo.png" alt="School Logo" style="width: 100px; height: 100px; object-fit: contain; flex-shrink: 0;" onerror="this.style.display='none'">
-                            <div style="flex: 1; text-align: center; background: white;">
-                                <h1 style="font-size: 26px; font-weight: bold; color: #2c3e50; margin: 0; background: white;">VISWA BHARATHI HIGH SCHOOL</h1>
-                                <p style="font-size: 13px; color: #666; margin: 8px 0; background: white;">NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)</p>
-                                <p style="font-size: 13px; color: #666; margin: 8px 0; background: white;">Cell: 6301444214, 8555950709</p>
-                            </div>
-                        </div>
-                        <h2 style="text-align: center; font-size: 22px; color: #2c3e50; margin: 15px 0 0 0; text-decoration: underline; background: white;">FEE CERTIFICATE</h2>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Certificate No:</strong> FC${certificate.id || Date.now()}</p>
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Date of Issue:</strong> ${currentDate}</p>
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Academic Year:</strong> ${academicYear}</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="border-bottom: 2px solid #2c3e50; padding-bottom: 8px; font-size: 16px; color: #2c3e50;">STUDENT DETAILS</h3>
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Student Name:</strong> ${certificate.studentName}</p>
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Student Code:</strong> ${certificate.studentCode}</p>
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Roll Number:</strong> ${certificate.studentRoll}</p>
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Father's Name:</strong> ${fatherName}</p>
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Class:</strong> ${classDisplay}</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="border-bottom: 2px solid #2c3e50; padding-bottom: 8px; font-size: 16px; color: #2c3e50;">FEE DETAILS</h3>
-                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                            <tr>
-                                <th style="border: 1px solid #2c3e50; padding: 12px; text-align: left; background-color: #ecf0f1; font-size: 14px;">Description</th>
-                                <th style="border: 1px solid #2c3e50; padding: 12px; text-align: right; background-color: #ecf0f1; font-size: 14px;">Amount (₹)</th>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #2c3e50; padding: 12px; font-size: 14px;">Total Fee Amount</td>
-                                <td style="border: 1px solid #2c3e50; padding: 12px; text-align: right; font-size: 14px;">${certificate.totalFee.toFixed(2)}</td>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #2c3e50; padding: 12px; font-size: 14px;">Amount Paid</td>
-                                <td style="border: 1px solid #2c3e50; padding: 12px; text-align: right; font-size: 14px; color: #27ae60;">${certificate.amountPaid.toFixed(2)}</td>
-                            </tr>
-                            <tr style="background-color: #ecf0f1; font-weight: bold;">
-                                <td style="border: 1px solid #2c3e50; padding: 12px; font-size: 14px;">Remaining Due</td>
-                                <td style="border: 1px solid #2c3e50; padding: 12px; text-align: right; font-size: 14px; color: ${certificate.remainingDue > 0 ? '#e74c3c' : '#27ae60'};">${certificate.remainingDue.toFixed(2)}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <p style="margin: 10px 0; font-size: 14px;"><strong>Remarks:</strong> ${remarks}</p>
-                        
-                    <div style="text-align: right; margin-top: 40px;">
-                        <div style="display: inline-block; text-align: center; min-width: 180px;">
-                            <div style="border-top: 2px solid #2c3e50; margin-bottom: 8px;"></div>
-                            <p style="margin: 5px 0; font-size: 13px; font-weight: 600;">Correspondent</p>
-                            <p style="margin: 5px 0; font-size: 13px;"><strong>Viswa Bharathi High School</strong></p>
-                        </div>
+        const certificateDiv = document.createElement('div');
+        certificateDiv.id = 'feeCertificateContent';
+        certificateDiv.style.cssText = 'width: 800px; background: #ffffff; padding: 40px;';
+        
+        certificateDiv.innerHTML = `
+            <div style="border: 3px solid #000000; padding: 30px; background: #ffffff;">
+                <!-- Header Section -->
+                <div style="border-bottom: 3px solid #000000; padding-bottom: 20px; margin-bottom: 25px; background: #ffffff;">
+                    <table style="width: 100%; border-collapse: collapse; background: #ffffff;">
+                        <tr>
+                            <td style="width: 120px; vertical-align: top; padding: 0;">
+                                <img src="logo.png" alt="Logo" style="width: 100px; height: 100px; display: block;" onerror="this.style.display='none'">
+                            </td>
+                            <td style="text-align: center; vertical-align: middle; padding: 0 10px; background: #ffffff;">
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: bold; color: #000000; margin: 0 0 12px 0; letter-spacing: 1px; line-height: 1.2;">
+                                    VISWA BHARATHI HIGH SCHOOL
+                                </div>
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin: 6px 0; line-height: 1.4;">
+                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)
+                                </div>
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin: 6px 0; line-height: 1.4;">
+                                    Cell: 6301444214, 8555950709
+                                </div>
+                            </td>
+                            <td style="width: 120px;"></td>
+                        </tr>
+                    </table>
+                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 22px; font-weight: bold; color: #000000; margin: 20px 0 0 0; text-decoration: underline; text-transform: uppercase;">
+                        FEE CERTIFICATE
                     </div>
                 </div>
-            `;
+                
+                <!-- Certificate Info -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #ffffff; font-family: Arial, Helvetica, sans-serif;">
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                            <b>Certificate No:</b> FC${certificate.id || Date.now()}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                            <b>Date of Issue:</b> ${currentDate}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                            <b>Academic Year:</b> ${academicYear}
+                        </td>
+                    </tr>
+                </table>
+                
+                <!-- Student Details -->
+                <div style="margin-bottom: 20px; background: #ffffff;">
+                    <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #000000;">
+                        STUDENT DETAILS
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif; background: #ffffff;">
+                        <tr>
+                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                                <b>Student Name:</b> ${certificate.studentName}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                                <b>Student Code:</b> ${certificate.studentCode}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                                <b>Roll Number:</b> ${certificate.studentRoll}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                                <b>Father's Name:</b> ${fatherName}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
+                                <b>Class:</b> ${classDisplay}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Fee Details -->
+                <div style="margin-bottom: 20px; background: #ffffff;">
+                    <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #000000;">
+                        FEE DETAILS
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif; background: #ffffff;">
+                        <thead>
+                            <tr style="background-color: #e8e8e8;">
+                                <th style="border: 1px solid #000000; padding: 10px; text-align: left; font-size: 14px; color: #000000; font-weight: bold;">
+                                    Description
+                                </th>
+                                <th style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: #000000; font-weight: bold;">
+                                    Amount (₹)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #ffffff;">
+                                <td style="border: 1px solid #000000; padding: 10px; font-size: 14px; color: #000000;">
+                                    Total Fee Amount
+                                </td>
+                                <td style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: #000000;">
+                                    ${certificate.totalFee.toFixed(2)}
+                                </td>
+                            </tr>
+                            <tr style="background: #ffffff;">
+                                <td style="border: 1px solid #000000; padding: 10px; font-size: 14px; color: #000000;">
+                                    Amount Paid
+                                </td>
+                                <td style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: #27ae60; font-weight: bold;">
+                                    ${certificate.amountPaid.toFixed(2)}
+                                </td>
+                            </tr>
+                            <tr style="background-color: #e8e8e8;">
+                                <td style="border: 1px solid #000000; padding: 10px; font-size: 14px; color: #000000; font-weight: bold;">
+                                    Remaining Due
+                                </td>
+                                <td style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: ${certificate.remainingDue > 0 ? '#e74c3c' : '#27ae60'}; font-weight: bold;">
+                                    ${certificate.remainingDue.toFixed(2)}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Remarks -->
+                <div style="margin-bottom: 30px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; background: #ffffff;">
+                    <b>Remarks:</b> ${remarks}
+                </div>
+                
+                <!-- Signature -->
+                <table style="width: 100%; border-collapse: collapse; margin-top: 40px; background: #ffffff;">
+                    <tr>
+                        <td style="width: 50%;"></td>
+                        <td style="width: 50%; text-align: center;">
+                            <div style="border-top: 2px solid #000000; padding-top: 8px; margin: 0 auto; width: 200px;">
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #000000; margin: 5px 0;">
+                                    Correspondent
+                                </div>
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #000000; margin: 5px 0;">
+                                    Viswa Bharathi High School
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        `;
 
-            const buttonContainer = document.createElement('div');
-            buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
-            
-            const downloadBtn = document.createElement('button');
-            downloadBtn.textContent = '⬇️ Download as PNG';
-            downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-            downloadBtn.onclick = function() {
-                generateFeeCertificateImage(certificateDiv, certificate);
-            };
-            
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = '✕ Close';
-            closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-            closeBtn.onclick = function() {
-                document.body.removeChild(modalOverlay);
-            };
-
-            buttonContainer.appendChild(downloadBtn);
-            buttonContainer.appendChild(closeBtn);
-            
-            contentWrapper.appendChild(certificateDiv);
-            contentWrapper.appendChild(buttonContainer);
-            modalOverlay.appendChild(contentWrapper);
-            document.body.appendChild(modalOverlay);
-
-        } catch (error) {
-            console.error('Error in downloadFeeCertificateImage:', error);
-            showNotification('Error preparing certificate: ' + error.message, 'error');
-        }
-    }
-
-    // Generate image from certificate element
-    function generateFeeCertificateImage(element, certificate) {
-        showNotification('Converting to image...', 'info');
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
         
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = '⬇️ Download as PNG';
+        downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+        downloadBtn.onclick = function() {
+            generateFeeCertificateImage(certificateDiv, certificate);
+        };
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '✕ Close';
+        closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+        closeBtn.onclick = function() {
+            document.body.removeChild(modalOverlay);
+        };
+
+        buttonContainer.appendChild(downloadBtn);
+        buttonContainer.appendChild(closeBtn);
+        
+        contentWrapper.appendChild(certificateDiv);
+        contentWrapper.appendChild(buttonContainer);
+        modalOverlay.appendChild(contentWrapper);
+        document.body.appendChild(modalOverlay);
+
+    } catch (error) {
+        console.error('Error in downloadFeeCertificateImage:', error);
+        showNotification('Error preparing certificate: ' + error.message, 'error');
+    }
+}
+
+// ========== GENERATE FEE CERTIFICATE IMAGE (FIXED VERSION) ==========
+function generateFeeCertificateImage(element, certificate) {
+    showNotification('Converting to image...', 'info');
+    
+    // Wait a moment for fonts to load
+    setTimeout(function() {
         html2canvas(element, {
             scale: 2,
             backgroundColor: '#ffffff',
             logging: false,
             useCORS: true,
-            allowTaint: true,
+            allowTaint: false,
             width: element.offsetWidth,
-            height: element.offsetHeight
+            height: element.offsetHeight,
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight,
+            letterRendering: true,
+            imageTimeout: 0,
+            onclone: function(clonedDoc) {
+                const clonedElement = clonedDoc.getElementById('feeCertificateContent');
+                if (clonedElement) {
+                    // Force all elements to use system fonts and black color
+                    const allElements = clonedElement.querySelectorAll('*');
+                    allElements.forEach(el => {
+                        el.style.fontFamily = 'Arial, Helvetica, sans-serif';
+                        el.style.color = el.style.color || '#000000';
+                        el.style.backgroundColor = el.style.backgroundColor || '#ffffff';
+                    });
+                    
+                    // Ensure tables render properly
+                    const tables = clonedElement.querySelectorAll('table');
+                    tables.forEach(table => {
+                        table.style.borderCollapse = 'collapse';
+                        table.style.backgroundColor = '#ffffff';
+                    });
+                    
+                    // Force all text to be visible
+                    const textNodes = clonedElement.querySelectorAll('div, td, th, b');
+                    textNodes.forEach(node => {
+                        if (node.textContent.trim()) {
+                            node.style.visibility = 'visible';
+                            node.style.opacity = '1';
+                            node.style.display = node.style.display || (node.tagName === 'TD' || node.tagName === 'TH' ? 'table-cell' : 'block');
+                        }
+                    });
+                }
+            }
         }).then(function(canvas) {
             console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
             
@@ -1911,18 +2037,19 @@
                 showNotification('✅ Fee certificate downloaded successfully!');
                 
                 const modal = document.getElementById('feeCertificatePreview');
-                if (modal) {
+                if (modal && document.body.contains(modal)) {
                     setTimeout(() => {
                         document.body.removeChild(modal);
                     }, 1000);
                 }
-            }, 'image/png');
+            }, 'image/png', 1.0);
             
         }).catch(function(error) {
             console.error('html2canvas error:', error);
             showNotification('Failed to generate image. Error: ' + (error.message || 'Unknown'), 'error');
         });
-    }
+    }, 300); // Wait 300ms for fonts to load
+}
 
     // ========== HALL TICKET FUNCTIONS ==========
     function issueHallTicket() {

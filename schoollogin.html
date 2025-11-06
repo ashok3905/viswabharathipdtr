@@ -576,6 +576,7 @@
             <h3 class="login-title" id="loginTitle"></h3>
             <div class="login-format-info" id="loginFormatInfo"></div>
             <input type="text" class="login-input" id="loginCode" placeholder="Enter your login code" autocomplete="new-password" data-form-type="other">
+            <input type="password" class="login-input" id="loginPassword" placeholder="Enter your password" autocomplete="new-password" data-form-type="other" style="display: none;">
             <div class="form-buttons">
                 <button class="login-submit" onclick="processLogin()">
                     <span class="btn-text">Login</span>
@@ -609,6 +610,15 @@
     <script>
         // Global variables
         let currentRole = '';
+        let currentStep = 'code'; // 'code' or 'password'
+        let enteredCode = '';
+
+        // Password constants
+        const PASSWORDS = {
+            admin: 'AP@ssw0rd',
+            faculty: 'Viswa@F',
+            receptionist: 'Viswa@R'
+        };
 
         // Clear form data on page load and handle auto-fill prevention
         window.addEventListener('load', function() {
@@ -637,47 +647,46 @@
         // Enhanced function to disable browser autofill completely
         function disableBrowserAutofill() {
             const loginInput = document.getElementById('loginCode');
+            const passwordInput = document.getElementById('loginPassword');
             
-            // Set multiple attributes to prevent autofill
-            loginInput.setAttribute('autocomplete', 'new-password');
-            loginInput.setAttribute('data-form-type', 'other');
-            loginInput.setAttribute('data-lpignore', 'true');
-            loginInput.setAttribute('data-1p-ignore', 'true');
-            loginInput.setAttribute('readonly', 'readonly');
-            
-            // Remove readonly on focus to allow typing
-            loginInput.addEventListener('focus', function() {
-                this.removeAttribute('readonly');
-            });
-            
-            // Clear any autofilled values immediately
-            setInterval(() => {
-                if (loginInput.value && !document.activeElement === loginInput) {
-                    // Only clear if user is not actively typing
-                    const currentTime = new Date().getTime();
-                    if (!loginInput.dataset.lastTyped || (currentTime - parseInt(loginInput.dataset.lastTyped)) > 100) {
-                        loginInput.value = '';
-                    }
-                }
-            }, 50);
-            
-            // Track user typing
-            loginInput.addEventListener('input', function() {
-                this.dataset.lastTyped = new Date().getTime();
+            [loginInput, passwordInput].forEach(input => {
+                // Set multiple attributes to prevent autofill
+                input.setAttribute('autocomplete', 'new-password');
+                input.setAttribute('data-form-type', 'other');
+                input.setAttribute('data-lpignore', 'true');
+                input.setAttribute('data-1p-ignore', 'true');
+                input.setAttribute('readonly', 'readonly');
+                
+                // Remove readonly on focus to allow typing
+                input.addEventListener('focus', function() {
+                    this.removeAttribute('readonly');
+                });
+                
+                // Track user typing
+                input.addEventListener('input', function() {
+                    this.dataset.lastTyped = new Date().getTime();
+                });
             });
         }
 
         // Show login form for selected role
         function showLogin(role) {
             currentRole = role;
+            currentStep = 'code';
+            enteredCode = '';
+            
             const roleSelection = document.getElementById('roleSelection');
             const loginForm = document.getElementById('loginForm');
             const loginTitle = document.getElementById('loginTitle');
             const loginCode = document.getElementById('loginCode');
+            const loginPassword = document.getElementById('loginPassword');
             const formatInfo = document.getElementById('loginFormatInfo');
 
-            // Clear any existing input value
+            // Clear any existing input values
             loginCode.value = '';
+            loginPassword.value = '';
+            loginPassword.style.display = 'none';
+            loginCode.style.display = 'block';
             
             // Hide role selection
             roleSelection.style.display = 'none';
@@ -732,10 +741,17 @@
             const roleSelection = document.getElementById('roleSelection');
             const loginForm = document.getElementById('loginForm');
             const loginCode = document.getElementById('loginCode');
+            const loginPassword = document.getElementById('loginPassword');
             
-            // Clear input completely
+            // Clear inputs completely
             loginCode.value = '';
-            loginCode.blur(); // Remove focus
+            loginPassword.value = '';
+            loginCode.blur();
+            loginPassword.blur();
+            
+            // Reset visibility
+            loginCode.style.display = 'block';
+            loginPassword.style.display = 'none';
             
             // Hide login form
             loginForm.classList.remove('show');
@@ -743,13 +759,17 @@
             // Show role selection
             roleSelection.style.display = 'block';
             
-            // Reset current role
+            // Reset states
             currentRole = '';
+            currentStep = 'code';
+            enteredCode = '';
             
             // Clear any browser stored data
             setTimeout(() => {
                 loginCode.setAttribute('autocomplete', 'new-password');
+                loginPassword.setAttribute('autocomplete', 'new-password');
                 loginCode.setAttribute('readonly', 'readonly');
+                loginPassword.setAttribute('readonly', 'readonly');
             }, 100);
         }
 
@@ -776,14 +796,13 @@
             return code === 'CB25-R';
         }
 
-        // Validate student code - Updated for new format CB25-01-1 to CB25-10-60
+        // Validate student code
         function validateStudentCode(code) {
-            // Pattern: CB25-[CLASS]-[ROLL] where CLASS is 01-10 and ROLL is 1-60
             const pattern = /^CB25-(0[1-9]|10)-([1-9]|[1-5][0-9]|60)$/;
             return pattern.test(code);
         }
 
-        // Extract class and roll number from student code - Updated for new format
+        // Extract class and roll number from student code
         function parseStudentCode(code) {
             const match = code.match(/^CB25-(0[1-9]|10)-([1-9]|[1-5][0-9]|60)$/);
             if (match) {
@@ -794,89 +813,189 @@
             return null;
         }
 
-        // Process login based on current role
+        // Validate password for role
+        function validatePassword(role, password) {
+            return PASSWORDS[role] === password;
+        }
+
+        // Show password input
+        function showPasswordInput() {
+            const loginCode = document.getElementById('loginCode');
+            const loginPassword = document.getElementById('loginPassword');
+            const loginTitle = document.getElementById('loginTitle');
+            
+            // Hide code input
+            loginCode.style.display = 'none';
+            
+            // Show password input
+            loginPassword.style.display = 'block';
+            loginPassword.value = '';
+            
+            // Update title
+            let icon = '';
+            switch(currentRole) {
+                case 'admin':
+                    icon = '<i class="fas fa-user-shield"></i>';
+                    break;
+                case 'faculty':
+                    icon = '<i class="fas fa-chalkboard-teacher"></i>';
+                    break;
+                case 'receptionist':
+                    icon = '<i class="fas fa-desk"></i>';
+                    break;
+            }
+            loginTitle.innerHTML = icon + ' Enter Password';
+            
+            // Set current step to password
+            currentStep = 'password';
+            
+            // Focus on password input
+            setTimeout(() => {
+                loginPassword.setAttribute('autocomplete', 'new-password');
+                loginPassword.setAttribute('data-form-type', 'other');
+                loginPassword.focus();
+            }, 100);
+        }
+
+        // Process login based on current role and step
         function processLogin() {
-            const loginCode = document.getElementById('loginCode').value.trim().toUpperCase();
             const submitBtn = document.querySelector('.login-submit');
             
-            if (!loginCode) {
-                showAlert('Please enter your login code', 'error');
-                return;
-            }
-            
-            // Show loading state
-            submitBtn.classList.add('loading');
-            
-            // Simulate processing delay
-            setTimeout(() => {
-                let isValid = false;
-                let redirectUrl = '';
-                let errorMessage = 'Invalid login code';
+            if (currentStep === 'code') {
+                // Process code validation
+                const loginCode = document.getElementById('loginCode').value.trim().toUpperCase();
                 
-                switch(currentRole) {
-                    case 'admin':
-                        if (validateAdminCode(loginCode)) {
-                            isValid = true;
-                            redirectUrl = 'admin.html';
-                            sessionStorage.setItem('adminCode', loginCode);
-                        } else {
-                            errorMessage = 'Invalid admin code. Expected format: CB25-A';
-                        }
-                        break;
-                        
-                    case 'faculty':
-                        if (validateFacultyCode(loginCode)) {
-                            isValid = true;
-                            redirectUrl = 'faculty.html';
-                            sessionStorage.setItem('facultyCode', loginCode);
-                        } else {
-                            errorMessage = 'Invalid faculty code. Use CB25N/CB25L/CB25U for pre-primary or CB2501-CB2510 for classes';
-                        }
-                        break;
+                if (!loginCode) {
+                    showAlert('Please enter your login code', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                submitBtn.classList.add('loading');
+                
+                // Simulate processing delay
+                setTimeout(() => {
+                    let isValid = false;
+                    let errorMessage = 'Invalid login code';
+                    
+                    switch(currentRole) {
+                        case 'admin':
+                            if (validateAdminCode(loginCode)) {
+                                isValid = true;
+                                enteredCode = loginCode;
+                            } else {
+                                errorMessage = 'Invalid admin code. Expected format: CB25-A';
+                            }
+                            break;
+                            
+                        case 'faculty':
+                            if (validateFacultyCode(loginCode)) {
+                                isValid = true;
+                                enteredCode = loginCode;
+                            } else {
+                                errorMessage = 'Invalid faculty code. Use CB25N/CB25L/CB25U for pre-primary or CB2501-CB2510 for classes';
+                            }
+                            break;
 
-                    case 'receptionist':
-                        if (validateReceptionistCode(loginCode)) {
-                            isValid = true;
-                            redirectUrl = 'receptionist.html';
-                            sessionStorage.setItem('receptionistCode', loginCode);
-                        } else {
-                            errorMessage = 'Invalid receptionist code. Expected format: CB25-R';
+                        case 'receptionist':
+                            if (validateReceptionistCode(loginCode)) {
+                                isValid = true;
+                                enteredCode = loginCode;
+                            } else {
+                                errorMessage = 'Invalid receptionist code. Expected format: CB25-R';
+                            }
+                            break;
+                            
+                        case 'student':
+                            if (validateStudentCode(loginCode)) {
+                                const studentInfo = parseStudentCode(loginCode);
+                                // Students don't need password, directly login
+                                sessionStorage.setItem('studentCode', loginCode);
+                                sessionStorage.setItem('studentClass', studentInfo.class);
+                                sessionStorage.setItem('studentRoll', studentInfo.roll);
+                                showAlert('Login successful! Redirecting...', 'success');
+                                setTimeout(() => {
+                                    window.location.href = 'student.html';
+                                }, 1500);
+                                submitBtn.classList.remove('loading');
+                                return;
+                            } else {
+                                errorMessage = 'Invalid student code. Format: CB25-[CLASS]-[ROLL] (e.g., CB25-01-1)';
+                            }
+                            break;
+                    }
+                    
+                    // Remove loading state
+                    submitBtn.classList.remove('loading');
+                    
+                    if (isValid) {
+                        // Show password input for admin, faculty, and receptionist
+                        showPasswordInput();
+                    } else {
+                        showAlert(errorMessage, 'error');
+                        // Clear input and reset security attributes
+                        const input = document.getElementById('loginCode');
+                        input.value = '';
+                        input.blur();
+                        setTimeout(() => {
+                            input.setAttribute('readonly', 'readonly');
+                        }, 100);
+                    }
+                }, 1000);
+            } else if (currentStep === 'password') {
+                // Process password validation
+                const loginPassword = document.getElementById('loginPassword').value;
+                
+                if (!loginPassword) {
+                    showAlert('Please enter your password', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                submitBtn.classList.add('loading');
+                
+                // Simulate processing delay
+                setTimeout(() => {
+                    let redirectUrl = '';
+                    
+                    if (validatePassword(currentRole, loginPassword)) {
+                        // Password is correct
+                        switch(currentRole) {
+                            case 'admin':
+                                sessionStorage.setItem('adminCode', enteredCode);
+                                redirectUrl = 'admin.html';
+                                break;
+                            case 'faculty':
+                                sessionStorage.setItem('facultyCode', enteredCode);
+                                redirectUrl = 'faculty.html';
+                                break;
+                            case 'receptionist':
+                                sessionStorage.setItem('receptionistCode', enteredCode);
+                                redirectUrl = 'receptionist.html';
+                                break;
                         }
-                        break;
                         
-                    case 'student':
-                        if (validateStudentCode(loginCode)) {
-                            const studentInfo = parseStudentCode(loginCode);
-                            isValid = true;
-                            redirectUrl = 'student.html';
-                            sessionStorage.setItem('studentCode', loginCode);
-                            sessionStorage.setItem('studentClass', studentInfo.class);
-                            sessionStorage.setItem('studentRoll', studentInfo.roll);
-                        } else {
-                            errorMessage = 'Invalid student code. Format: CB25-[CLASS]-[ROLL] (e.g., CB25-01-1)';
-                        }
-                        break;
-                }
-                
-                // Remove loading state
-                submitBtn.classList.remove('loading');
-                
-                if (isValid) {
-                    showAlert('Login successful! Redirecting...', 'success');
-                    setTimeout(() => {
-                        window.location.href = redirectUrl;
-                    }, 1500);
-                } else {
-                    showAlert(errorMessage, 'error');
-                    // Clear input and reset security attributes
-                    const input = document.getElementById('loginCode');
-                    input.value = '';
-                    input.blur();
-                    setTimeout(() => {
-                        input.setAttribute('readonly', 'readonly');
-                    }, 100);
-                }
-            }, 1000);
+                        submitBtn.classList.remove('loading');
+                        showAlert('Login successful! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = redirectUrl;
+                        }, 1500);
+                    } else {
+                        // Password is incorrect
+                        submitBtn.classList.remove('loading');
+                        showAlert('Invalid password. Please try again.', 'error');
+                        
+                        // Clear password input
+                        const passwordInput = document.getElementById('loginPassword');
+                        passwordInput.value = '';
+                        passwordInput.blur();
+                        setTimeout(() => {
+                            passwordInput.setAttribute('readonly', 'readonly');
+                            passwordInput.focus();
+                        }, 100);
+                    }
+                }, 1000);
+            }
         }
 
         // Show alert modal
@@ -966,7 +1085,7 @@
             window.history.replaceState({}, document.title, url.toString());
         }
 
-        // Auto-format input as user types - Updated for new student format and receptionist
+        // Auto-format input as user types
         function formatInput(input, role) {
             let value = input.value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
             
@@ -1041,22 +1160,31 @@
             return value;
         }
 
-        // Handle Enter key press in login input and format input
+        // Handle Enter key press in login inputs and format input
         document.addEventListener('DOMContentLoaded', function() {
             const loginCode = document.getElementById('loginCode');
+            const loginPassword = document.getElementById('loginPassword');
             
             // Enhanced security setup
             disableBrowserAutofill();
             
+            // Handle Enter key for code input
             loginCode.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     processLogin();
                 }
             });
 
-            // Auto-format input as user types
+            // Handle Enter key for password input
+            loginPassword.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    processLogin();
+                }
+            });
+
+            // Auto-format code input as user types
             loginCode.addEventListener('input', function(e) {
-                if (currentRole) {
+                if (currentRole && currentStep === 'code') {
                     const formattedValue = formatInput(e.target, currentRole);
                     if (e.target.value !== formattedValue) {
                         e.target.value = formattedValue;
@@ -1065,14 +1193,21 @@
                 // Update last typed timestamp for security
                 e.target.dataset.lastTyped = new Date().getTime();
             });
+
+            // Track password typing
+            loginPassword.addEventListener('input', function(e) {
+                e.target.dataset.lastTyped = new Date().getTime();
+            });
             
             // Additional security - clear on blur
-            loginCode.addEventListener('blur', function(e) {
-                setTimeout(() => {
-                    if (!document.activeElement || document.activeElement !== e.target) {
-                        e.target.setAttribute('readonly', 'readonly');
-                    }
-                }, 100);
+            [loginCode, loginPassword].forEach(input => {
+                input.addEventListener('blur', function(e) {
+                    setTimeout(() => {
+                        if (!document.activeElement || document.activeElement !== e.target) {
+                            e.target.setAttribute('readonly', 'readonly');
+                        }
+                    }, 100);
+                });
             });
             
             // Close alert when clicking outside
@@ -1106,13 +1241,17 @@
         // Additional security - clear input periodically if not in use
         setInterval(() => {
             const loginInput = document.getElementById('loginCode');
-            if (loginInput && loginInput.value && document.activeElement !== loginInput) {
-                const lastTyped = loginInput.dataset.lastTyped;
-                const currentTime = new Date().getTime();
-                if (!lastTyped || (currentTime - parseInt(lastTyped)) > 10000) { // 10 seconds of inactivity
-                    loginInput.value = '';
+            const passwordInput = document.getElementById('loginPassword');
+            
+            [loginInput, passwordInput].forEach(input => {
+                if (input && input.value && document.activeElement !== input) {
+                    const lastTyped = input.dataset.lastTyped;
+                    const currentTime = new Date().getTime();
+                    if (!lastTyped || (currentTime - parseInt(lastTyped)) > 10000) { // 10 seconds of inactivity
+                        input.value = '';
+                    }
                 }
-            }
+            });
         }, 5000);
     </script>
 </body>
