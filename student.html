@@ -1207,6 +1207,8 @@
             }
         }
     </style>
+    <!-- Add this in the <head> section or before closing </body> tag -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <script>
@@ -2395,6 +2397,7 @@ async function loadMyHallTickets() {
     }
 }
 
+// ========== DOWNLOAD HALL TICKET FOR STUDENTS (HALF PAGE VERSION) ==========
 
 async function showHallTicketDetail(hallTicketId) {
     try {
@@ -2415,15 +2418,15 @@ async function showHallTicketDetail(hallTicketId) {
         const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
         const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 
-        // Build exam schedule table with timing
+        // Build exam schedule table with timing (compact version)
         let examScheduleHTML = '';
         if (ticket.examSchedule && Array.isArray(ticket.examSchedule) && ticket.examSchedule.length > 0) {
-            examScheduleHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 10px; border: 1px solid #000;">`;
+            examScheduleHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 5px; border: 1px solid #000; font-family: Arial, Helvetica, sans-serif;">`;
             examScheduleHTML += `<thead><tr>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Subject</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Date</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Day</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 8px; background-color: #e5e7eb; font-weight: bold; font-size: 13px;">Timing</th>`;
+            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Subject</th>`;
+            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Date</th>`;
+            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Day</th>`;
+            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Timing</th>`;
             examScheduleHTML += `</tr></thead><tbody>`;
             
             ticket.examSchedule.forEach(schedule => {
@@ -2434,14 +2437,14 @@ async function showHallTicketDetail(hallTicketId) {
                         month: 'short', 
                         year: 'numeric' 
                     });
-                    const dayName = scheduleDate.toLocaleDateString('en-IN', { weekday: 'long' });
+                    const dayName = scheduleDate.toLocaleDateString('en-IN', { weekday: 'short' });
                     
                     schedule.exams.forEach(exam => {
-                        examScheduleHTML += `<tr>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${exam.examName || 'N/A'}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${formattedDate}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${dayName}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 8px; font-size: 13px;">${exam.timing || 'N/A'}</td>`;
+                        examScheduleHTML += `<tr style="background: #ffffff;">`;
+                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.examName || 'N/A'}</td>`;
+                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${formattedDate}</td>`;
+                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${dayName}</td>`;
+                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.timing || 'N/A'}</td>`;
                         examScheduleHTML += `</tr>`;
                     });
                 }
@@ -2479,62 +2482,116 @@ async function showHallTicketDetail(hallTicketId) {
             background: white;
             border-radius: 10px;
             padding: 20px;
-            max-width: 900px;
+            max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
         `;
 
         const hallTicketDiv = document.createElement('div');
         hallTicketDiv.id = 'studentHallTicketContent';
-        hallTicketDiv.style.cssText = 'width: 800px; background: white; padding: 40px; font-family: "Times New Roman", serif;';
+        hallTicketDiv.style.cssText = 'width: 400px; background: #ffffff; padding: 15px;';
         
         hallTicketDiv.innerHTML = `
-            <div style="border: 3px solid #1e40af; padding: 30px; background: white;">
-                <div style="border-bottom: 2px solid #1e40af; padding-bottom: 15px; margin-bottom: 20px;">
-                    <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 15px;">
-                        <img src="logo.png" alt="School Logo" style="width: 80px; height: 80px; object-fit: contain; flex-shrink: 0;" onerror="this.style.display='none'">
-                        <div style="flex: 1; text-align: center;">
-                            <h1 style="font-size: 24px; font-weight: bold; color: #1e40af !important; margin: 0 0 8px 0; background: transparent;">VISWA BHARATHI HIGH SCHOOL</h1>
-
-                            <p style="font-size: 12px; color: #333; margin: 3px 0;">NEHRU ROAD, PRODDATUR - 516 360. Kadapa Dist. (A.P.)</p>
-                            <p style="font-size: 12px; color: #333; margin: 3px 0;">Cell: 6301444214, 8555950709</p>
+            <div style="border: 2px solid #000000; padding: 12px; background: #ffffff;">
+                <!-- Header Section -->
+                <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 10px; background: #ffffff;">
+                    <table style="width: 100%; border-collapse: collapse; background: #ffffff;">
+                        <tr>
+                            <td style="width: 50px; vertical-align: top; padding: 0;">
+                                <img src="logo.png" alt="Logo" style="width: 40px; height: 40px; display: block;" onerror="this.style.display='none'">
+                            </td>
+                            <td style="text-align: center; vertical-align: middle; padding: 0 5px; background: #ffffff;">
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #000000; margin: 0 0 4px 0; letter-spacing: 0.5px; line-height: 1.2; white-space: nowrap;">
+                                    VISWA BHARATHI HIGH SCHOOL
+                                </div>
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
+                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)
+                                </div>
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
+                                    Cell: 6301444214, 8555950709
+                                </div>
+                            </td>
+                            <td style="width: 50px;"></td>
+                        </tr>
+                    </table>
+                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 12px; font-weight: bold; color: #000000; margin: 8px 0 0 0; text-decoration: underline; text-transform: uppercase;">
+                        HALL TICKET
+                    </div>
+                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 11px; font-weight: bold; color: #000000; margin: 4px 0 0 0;">
+                        ${ticket.examName}
+                    </div>
+                </div>
+                
+                <!-- Student Details -->
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; background: #ffffff; font-family: Arial, Helvetica, sans-serif;">
+                    <tr>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000; width: 40%; font-weight: bold;">
+                            Student Name:
+                        </td>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                            ${ticket.studentName}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                            Class & Section:
+                        </td>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                            ${classDisplay}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                            Roll Number:
+                        </td>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                            ${ticket.studentRoll}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                            Student Code:
+                        </td>
+                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                            ${ticket.studentCode}
+                        </td>
+                    </tr>
+                </table>
+                
+                <!-- Exam Schedule -->
+                ${examScheduleHTML ? `
+                    <div style="margin: 8px 0; background: #ffffff;">
+                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #000000; margin-bottom: 4px; border-bottom: 1px solid #000000; padding-bottom: 2px;">
+                            EXAMINATION SCHEDULE
                         </div>
+                        ${examScheduleHTML}
                     </div>
-                    <h2 style="text-align: center; font-size: 20px; color: #000; text-decoration: underline; margin: 15px 0 0 0;">HALL TICKET (${ticket.examName})</h2>
-                </div>
+                ` : ''}
                 
-                <div style="margin: 20px 0;">
-                    <div style="margin: 12px 0;">
-                        <span style="font-weight: bold; color: #000; font-size: 14px;">Student Name: </span>
-                        <span style="color: #333; font-size: 14px;">${ticket.studentName}</span>
-                    </div>
-                    
-                    <div style="margin: 12px 0;">
-                        <span style="font-weight: bold; color: #000; font-size: 14px;">Class & Sec: </span>
-                        <span style="color: #333; font-size: 14px;">${classDisplay}</span>
-                    </div>
-                    
-                    <div style="margin: 12px 0;">
-                        <span style="font-weight: bold; color: #000; font-size: 14px;">Roll No: </span>
-                        <span style="color: #333; font-size: 14px;">${ticket.studentRoll}</span>
-                    </div>
-                    
-                    ${examScheduleHTML ? `<div style="margin: 15px 0;">${examScheduleHTML}</div>` : ''}
-                    
-                    ${ticket.remarks ? `
-                    <div style="margin: 15px 0; padding: 10px; background: #f9fafb; border: 1px solid #d1d5db; border-radius: 4px;">
-                        <p style="font-size: 12px; margin: 0;"><strong>Instructions:</strong> ${ticket.remarks}</p>
-                    </div>
-                    ` : ''}
+                <!-- Instructions -->
+                ${ticket.remarks ? `
+                <div style="margin: 8px 0; padding: 6px; background: #f8f8f8; border: 1px solid #d0d0d0; border-radius: 3px; font-family: Arial, Helvetica, sans-serif;">
+                    <div style="font-weight: bold; margin-bottom: 3px; color: #000000; font-size: 9px;">INSTRUCTIONS:</div>
+                    <div style="font-size: 8px; color: #000000; line-height: 1.4;">${ticket.remarks}</div>
                 </div>
+                ` : ''}
                 
-                <div style="margin-top: 40px; text-align: right;">
-                    <div style="display: inline-block; text-align: center; min-width: 150px;">
-                        <div style="border-top: 2px solid #000; margin-bottom: 5px;"></div>
-                        <p style="font-size: 12px; color: #000; margin: 5px 0;">Principal</p>
-                        <p style="font-size: 12px; color: #000; margin: 5px 0;"><strong>Viswabharathi School</strong></p>
-                    </div>
-                </div>
+                <!-- Signature -->
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #ffffff;">
+                    <tr>
+                        <td style="width: 50%;"></td>
+                        <td style="width: 50%; text-align: center;">
+                            <div style="border-top: 1px solid #000000; padding-top: 4px; margin: 0 auto; width: 100px;">
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 9px; font-weight: bold; color: #000000; margin: 2px 0;">
+                                    Principal
+                                </div>
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; font-weight: bold; color: #000000; margin: 2px 0;">
+                                    Viswa Bharathi High School
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
         `;
 
@@ -2568,79 +2625,138 @@ async function showHallTicketDetail(hallTicketId) {
         alert('Error loading hall ticket details: ' + error.message);
     }
 }
-// Helper function to generate hall ticket image for students
+
+// ========== GENERATE HALL TICKET IMAGE FOR STUDENTS (HALF PAGE VERSION) ==========
 function generateStudentHallTicketImage(element, ticket) {
     // Check if html2canvas is loaded
     if (typeof html2canvas === 'undefined') {
-        showNotification('Image generation library not loaded. Please refresh the page.', 'error');
-        // Try to reload the library
+        alert('Image generation library not loaded. Please refresh the page and try again.');
+        console.error('html2canvas is not loaded');
+        
+        // Try to load html2canvas dynamically
         const script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
         script.onload = function() {
-            showNotification('Library loaded. Please try downloading again.', 'info');
+            alert('Library loaded successfully. Please click download again.');
+        };
+        script.onerror = function() {
+            alert('Failed to load image generation library. Please refresh the page.');
         };
         document.head.appendChild(script);
         return;
     }
     
+    // Show loading notification
     const notification = document.createElement('div');
-    notification.style.cssText = `position: fixed; top: 20px; right: 20px; z-index: 10001; background: #3b82f6; color: white; padding: 1rem; border-radius: 8px; font-weight: 600;`;
+    notification.style.cssText = `
+        position: fixed; 
+        top: 20px; 
+        right: 20px; 
+        z-index: 10001; 
+        background: #3b82f6; 
+        color: white; 
+        padding: 1rem 1.5rem; 
+        border-radius: 8px; 
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    `;
     notification.textContent = 'Converting to image...';
     document.body.appendChild(notification);
     
-    html2canvas(element, {
-        scale: 2,
-        backgroundColor: '#ffffff',
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        width: element.offsetWidth,
-        height: element.offsetHeight
-    }).then(function(canvas) {
-        console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
-        
-        // Convert canvas to blob
-        canvas.toBlob(function(blob) {
-            if (!blob) {
-                document.body.removeChild(notification);
-                alert('Failed to create image file');
-                return;
+    // Wait a moment for fonts to load
+    setTimeout(function() {
+        html2canvas(element, {
+            scale: 3, // Higher scale for better quality at smaller size
+            backgroundColor: '#ffffff',
+            logging: false,
+            useCORS: true,
+            allowTaint: false,
+            width: element.offsetWidth,
+            height: element.offsetHeight,
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight,
+            letterRendering: true,
+            imageTimeout: 0,
+            onclone: function(clonedDoc) {
+                const clonedElement = clonedDoc.getElementById('studentHallTicketContent');
+                if (clonedElement) {
+                    // Force all elements to use system fonts and black color
+                    const allElements = clonedElement.querySelectorAll('*');
+                    allElements.forEach(el => {
+                        el.style.fontFamily = 'Arial, Helvetica, sans-serif';
+                        const currentColor = el.style.color;
+                        if (!currentColor || currentColor === '' || currentColor.includes('blue')) {
+                            el.style.color = '#000000';
+                        }
+                        el.style.backgroundColor = el.style.backgroundColor || '#ffffff';
+                    });
+                    
+                    // Ensure tables render properly
+                    const tables = clonedElement.querySelectorAll('table');
+                    tables.forEach(table => {
+                        table.style.borderCollapse = 'collapse';
+                        table.style.backgroundColor = '#ffffff';
+                    });
+                    
+                    // Force all text to be visible
+                    const textNodes = clonedElement.querySelectorAll('div, td, th');
+                    textNodes.forEach(node => {
+                        if (node.textContent.trim()) {
+                            node.style.visibility = 'visible';
+                            node.style.opacity = '1';
+                        }
+                    });
+                }
             }
+        }).then(function(canvas) {
+            console.log('✅ Canvas created successfully:', canvas.width, 'x', canvas.height);
             
-            // Create download link
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            const fileName = `HallTicket_${ticket.studentName.replace(/\s+/g, '_')}_${ticket.studentRoll}.png`;
-            link.download = fileName;
-            link.href = url;
-            link.click();
-            
-            // Cleanup
-            setTimeout(() => {
-                URL.revokeObjectURL(url);
-            }, 100);
-            
-            notification.style.background = '#10b981';
-            notification.textContent = '✅ Hall ticket downloaded successfully!';
-            
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 2000);
-            
-            // Close modal after download
-            const modal = document.getElementById('studentHallTicketPreview');
-            if (modal) {
+            // Convert canvas to blob
+            canvas.toBlob(function(blob) {
+                if (!blob) {
+                    document.body.removeChild(notification);
+                    alert('Failed to create image file. Please try again.');
+                    return;
+                }
+                
+                // Create download link
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const fileName = `HallTicket_${ticket.studentName.replace(/\s+/g, '_')}_${ticket.studentRoll}.png`;
+                link.download = fileName;
+                link.href = url;
+                link.click();
+                
+                // Cleanup
                 setTimeout(() => {
-                    document.body.removeChild(modal);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                // Update notification
+                notification.style.background = '#10b981';
+                notification.textContent = '✅ Hall ticket downloaded successfully!';
+                
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
                 }, 2000);
-            }
-        }, 'image/png');
-        
-    }).catch(function(error) {
-        console.error('html2canvas error:', error);
-        document.body.removeChild(notification);
-        alert('Failed to generate image. Error: ' + (error.message || 'Unknown'));
-    });
+                
+                // Close modal after successful download
+                const modal = document.getElementById('studentHallTicketPreview');
+                if (modal && document.body.contains(modal)) {
+                    setTimeout(() => {
+                        document.body.removeChild(modal);
+                    }, 2000);
+                }
+            }, 'image/png', 1.0);
+            
+        }).catch(function(error) {
+            console.error('❌ html2canvas error:', error);
+            document.body.removeChild(notification);
+            alert('Failed to generate image. Error: ' + (error.message || 'Unknown error'));
+        });
+    }, 300); // Wait 300ms for fonts to load
 }
 
         function closeHallTicketDetail() {
