@@ -2419,213 +2419,212 @@ async function showHallTicketDetail(hallTicketId) {
         const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 
         // Build exam schedule table with timing (compact version)
-        let examScheduleHTML = '';
-        if (ticket.examSchedule && Array.isArray(ticket.examSchedule) && ticket.examSchedule.length > 0) {
-            examScheduleHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 5px; border: 1px solid #000; font-family: Arial, Helvetica, sans-serif;">`;
-            examScheduleHTML += `<thead><tr>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Subject</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Date</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Day</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Timing</th>`;
-            examScheduleHTML += `</tr></thead><tbody>`;
-            
-            ticket.examSchedule.forEach(schedule => {
-                if (schedule.date && schedule.exams && Array.isArray(schedule.exams)) {
-                    const scheduleDate = new Date(schedule.date);
-                    const formattedDate = scheduleDate.toLocaleDateString('en-IN', { 
-                        day: '2-digit', 
-                        month: 'short', 
-                        year: 'numeric' 
-                    });
-                    const dayName = scheduleDate.toLocaleDateString('en-IN', { weekday: 'short' });
+       let examScheduleHTML = '';
+                if (ticket.examSchedule && Array.isArray(ticket.examSchedule) && ticket.examSchedule.length > 0) {
+                    examScheduleHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 5px; border: 1px solid #000; font-family: Arial, Helvetica, sans-serif;">`;
+                    examScheduleHTML += `<thead><tr>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Subject</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Date</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Day</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Timing</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Invigilator Signature</th>`;
+                    examScheduleHTML += `</tr></thead><tbody>`;
                     
-                    schedule.exams.forEach(exam => {
-                        examScheduleHTML += `<tr style="background: #ffffff;">`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.examName || 'N/A'}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${formattedDate}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${dayName}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.timing || 'N/A'}</td>`;
-                        examScheduleHTML += `</tr>`;
+                    ticket.examSchedule.forEach(schedule => {
+                        if (schedule.date && schedule.exams && Array.isArray(schedule.exams)) {
+                            const scheduleDate = new Date(schedule.date);
+                            const formattedDate = scheduleDate.toLocaleDateString('en-IN', { 
+                                day: '2-digit', 
+                                month: 'short', 
+                                year: 'numeric' 
+                            });
+                            const dayName = scheduleDate.toLocaleDateString('en-IN', { weekday: 'short' });
+                            
+                            schedule.exams.forEach(exam => {
+                                examScheduleHTML += `<tr style="background: #ffffff;">`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.examName || 'N/A'}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${formattedDate}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${dayName}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.timing || 'N/A'}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 20px; font-size: 10px; color: #000000; background: #ffffff;"></td>`;
+                                examScheduleHTML += `</tr>`;
+                            });
+                        }
                     });
+                    
+                    examScheduleHTML += `</tbody></table>`;
                 }
-            });
-            
-            examScheduleHTML += `</tbody></table>`;
-        }
 
-        // Format class display
-        let classDisplay = ticket.studentClass;
-        if (ticket.studentClass === 'nursery') classDisplay = 'Nursery';
-        else if (ticket.studentClass === 'lkg') classDisplay = 'LKG';
-        else if (ticket.studentClass === 'ukg') classDisplay = 'UKG';
-        else classDisplay = 'Class ' + ticket.studentClass;
+                let classDisplay = ticket.studentClass;
+                if (ticket.studentClass === 'nursery') classDisplay = 'Nursery';
+                else if (ticket.studentClass === 'lkg') classDisplay = 'LKG';
+                else if (ticket.studentClass === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + ticket.studentClass;
 
-        // Create modal overlay
-        const modalOverlay = document.createElement('div');
-        modalOverlay.id = 'studentHallTicketPreview';
-        modalOverlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        `;
+                const modalOverlay = document.createElement('div');
+                modalOverlay.id = 'adminHallTicketPreview';
+                modalOverlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                `;
 
-        const contentWrapper = document.createElement('div');
-        contentWrapper.style.cssText = `
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-        `;
+                const contentWrapper = document.createElement('div');
+                contentWrapper.style.cssText = `
+                    background: white;
+                    border-radius: 10px;
+                    padding: 20px;
+                    max-width: 500px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                `;
 
-        const hallTicketDiv = document.createElement('div');
-        hallTicketDiv.id = 'studentHallTicketContent';
-        hallTicketDiv.style.cssText = 'width: 400px; background: #ffffff; padding: 15px;';
-        
-        hallTicketDiv.innerHTML = `
-            <div style="border: 2px solid #000000; padding: 12px; background: #ffffff;">
-                <!-- Header Section -->
-                <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 10px; background: #ffffff;">
-                    <table style="width: 100%; border-collapse: collapse; background: #ffffff;">
-                        <tr>
-                            <td style="width: 50px; vertical-align: top; padding: 0;">
-                                <img src="logo.png" alt="Logo" style="width: 40px; height: 40px; display: block;" onerror="this.style.display='none'">
-                            </td>
-                            <td style="text-align: center; vertical-align: middle; padding: 0 5px; background: #ffffff;">
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #000000; margin: 0 0 4px 0; letter-spacing: 0.5px; line-height: 1.2; white-space: nowrap;">
-                                    VISWA BHARATHI HIGH SCHOOL
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
-                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
-                                    Cell: 6301444214, 8555950709
-                                </div>
-                            </td>
-                            <td style="width: 50px;"></td>
-                        </tr>
-                    </table>
-                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 12px; font-weight: bold; color: #000000; margin: 8px 0 0 0; text-decoration: underline; text-transform: uppercase;">
-                        HALL TICKET
-                    </div>
-                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 11px; font-weight: bold; color: #000000; margin: 4px 0 0 0;">
-                        ${ticket.examName}
-                    </div>
-                </div>
+                const hallTicketDiv = document.createElement('div');
+                hallTicketDiv.id = 'adminHallTicketContent';
+                hallTicketDiv.style.cssText = 'width: 400px; background: #ffffff; padding: 15px;';
                 
-                <!-- Student Details -->
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; background: #ffffff; font-family: Arial, Helvetica, sans-serif;">
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; width: 40%; font-weight: bold;">
-                            Student Name:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${ticket.studentName}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
-                            Class & Section:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${classDisplay}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
-                            Roll Number:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${ticket.studentRoll}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
-                            Student Code:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${ticket.studentCode}
-                        </td>
-                    </tr>
-                </table>
-                
-                <!-- Exam Schedule -->
-                ${examScheduleHTML ? `
-                    <div style="margin: 8px 0; background: #ffffff;">
-                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #000000; margin-bottom: 4px; border-bottom: 1px solid #000000; padding-bottom: 2px;">
-                            EXAMINATION SCHEDULE
-                        </div>
-                        ${examScheduleHTML}
-                    </div>
-                ` : ''}
-                
-                <!-- Instructions -->
-                ${ticket.remarks ? `
-                <div style="margin: 8px 0; padding: 6px; background: #f8f8f8; border: 1px solid #d0d0d0; border-radius: 3px; font-family: Arial, Helvetica, sans-serif;">
-                    <div style="font-weight: bold; margin-bottom: 3px; color: #000000; font-size: 9px;">INSTRUCTIONS:</div>
-                    <div style="font-size: 8px; color: #000000; line-height: 1.4;">${ticket.remarks}</div>
-                </div>
-                ` : ''}
-                
-                <!-- Signature -->
-                <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #ffffff;">
-                    <tr>
-                        <td style="width: 50%;"></td>
-                        <td style="width: 50%; text-align: center;">
-                            <div style="border-top: 1px solid #000000; padding-top: 4px; margin: 0 auto; width: 100px;">
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 9px; font-weight: bold; color: #000000; margin: 2px 0;">
-                                    Principal
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; font-weight: bold; color: #000000; margin: 2px 0;">
-                                    Viswa Bharathi High School
-                                </div>
+                hallTicketDiv.innerHTML = `
+                    <div style="border: 2px solid #000000; padding: 12px; background: #ffffff;">
+                        <!-- Header Section -->
+                        <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 10px; background: #ffffff;">
+                            <table style="width: 100%; border-collapse: collapse; background: #ffffff;">
+                                <tr>
+                                    <td style="width: 50px; vertical-align: top; padding: 0;">
+                                        <img src="logo.png" alt="Logo" style="width: 40px; height: 40px; display: block;" onerror="this.style.display='none'">
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle; padding: 0 5px; background: #ffffff;">
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #000000; margin: 0 0 4px 0; letter-spacing: 0.5px; line-height: 1.2; white-space: nowrap;">
+                                            VISWA BHARATHI SCHOOL
+                                        </div>
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
+                                            NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)
+                                        </div>
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
+                                            Cell: 6301444214, 8555950709
+                                        </div>
+                                    </td>
+                                    <td style="width: 50px;"></td>
+                                </tr>
+                            </table>
+                            <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 12px; font-weight: bold; color: #000000; margin: 8px 0 0 0; text-decoration: underline; text-transform: uppercase;">
+                                HALL TICKET
                             </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        `;
+                            <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 11px; font-weight: bold; color: #000000; margin: 4px 0 0 0;">
+                                ${ticket.examName}
+                            </div>
+                        </div>
+                        
+                        <!-- Student Details -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; background: #ffffff; font-family: Arial, Helvetica, sans-serif;">
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; width: 40%; font-weight: bold;">
+                                    Student Name:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${ticket.studentName}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                                    Class & Section:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${classDisplay}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                                    Roll Number:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${ticket.studentRoll}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                                    Student Code:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${ticket.studentCode}
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Exam Schedule -->
+                        ${examScheduleHTML ? `
+                            <div style="margin: 8px 0; background: #ffffff;">
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #000000; margin-bottom: 4px; border-bottom: 1px solid #000000; padding-bottom: 2px;">
+                                    EXAMINATION SCHEDULE
+                                </div>
+                                ${examScheduleHTML}
+                            </div>
+                        ` : ''}
+                        
+                        <!-- Instructions -->
+                        ${ticket.remarks ? `
+                        <div style="margin: 8px 0; padding: 6px; background: #f8f8f8; border: 1px solid #d0d0d0; border-radius: 3px; font-family: Arial, Helvetica, sans-serif;">
+                            <div style="font-weight: bold; margin-bottom: 3px; color: #000000; font-size: 9px;">INSTRUCTIONS:</div>
+                            <div style="font-size: 8px; color: #000000; line-height: 1.4;">${ticket.remarks}</div>
+                        </div>
+                        ` : ''}
+                        
+                        <!-- Signature -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #ffffff;">
+                            <tr>
+                                <td style="width: 50%;"></td>
+                                <td style="width: 50%; text-align: center;">
+                                    <div style="border-top: 1px solid #000000; padding-top: 4px; margin: 0 auto; width: 100px;">
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 9px; font-weight: bold; color: #000000; margin: 2px 0;">
+                                            Principal
+                                        </div>
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; font-weight: bold; color: #000000; margin: 2px 0;">
+                                            Viswa Bharathi High School
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
 
-        const buttonContainer = document.createElement('div');
-        buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
-        
-        const downloadBtn = document.createElement('button');
-        downloadBtn.textContent = '⬇️ Download as PNG';
-        downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-        downloadBtn.onclick = function() {
-            generateStudentHallTicketImage(hallTicketDiv, ticket);
-        };
-        
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = '✕ Close';
-        closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-        closeBtn.onclick = function() {
-            document.body.removeChild(modalOverlay);
-        };
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = '⬇️ Download as PNG';
+                downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+                downloadBtn.onclick = function() {
+                    generateAdminHallTicketImage(hallTicketDiv, ticket);
+                };
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = '✕ Close';
+                closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+                closeBtn.onclick = function() {
+                    document.body.removeChild(modalOverlay);
+                };
 
-        buttonContainer.appendChild(downloadBtn);
-        buttonContainer.appendChild(closeBtn);
-        
-        contentWrapper.appendChild(hallTicketDiv);
-        contentWrapper.appendChild(buttonContainer);
-        modalOverlay.appendChild(contentWrapper);
-        document.body.appendChild(modalOverlay);
+                buttonContainer.appendChild(downloadBtn);
+                buttonContainer.appendChild(closeBtn);
+                
+                contentWrapper.appendChild(hallTicketDiv);
+                contentWrapper.appendChild(buttonContainer);
+                modalOverlay.appendChild(contentWrapper);
+                document.body.appendChild(modalOverlay);
 
-    } catch (error) {
-        console.error('Error loading hall ticket details:', error);
-        alert('Error loading hall ticket details: ' + error.message);
-    }
-}
-
+            } catch (error) {
+                console.error('Error in downloadHallTicket:', error);
+                showNotification('Error: ' + error.message, 'error');
+            }
+        }
 // ========== GENERATE HALL TICKET IMAGE FOR STUDENTS (HALF PAGE VERSION) ==========
 function generateStudentHallTicketImage(element, ticket) {
     // Check if html2canvas is loaded
@@ -2856,7 +2855,7 @@ function generateStudentHallTicketImage(element, ticket) {
                             <div class="header-flex">
                                 <img src="logo.png" alt="School Logo" class="school-logo" onerror="this.style.display='none'">
                                 <div class="school-info">
-                                    <h1 class="school-name">VISWA BHARATHI HIGH SCHOOL</h1>
+                                    <h1 class="school-name">VISWA BHARATHI SCHOOL</h1>
                                     <p class="school-address">NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)</p>
                                     <p class="school-address">Cell: 6301444214, 8555950709</p>
                                 </div>
@@ -3068,7 +3067,7 @@ function generateStudentHallTicketImage(element, ticket) {
                             <div class="header-flex">
                                 <img src="logo.png" alt="School Logo" class="school-logo" onerror="this.style.display='none'">
                                 <div class="school-info">
-                                    <h1 class="school-name">VISWA BHARATHI HIGH SCHOOL</h1>
+                                    <h1 class="school-name">VISWA BHARATHI SCHOOL</h1>
                                     <p class="school-address">NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)</p>
                                     <p class="school-address">Cell: 6301444214, 8555950709</p>
                                 </div>
@@ -3285,7 +3284,7 @@ function generateStudentHallTicketImage(element, ticket) {
                             <div class="header-flex">
                                 <img src="logo.png" alt="School Logo" class="school-logo" onerror="this.style.display='none'">
                                 <div class="school-info">
-                                    <h1 class="school-name">VISWA BHARATHI HIGH SCHOOL</h1>
+                                    <h1 class="school-name">VISWA BHARATHI SCHOOL</h1>
                                     <p class="school-address">NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)</p>
                                     <p class="school-address">Cell: 6301444214, 8555950709</p>
                                 </div>
