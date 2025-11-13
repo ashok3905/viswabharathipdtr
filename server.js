@@ -53,7 +53,12 @@ function sanitizeInput(input) {
     if (typeof input !== 'string') return input;
     return input.trim().replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 }
-
+function setNoCacheHeaders(res) {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+}
 // Validate date range for attendance
 function isValidAttendanceDate(month, year) {
     const currentDate = new Date();
@@ -514,6 +519,7 @@ app.post('/api/admin/notifications', upload.single('file'), async (req, res) => 
 // 2. Get All Notifications (Admin view)
 app.get('/api/admin/notifications', async (req, res) => {
     try {
+        setNoCacheHeaders(res); 
         let data = await readData();
         data = cleanExpiredPosts(data);
         await writeData(data);
@@ -789,6 +795,7 @@ app.post('/api/notifications/read-all', async (req, res) => {
 
 // Get all data (PRESERVED)
 app.get('/api/data', async (req, res) => {
+     setNoCacheHeaders(res);
     let data = await readData();
     data = cleanExpiredPosts(data);
     await writeData(data);
@@ -1628,6 +1635,7 @@ app.post('/api/fee-certificates', async (req, res) => {
 // 2. Get all fee certificates (Admin view - all certificates)
 app.get('/api/admin/fee-certificates', async (req, res) => {
     try {
+        setNoCacheHeaders(res);
         console.log('📋 Admin requesting all fee certificates');
         const data = await readData();
         
@@ -1901,7 +1909,9 @@ app.post('/api/admin/create-hall-ticket', async (req, res) => {
 
 // Get all Hall Tickets
 app.get('/api/admin/hall-tickets', async (req, res) => {
+
     try {
+        setNoCacheHeaders(res);
         const data = await readData();
         
         if (!data.hallTickets) {
