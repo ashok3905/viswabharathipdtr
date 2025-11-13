@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Viswa Bharathi School</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        :root {
+            --primary-color: #6a3093;
+            --accent-color: #f9a826;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --white: #ffffff;
+            --light-bg: #f9f9f9;
+            --gradient-primary: linear-gradient(135deg, #a044ff 0%, #6a3093 100%);
+            --gradient-accent: linear-gradient(135deg, #f9a826 0%, #ff7b00 100%);
+            --shadow-sm: 0 5px 15px rgba(106, 48, 147, 0.08);
+            --shadow-md: 0 10px 30px rgba(106, 48, 147, 0.12);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Navbar Styles - Same as main site */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: var(--transition);
+            height: 70px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 100%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Josefin Sans', sans-serif;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .back-home {
+            padding: 10px 25px;
+            background: var(--gradient-accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .back-home:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Main Content */
+        .privacy-container {
+            max-width: 1200px;
+            margin: 120px auto 60px;
+            padding: 0 5%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease;
+        }
+
+        .page-header h1 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .page-header .update-date {
+            color: var(--text-light);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .privacy-content {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: var(--shadow-md);
+            animation: slideUp 1s ease;
+        }
+
+        .intro-text {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(106, 48, 147, 0.05) 0%, rgba(249, 168, 38, 0.05) 100%);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 10px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent-color);
+            display: inline-block;
+        }
+
+        .section h3 {
+            font-size: 22px;
+            color: var(--text-dark);
+            margin: 25px 0 15px;
+            font-weight: 600;
+        }
+
+        .section p {
+            color: var(--text-light);
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .section ul {
+            margin: 15px 0 15px 30px;
+            color: var(--text-light);
+        }
+
+        .section ul li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(106, 48, 147, 0.08) 0%, rgba(249, 168, 38, 0.08) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .contact-box {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .contact-box h2 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .contact-box p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .contact-box a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .contact-box a:hover {
+            color: white;
+        }
+
+        /* Footer */
+        .simple-footer {
+            background: linear-gradient(135deg, #2b3240 0%, #1a1f2b 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 5%;
+            margin-top: 60px;
+        }
+
+        .simple-footer p {
+            margin: 5px 0;
+            opacity: 0.8;
+        }
+
+        .simple-footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .simple-footer a:hover {
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+            .privacy-content {
+                padding: 30px 20px;
+            }
+
+            .section h2 {
+                font-size: 24px;
+            }
+
+            .section h3 {
+                font-size: 20px;
+            }
+
+            .logo-text {
+                font-size: 18px;
+            }
+
+            .back-home {
+                padding: 8px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="logo.png" alt="Viswa Bharathi School Logo">
+                <a href="index.html" class="logo-text">Viswa Bharathi School</a>
+            </div>
+            <a href="index.html" class="back-home">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="privacy-container">
+        <div class="page-header">
+            <h1>Privacy Policy</h1>
+            <p class="update-date">Last Updated: November 13, 2024</p>
+        </div>
+
+        <div class="privacy-content">
+            <div class="intro-text">
+                <strong>Welcome to Viswa Bharathi School's Privacy Policy.</strong> We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or interact with our services.
+            </div>
+
+            <!-- Section 1: Information We Collect -->
+            <div class="section">
+                <h2>1. Information We Collect</h2>
+                
+                <h3>1.1 Personal Information</h3>
+                <p>When you interact with our website or apply for admission, we may collect the following information:</p>
+                <ul>
+                    <li><strong>Parent/Guardian Name:</strong> Full name of the parent or legal guardian</li>
+                    <li><strong>Contact Number:</strong> Mobile phone number for communication purposes</li>
+                    <li><strong>Email Address:</strong> For sending updates and correspondence (when provided)</li>
+                    <li><strong>Inquiry Details:</strong> Information submitted through contact forms regarding admissions, fees, or general inquiries</li>
+                </ul>
+
+                <h3>1.2 Automatically Collected Information</h3>
+                <p>When you visit our website, we may automatically collect certain information about your device and browsing activity, including:</p>
+                <ul>
+                    <li>IP address</li>
+                    <li>Browser type and version</li>
+                    <li>Pages visited and time spent on pages</li>
+                    <li>Device type and operating system</li>
+                    <li>Referring website addresses</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <strong>Important Note:</strong> We do not collect any personal information directly from students or minors. All communications are conducted with parents or legal guardians only.
+                </div>
+            </div>
+
+            <!-- Section 2: How We Use Your Information -->
+            <div class="section">
+                <h2>2. How We Use Your Information</h2>
+                <p>We use the information we collect for the following purposes:</p>
+                <ul>
+                    <li><strong>Admission Processing:</strong> To process admission applications and inquiries</li>
+                    <li><strong>Communication:</strong> To respond to your inquiries and provide information about our school programs, fees, and services</li>
+                    <li><strong>Service Improvement:</strong> To understand how visitors use our website and improve user experience</li>
+                    <li><strong>Administrative Purposes:</strong> To maintain records and manage school operations</li>
+                    <li><strong>Legal Compliance:</strong> To comply with applicable laws and regulations</li>
+                </ul>
+            </div>
+
+            <!-- Section 3: Google AdSense -->
+            <div class="section">
+                <h2>3. Third-Party Advertising (Google AdSense)</h2>
+                <p>We use Google AdSense to display advertisements on our website. Google AdSense may use cookies and web beacons to collect information about your visits to this and other websites in order to provide relevant advertisements.</p>
+                
+                <h3>3.1 What is Google AdSense?</h3>
+                <p>Google AdSense is an advertising service provided by Google LLC. It uses cookies and other tracking technologies to serve ads based on your prior visits to our website or other websites on the Internet.</p>
+
+                <h3>3.2 Google's Use of Information</h3>
+                <ul>
+                    <li>Google may collect information such as your IP address, browser type, and pages visited</li>
+                    <li>Google uses this information to provide targeted advertising</li>
+                    <li>You can opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" style="color: var(--primary-color);">Google Ads Settings</a></li>
+                    <li>You can also visit <a href="http://www.aboutads.info/choices/" target="_blank" style="color: var(--primary-color);">aboutads.info</a> to opt out of personalized advertising from other providers</li>
+                </ul>
+
+                <h3>3.3 Third-Party Vendors</h3>
+                <p>Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to our website. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our site and/or other sites on the Internet.</p>
+            </div>
+
+            <!-- Section 4: Cookies and Tracking -->
+            <div class="section">
+                <h2>4. Cookies and Tracking Technologies</h2>
+                
+                <h3>4.1 What are Cookies?</h3>
+                <p>Cookies are small text files that are placed on your device when you visit our website. They help us provide you with a better experience by remembering your preferences and understanding how you use our site.</p>
+
+                <h3>4.2 Types of Cookies We Use</h3>
+                <ul>
+                    <li><strong>Essential Cookies:</strong> Necessary for the website to function properly</li>
+                    <li><strong>Advertising Cookies:</strong> Used by Google AdSense to display relevant advertisements</li>
+                    <li><strong>Analytics Cookies:</strong> Help us understand how visitors interact with our website</li>
+                </ul>
+
+                <h3>4.3 Managing Cookies</h3>
+                <p>You can control and/or delete cookies as you wish. You can delete all cookies that are already on your computer and you can set most browsers to prevent them from being placed. However, if you do this, you may have to manually adjust some preferences every time you visit our site.</p>
+            </div>
+
+            <!-- Section 5: Data Security -->
+            <div class="section">
+                <h2>5. Data Security</h2>
+                <p>We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. These measures include:</p>
+                <ul>
+                    <li>Secure data storage systems</li>
+                    <li>Limited access to personal information by authorized personnel only</li>
+                    <li>Regular security assessments and updates</li>
+                    <li>Encryption of sensitive data during transmission</li>
+                </ul>
+                <p>However, please note that no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
+            </div>
+
+            <!-- Section 6: Data Sharing -->
+            <div class="section">
+                <h2>6. Information Sharing and Disclosure</h2>
+                <p>We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:</p>
+                <ul>
+                    <li><strong>With Your Consent:</strong> When you have given us explicit permission to share your information</li>
+                    <li><strong>Service Providers:</strong> With trusted third-party service providers who assist us in operating our website (such as Google AdSense for advertising)</li>
+                    <li><strong>Legal Requirements:</strong> When required by law or to protect our rights and safety</li>
+                    <li><strong>School Operations:</strong> With authorized school staff for legitimate educational and administrative purposes</li>
+                </ul>
+            </div>
+
+            <!-- Section 7: Social Media -->
+            <div class="section">
+                <h2>7. Social Media Integration</h2>
+                <p>Our website contains links to our social media accounts on the following platforms:</p>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>YouTube</li>
+                    <li>Twitter (X)</li>
+                    <li>LinkedIn</li>
+                </ul>
+                <p>When you click on these links, you will be redirected to our social media pages. Please note that these platforms have their own privacy policies, and we are not responsible for their privacy practices. We encourage you to review the privacy policies of these platforms.</p>
+            </div>
+
+            <!-- Section 8: Children's Privacy -->
+            <div class="section">
+                <h2>8. Children's Privacy</h2>
+                <p>Our website is designed for communication with parents and guardians. We do not knowingly collect personal information directly from children under the age of 18. All inquiries, applications, and communications should be made by parents or legal guardians.</p>
+                <p>If we discover that we have inadvertently collected personal information from a child under 18 without parental consent, we will delete that information immediately.</p>
+            </div>
+
+            <!-- Section 9: Your Rights -->
+            <div class="section">
+                <h2>9. Your Rights and Choices</h2>
+                <p>As a user of our website, you have the following rights regarding your personal information:</p>
+                <ul>
+                    <li><strong>Access:</strong> You have the right to request access to the personal information we hold about you</li>
+                    <li><strong>Correction:</strong> You can request that we correct any inaccurate or incomplete information</li>
+                    <li><strong>Deletion:</strong> You can request that we delete your personal information, subject to legal requirements</li>
+                    <li><strong>Opt-Out:</strong> You can opt out of receiving marketing communications from us at any time</li>
+                    <li><strong>Data Portability:</strong> You can request a copy of your data in a structured, machine-readable format</li>
+                </ul>
+                <p>To exercise any of these rights, please contact us using the information provided below.</p>
+            </div>
+
+            <!-- Section 10: Data Retention -->
+            <div class="section">
+                <h2>10. Data Retention</h2>
+                <p>We retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. When we no longer need your information, we will securely delete or anonymize it.</p>
+                <ul>
+                    <li><strong>Admission Inquiries:</strong> Information from admission inquiries is retained for up to 2 years</li>
+                    <li><strong>Contact Form Submissions:</strong> Retained for 1 year unless ongoing communication is required</li>
+                    <li><strong>Website Analytics Data:</strong> Retained according to Google's data retention policies</li>
+                </ul>
+            </div>
+
+            <!-- Section 11: International Users -->
+            <div class="section">
+                <h2>11. Geographic Restrictions</h2>
+                <p>Our services are primarily intended for users located in India. If you are accessing our website from outside India, please be aware that your information may be transferred to, stored, and processed in India where our servers are located and our central database is operated.</p>
+                <p>By using our website, you consent to the transfer of your information to India and the processing of your information in accordance with Indian data protection laws.</p>
+            </div>
+
+            <!-- Section 12: Changes to Privacy Policy -->
+            <div class="section">
+                <h2>12. Changes to This Privacy Policy</h2>
+                <p>We reserve the right to update or modify this Privacy Policy at any time. When we make changes, we will:</p>
+                <ul>
+                    <li>Update the "Last Updated" date at the top of this page</li>
+                    <li>Post the revised Privacy Policy on our website</li>
+                    <li>Notify you of significant changes through email or prominent notice on our website</li>
+                </ul>
+                <p>We encourage you to review this Privacy Policy periodically to stay informed about how we are protecting your information. Your continued use of our website after any changes indicates your acceptance of the updated Privacy Policy.</p>
+            </div>
+
+            <!-- Section 13: Third-Party Links -->
+            <div class="section">
+                <h2>13. Third-Party Websites</h2>
+                <p>Our website may contain links to third-party websites, including educational resources, government websites, and partner institutions. We are not responsible for the privacy practices or content of these external sites. We recommend that you review the privacy policies of any third-party websites you visit.</p>
+            </div>
+
+            <!-- Section 14: Consent -->
+            <div class="section">
+                <h2>14. Your Consent</h2>
+                <p>By using our website, you consent to this Privacy Policy and agree to its terms. If you do not agree with this policy, please do not use our website or provide us with your personal information.</p>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-box">
+                <h2>Contact Us</h2>
+                <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+                <p style="margin-top: 20px;">
+                    <strong>Viswa Bharathi School</strong><br>
+                    4/19-2-3, Beside Medinova Hospital<br>
+                    Nehru Road, Proddatur - 516360<br>
+                    Andhra Pradesh, India
+                </p>
+                <p style="margin-top: 20px;">
+                    <strong>Phone:</strong> <a href="tel:+916301444214">+91 6301444214</a><br>
+                    <strong>Email:</strong> <a href="mailto:viswabharathischoolpdtr@gmail.com">viswabharathischoolpdtr@gmail.com</a>
+                </p>
+                <p style="margin-top: 20px; font-size: 14px;">
+                    Office Hours: Monday - Saturday, 9:00 AM - 4:30 PM
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="simple-footer">
+        <p>&copy; 2024 Viswa Bharathi School. All Rights Reserved.</p>
+        <p><a href="index.html">Home</a> | <a href="#">Privacy Policy</a> | <a href="index.html#contact">Contact Us</a></p>
+    </footer>
+</body>
+</html>
