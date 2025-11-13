@@ -668,6 +668,111 @@ button[onclick*="index.html"]:hover {
     margin-top: 20px;
 }
     </style>
+     <style>
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .step-item.active .step-circle {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .step-item.completed .step-circle {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .step-item.active .step-label {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .step-line {
+            height: 2px;
+            background: #e5e7eb;
+            flex: 1;
+            margin: 20px 10px 0 10px;
+        }
+
+        .student-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .student-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+        }
+
+        .student-info {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1rem;
+        }
+
+        .student-roll {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .remove-student-btn {
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .remove-student-btn:hover {
+            background: #fecaca;
+        }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 </head>
 
@@ -969,6 +1074,157 @@ button[onclick*="index.html"]:hover {
             </div>
         </div>
 
+        <!-- NEW: Admin Bulk Hall Ticket Modal -->
+        <div id="adminBulkHallTicketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1002; align-items: center; justify-content: center;">
+            <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 1000px; width: 90%; max-height: 90%; overflow-y: auto;" onclick="event.stopPropagation()">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0;">📋 Bulk Hall Ticket Generation</h3>
+                    <button onclick="closeAdminBulkHallTicketModal()" style="background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 20px;">×</button>
+                </div>
+
+                <!-- Step Indicator -->
+                <div id="bulkStepIndicator" style="display: flex; justify-content: space-between; margin-bottom: 2rem; padding: 0 2rem;">
+                    <div class="step-item active" data-step="1">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Class & Exam Info</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Add Students</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item" data-step="3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Schedule Exams</div>
+                    </div>
+                </div>
+
+                <!-- Bulk Step 1: Basic Details -->
+                <div id="bulkHallTicketStep1">
+                    <form id="bulkHallTicketBasicForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bulkHallExamName">Exam Name:</label>
+                                <input type="text" id="bulkHallExamName" name="examName" placeholder="e.g., Mid Term, Final Exam" required maxlength="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="bulkHallStudentClass">Select Class:</label>
+                                <select id="bulkHallStudentClass" name="studentClass" required>
+                                    <option value="">Choose class...</option>
+                                    <option value="nursery">Nursery</option>
+                                    <option value="lkg">LKG</option>
+                                    <option value="ukg">UKG</option>
+                                    <option value="1">Class 1</option>
+                                    <option value="2">Class 2</option>
+                                    <option value="3">Class 3</option>
+                                    <option value="4">Class 4</option>
+                                    <option value="5">Class 5</option>
+                                    <option value="6">Class 6</option>
+                                    <option value="7">Class 7</option>
+                                    <option value="8">Class 8</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="10">Class 10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bulkHallFromDate">Exam From Date:</label>
+                                <input type="date" id="bulkHallFromDate" name="fromDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bulkHallToDate">Exam To Date:</label>
+                                <input type="date" id="bulkHallToDate" name="toDate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bulkHallRemarks">Remarks/Instructions:</label>
+                            <textarea id="bulkHallRemarks" name="remarks" placeholder="Enter any general instructions for students" rows="3" maxlength="500"></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <button type="submit" class="primary-btn" style="flex: 1;">
+                                Next: Add Students →
+                            </button>
+                            <button type="button" onclick="closeAdminBulkHallTicketModal()" class="danger-btn" style="flex: 1;">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Bulk Step 2: Add Students -->
+                <div id="bulkHallTicketStep2" style="display: none;">
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
+                        <p style="margin: 0; font-weight: 600; color: #0369a1;">👥 Add all students who will receive hall tickets for this exam</p>
+                    </div>
+
+                    <!-- Quick Add Form -->
+                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                        <h4 style="margin-top: 0;">Add Student</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="bulkStudentName">Student Name:</label>
+                                <input type="text" id="bulkStudentName" placeholder="Enter full name" maxlength="50">
+                            </div>
+                            <div class="form-group">
+                                <label for="bulkStudentRoll">Roll Number:</label>
+                                <input type="number" id="bulkStudentRoll" placeholder="Enter roll number" min="1" max="999">
+                            </div>
+                            <div style="display: flex; align-items: flex-end;">
+                                <button type="button" onclick="addBulkStudentToList()" class="primary-btn" style="white-space: nowrap;">
+                                    ➕ Add Student
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Students List -->
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 0.5rem; margin-bottom: 0.5rem;">
+                            <h4 style="margin: 0;">Students List (<span id="bulkStudentCount">0</span>)</h4>
+                            <button type="button" onclick="clearAllBulkStudents()" class="danger-btn" style="font-size: 0.875rem; padding: 0.5rem 1rem;">
+                                🗑️ Clear All
+                            </button>
+                        </div>
+                        <div id="bulkStudentsList" style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1rem; max-height: 300px; overflow-y: auto;">
+                            <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyBulkStudentsMessage">
+                                No students added yet
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" onclick="goBackToBulkStep1()" class="secondary-btn" style="flex: 1;">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="goToBulkStep3()" class="primary-btn" style="flex: 1;" id="nextToBulkScheduleBtn" disabled>
+                            Next: Schedule Exams →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bulk Step 3: Exam Schedule -->
+                <div id="bulkHallTicketStep3" style="display: none;">
+                    <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
+                        <p style="margin: 0; font-weight: 600; color: #0369a1;">📅 Configure exam schedule (same for all <span id="totalBulkStudentsCount">0</span> students)</p>
+                    </div>
+                    <div id="bulkExamScheduleContainer"></div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" onclick="goBackToBulkStep2()" class="secondary-btn" style="flex: 1;">
+                            ← Back
+                        </button>
+                        <button type="button" onclick="submitAllBulkHallTickets()" class="primary-btn" style="flex: 2;">
+                            📤 Create All Hall Tickets
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- QR Code Generator Section -->
         <div class="section" id="qrSection" style="display: none;">
             <h2>QR Code Generator</h2>
@@ -978,9 +1234,6 @@ button[onclick*="index.html"]:hover {
                     <select id="qrType" class="form-input" onchange="updateQRForm()" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem;">
                         <option value="">Choose QR type...</option>
                         <option value="common">Common Login QR</option>
-                        <option value="nursery">Nursery Student</option>
-                        <option value="lkg">LKG Student</option>
-                        <option value="ukg">UKG Student</option>
                         <option value="classes">Class Students (1-10)</option>
                     </select>
                 </div>
@@ -1015,7 +1268,13 @@ button[onclick*="index.html"]:hover {
         let currentFeeCertTab = 'pending';
         let allFeeCertificates = [];
 
-        // ===== ENHANCED CACHE BUSTING WITH STORAGE CLEAR =====
+        // NEW: Bulk hall ticket variables
+        let bulkHallTicketData = {};
+        let bulkStudentsList = [];
+        let bulkExamSchedule = [];
+        let currentBulkStep = 1;
+
+        // ===== ENHANCED CACHE BUSTING =====
         async function fetchWithNoCache(url, options = {}) {
             const defaultOptions = {
                 headers: {
@@ -1024,7 +1283,7 @@ button[onclick*="index.html"]:hover {
                     'Expires': '0',
                     ...options.headers
                 },
-                cache: 'no-store', // Added
+                cache: 'no-store',
                 ...options
             };
             
@@ -1034,7 +1293,6 @@ button[onclick*="index.html"]:hover {
             return fetch(cacheBustedUrl, defaultOptions);
         }
 
-        // Clear browser cache for specific data
         function clearLocalCache() {
             try {
                 sessionStorage.clear();
@@ -1044,7 +1302,6 @@ button[onclick*="index.html"]:hover {
             }
         }
 
-        // Notification function
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.style.cssText = `
@@ -1068,7 +1325,6 @@ button[onclick*="index.html"]:hover {
             }, 4000);
         }
 
-        // Generate Student Code
         function generateStudentCode(classCode, rollNum) {
             const classStr = classCode.toString().toLowerCase();
             const rollNumber = parseInt(rollNum);
@@ -1112,7 +1368,6 @@ button[onclick*="index.html"]:hover {
             }
         }
 
-        // Submit notification form
         document.getElementById('notificationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1399,430 +1654,428 @@ button[onclick*="index.html"]:hover {
                 showNotification('Error loading hall tickets: ' + error.message, 'error');
             }
         }
-function displayHallTicketsTable() {
-    const container = document.getElementById('hallTicketsDisplay');
-    if (!allHallTickets || allHallTickets.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 3rem; color: #64748b;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
-                <p>No hall tickets available yet</p>
-                <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 0.5rem;">Hall tickets from receptionist and admin will appear here</p>
-            </div>
-        `;
-        return;
-    }
 
-    const groupedByClass = {};
-    allHallTickets.forEach(ticket => {
-        const classKey = ticket.studentClass || 'Unknown';
-        if (!groupedByClass[classKey]) {
-            groupedByClass[classKey] = [];
-        }
-        groupedByClass[classKey].push(ticket);
-    });
-
-    let html = '';
-    const sortedClasses = Object.keys(groupedByClass).sort((a, b) => {
-        const classOrder = ['nursery', 'lkg', 'ukg', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-        const aIndex = classOrder.indexOf(a.toLowerCase());
-        const bIndex = classOrder.indexOf(b.toLowerCase());
-        if (aIndex === -1) return 1;
-        if (bIndex === -1) return -1;
-        return aIndex - bIndex;
-    });
-
-    sortedClasses.forEach(classCode => {
-        const classDisplay = classCode === 'nursery' ? 'Nursery' : 
-                          classCode === 'lkg' ? 'LKG' : 
-                          classCode === 'ukg' ? 'UKG' : 
-                          `Class ${classCode}`;
-
-        const sortedTickets = groupedByClass[classCode].sort((a, b) => 
-            parseInt(a.studentRoll) - parseInt(b.studentRoll)
-        );
-
-        html += `
-            <div style="margin-bottom: 2rem;">
-                <h3 style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 1rem; margin: 0 0 1rem 0; border-radius: 8px;">${classDisplay}</h3>
-                <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                    <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
-                        <thead>
-                            <tr style="background: #f8fafc;">
-                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Student</th>
-                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Roll</th>
-                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Exam Name</th>
-                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Exam Period</th>
-                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Source</th>
-                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Status</th>
-                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-        `;
-
-        sortedTickets.forEach(ticket => {
-            const isIssued = ticket.status === 'issued';
-            const statusColor = isIssued ? '#10b981' : '#f59e0b';
-            const statusBg = isIssued ? '#f0fdf4' : '#fef3c7';
-            const statusDisplay = isIssued ? 'Issued' : 'Pending';
-            const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN');
-            const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN');
-            const source = ticket.issuedBy === 'receptionist' ? 'Receptionist' : 'Admin';
-            const sourceColor = ticket.issuedBy === 'receptionist' ? '#3b82f6' : '#10b981';
-
-            html += `
-                <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${ticket.studentName}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center; font-weight: 600;">${ticket.studentRoll}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${ticket.examName}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${fromDate} to ${toDate}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">
-                        <span style="background: ${sourceColor}20; color: ${sourceColor}; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${source}</span>
-                    </td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                        <span style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${statusDisplay}</span>
-                    </td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                        <div style="display: flex; gap: 0.5rem; justify-content: center; align-items: center; flex-wrap: wrap;">
-                            ${!isIssued ? 
-                                `<button onclick="issueHallTicketToStudent('${ticket.hallTicketId}', '${ticket.studentCode}')" style="background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Issue</button>` : 
-                                '<span style="color: #10b981; font-weight: 600; font-size: 0.75rem; white-space: nowrap;">✓ Issued</span>'
-                            }
-                            <button onclick="downloadHallTicket('${ticket.hallTicketId}')" style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Download</button>
-                            <button onclick="deleteHallTicket('${ticket.hallTicketId}')" style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        });
-
-        html += `</tbody></table></div></div>`;
-    });
-
-    container.innerHTML = html;
-}
-// ========== ADMIN DASHBOARD - HALL TICKET DOWNLOAD (HALF PAGE VERSION) ==========
-
-function downloadHallTicket(hallTicketId) {
-    try {
-        if (!allHallTickets || !allHallTickets.length) {
-            showNotification('No hall tickets loaded. Click "Refresh All" first.', 'error');
-            return;
-        }
-
-        const ticket = allHallTickets.find(t => t.hallTicketId === hallTicketId);
-        if (!ticket) {
-            showNotification('Hall ticket not found. Please refresh and try again.', 'error');
-            return;
-        }
-
-        if (typeof html2canvas === 'undefined') {
-            showNotification('Image library not loaded. Refresh the page.', 'error');
-            return;
-        }
-
-        const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-        const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-
-        // Build exam schedule table (compact version)
-        let examScheduleHTML = '';
-        if (ticket.examSchedule && Array.isArray(ticket.examSchedule) && ticket.examSchedule.length > 0) {
-            examScheduleHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 5px; border: 1px solid #000; font-family: Arial, Helvetica, sans-serif;">`;
-            examScheduleHTML += `<thead><tr>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Subject</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Date</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Day</th>`;
-            examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Timing</th>`;
-            examScheduleHTML += `</tr></thead><tbody>`;
-            
-            ticket.examSchedule.forEach(schedule => {
-                if (schedule.date && schedule.exams && Array.isArray(schedule.exams)) {
-                    const scheduleDate = new Date(schedule.date);
-                    const formattedDate = scheduleDate.toLocaleDateString('en-IN', { 
-                        day: '2-digit', 
-                        month: 'short', 
-                        year: 'numeric' 
-                    });
-                    const dayName = scheduleDate.toLocaleDateString('en-IN', { weekday: 'short' });
-                    
-                    schedule.exams.forEach(exam => {
-                        examScheduleHTML += `<tr style="background: #ffffff;">`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.examName || 'N/A'}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${formattedDate}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${dayName}</td>`;
-                        examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.timing || 'N/A'}</td>`;
-                        examScheduleHTML += `</tr>`;
-                    });
-                }
-            });
-            
-            examScheduleHTML += `</tbody></table>`;
-        }
-
-        // Format class display
-        let classDisplay = ticket.studentClass;
-        if (ticket.studentClass === 'nursery') classDisplay = 'Nursery';
-        else if (ticket.studentClass === 'lkg') classDisplay = 'LKG';
-        else if (ticket.studentClass === 'ukg') classDisplay = 'UKG';
-        else classDisplay = 'Class ' + ticket.studentClass;
-
-        // Create modal overlay
-        const modalOverlay = document.createElement('div');
-        modalOverlay.id = 'adminHallTicketPreview';
-        modalOverlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        `;
-
-        const contentWrapper = document.createElement('div');
-        contentWrapper.style.cssText = `
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-        `;
-
-        const hallTicketDiv = document.createElement('div');
-        hallTicketDiv.id = 'adminHallTicketContent';
-        hallTicketDiv.style.cssText = 'width: 400px; background: #ffffff; padding: 15px;';
-        
-        hallTicketDiv.innerHTML = `
-            <div style="border: 2px solid #000000; padding: 12px; background: #ffffff;">
-                <!-- Header Section -->
-                <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 10px; background: #ffffff;">
-                    <table style="width: 100%; border-collapse: collapse; background: #ffffff;">
-                        <tr>
-                            <td style="width: 50px; vertical-align: top; padding: 0;">
-                                <img src="logo.png" alt="Logo" style="width: 40px; height: 40px; display: block;" onerror="this.style.display='none'">
-                            </td>
-                            <td style="text-align: center; vertical-align: middle; padding: 0 5px; background: #ffffff;">
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #000000; margin: 0 0 4px 0; letter-spacing: 0.5px; line-height: 1.2; white-space: nowrap;">
-                                    VISWA BHARATHI HIGH SCHOOL
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
-                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
-                                    Cell: 6301444214, 8555950709
-                                </div>
-                            </td>
-                            <td style="width: 50px;"></td>
-                        </tr>
-                    </table>
-                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 12px; font-weight: bold; color: #000000; margin: 8px 0 0 0; text-decoration: underline; text-transform: uppercase;">
-                        HALL TICKET
+        function displayHallTicketsTable() {
+            const container = document.getElementById('hallTicketsDisplay');
+            if (!allHallTickets || allHallTickets.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
+                        <p>No hall tickets available yet</p>
+                        <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 0.5rem;">Hall tickets from receptionist and admin will appear here</p>
                     </div>
-                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 11px; font-weight: bold; color: #000000; margin: 4px 0 0 0;">
-                        ${ticket.examName}
-                    </div>
-                </div>
-                
-                <!-- Student Details -->
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; background: #ffffff; font-family: Arial, Helvetica, sans-serif;">
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; width: 40%; font-weight: bold;">
-                            Student Name:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${ticket.studentName}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
-                            Class & Section:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${classDisplay}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
-                            Roll Number:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${ticket.studentRoll}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
-                            Student Code:
-                        </td>
-                        <td style="padding: 3px 0; font-size: 10px; color: #000000;">
-                            ${ticket.studentCode}
-                        </td>
-                    </tr>
-                </table>
-                
-                <!-- Exam Schedule -->
-                ${examScheduleHTML ? `
-                    <div style="margin: 8px 0; background: #ffffff;">
-                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #000000; margin-bottom: 4px; border-bottom: 1px solid #000000; padding-bottom: 2px;">
-                            EXAMINATION SCHEDULE
-                        </div>
-                        ${examScheduleHTML}
-                    </div>
-                ` : ''}
-                
-                <!-- Instructions -->
-                ${ticket.remarks ? `
-                <div style="margin: 8px 0; padding: 6px; background: #f8f8f8; border: 1px solid #d0d0d0; border-radius: 3px; font-family: Arial, Helvetica, sans-serif;">
-                    <div style="font-weight: bold; margin-bottom: 3px; color: #000000; font-size: 9px;">INSTRUCTIONS:</div>
-                    <div style="font-size: 8px; color: #000000; line-height: 1.4;">${ticket.remarks}</div>
-                </div>
-                ` : ''}
-                
-                <!-- Signature -->
-                <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #ffffff;">
-                    <tr>
-                        <td style="width: 50%;"></td>
-                        <td style="width: 50%; text-align: center;">
-                            <div style="border-top: 1px solid #000000; padding-top: 4px; margin: 0 auto; width: 100px;">
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 9px; font-weight: bold; color: #000000; margin: 2px 0;">
-                                    Principal
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; font-weight: bold; color: #000000; margin: 2px 0;">
-                                    Viswa Bharathi High School
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        `;
-
-        const buttonContainer = document.createElement('div');
-        buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
-        
-        const downloadBtn = document.createElement('button');
-        downloadBtn.textContent = '⬇️ Download as PNG';
-        downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-        downloadBtn.onclick = function() {
-            generateAdminHallTicketImage(hallTicketDiv, ticket);
-        };
-        
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = '✕ Close';
-        closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-        closeBtn.onclick = function() {
-            document.body.removeChild(modalOverlay);
-        };
-
-        buttonContainer.appendChild(downloadBtn);
-        buttonContainer.appendChild(closeBtn);
-        
-        contentWrapper.appendChild(hallTicketDiv);
-        contentWrapper.appendChild(buttonContainer);
-        modalOverlay.appendChild(contentWrapper);
-        document.body.appendChild(modalOverlay);
-
-    } catch (error) {
-        console.error('Error in downloadHallTicket:', error);
-        showNotification('Error: ' + error.message, 'error');
-    }
-}
-
-// ========== GENERATE HALL TICKET IMAGE FOR ADMIN ==========
-function generateAdminHallTicketImage(element, ticket) {
-    if (typeof html2canvas === 'undefined') {
-        showNotification('Image library not loaded. Refresh the page.', 'error');
-        console.error('html2canvas is not loaded');
-        return;
-    }
-    
-    showNotification('Converting to image...', 'info');
-    
-    setTimeout(function() {
-        html2canvas(element, {
-            scale: 3, // Higher scale for better quality at smaller size
-            backgroundColor: '#ffffff',
-            logging: false,
-            useCORS: true,
-            allowTaint: false,
-            width: element.offsetWidth,
-            height: element.offsetHeight,
-            windowWidth: element.scrollWidth,
-            windowHeight: element.scrollHeight,
-            letterRendering: true,
-            imageTimeout: 0,
-            onclone: function(clonedDoc) {
-                const clonedElement = clonedDoc.getElementById('adminHallTicketContent');
-                if (clonedElement) {
-                    const allElements = clonedElement.querySelectorAll('*');
-                    allElements.forEach(el => {
-                        el.style.fontFamily = 'Arial, Helvetica, sans-serif';
-                        const currentColor = el.style.color;
-                        if (!currentColor || currentColor === '' || currentColor.includes('blue')) {
-                            el.style.color = '#000000';
-                        }
-                        el.style.backgroundColor = el.style.backgroundColor || '#ffffff';
-                    });
-                    
-                    const tables = clonedElement.querySelectorAll('table');
-                    tables.forEach(table => {
-                        table.style.borderCollapse = 'collapse';
-                        table.style.backgroundColor = '#ffffff';
-                    });
-                    
-                    const textNodes = clonedElement.querySelectorAll('div, td, th');
-                    textNodes.forEach(node => {
-                        if (node.textContent.trim()) {
-                            node.style.visibility = 'visible';
-                            node.style.opacity = '1';
-                        }
-                    });
-                }
+                `;
+                return;
             }
-        }).then(function(canvas) {
-            console.log('✅ Canvas created successfully:', canvas.width, 'x', canvas.height);
-            
-            canvas.toBlob(function(blob) {
-                if (!blob) {
-                    showNotification('Failed to create image file', 'error');
+
+            const groupedByClass = {};
+            allHallTickets.forEach(ticket => {
+                const classKey = ticket.studentClass || 'Unknown';
+                if (!groupedByClass[classKey]) {
+                    groupedByClass[classKey] = [];
+                }
+                groupedByClass[classKey].push(ticket);
+            });
+
+            let html = '';
+            const sortedClasses = Object.keys(groupedByClass).sort((a, b) => {
+                const classOrder = ['nursery', 'lkg', 'ukg', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+                const aIndex = classOrder.indexOf(a.toLowerCase());
+                const bIndex = classOrder.indexOf(b.toLowerCase());
+                if (aIndex === -1) return 1;
+                if (bIndex === -1) return -1;
+                return aIndex - bIndex;
+            });
+
+            sortedClasses.forEach(classCode => {
+                const classDisplay = classCode === 'nursery' ? 'Nursery' : 
+                                  classCode === 'lkg' ? 'LKG' : 
+                                  classCode === 'ukg' ? 'UKG' : 
+                                  `Class ${classCode}`;
+
+                const sortedTickets = groupedByClass[classCode].sort((a, b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+
+                html += `
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 1rem; margin: 0 0 1rem 0; border-radius: 8px;">${classDisplay}</h3>
+                        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                            <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Student</th>
+                                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Roll</th>
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Exam Name</th>
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Exam Period</th>
+                                        <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Source</th>
+                                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Status</th>
+                                        <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb; font-weight: 600;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+                sortedTickets.forEach(ticket => {
+                    const isIssued = ticket.status === 'issued';const statusColor = isIssued ? '#10b981' : '#f59e0b';
+                    const statusBg = isIssued ? '#f0fdf4' : '#fef3c7';
+                    const statusDisplay = isIssued ? 'Issued' : 'Pending';
+                    const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN');
+                    const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN');
+                    const source = ticket.issuedBy === 'receptionist' ? 'Receptionist' : 'Admin';
+                    const sourceColor = ticket.issuedBy === 'receptionist' ? '#3b82f6' : '#10b981';
+
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${ticket.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center; font-weight: 600;">${ticket.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${ticket.examName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${fromDate} to ${toDate}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">
+                                <span style="background: ${sourceColor}20; color: ${sourceColor}; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${source}</span>
+                            </td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <span style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${statusDisplay}</span>
+                            </td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                    ${!isIssued ? 
+                                        `<button onclick="issueHallTicketToStudent('${ticket.hallTicketId}', '${ticket.studentCode}')" style="background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Issue</button>` : 
+                                        '<span style="color: #10b981; font-weight: 600; font-size: 0.75rem; white-space: nowrap;">✓ Issued</span>'
+                                    }
+                                    <button onclick="downloadHallTicket('${ticket.hallTicketId}')" style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Download</button>
+                                    <button onclick="deleteHallTicket('${ticket.hallTicketId}')" style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `</tbody></table></div></div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ========== HALL TICKET DOWNLOAD WITH INVIGILATOR SIGNATURE COLUMN ==========
+        function downloadHallTicket(hallTicketId) {
+            try {
+                if (!allHallTickets || !allHallTickets.length) {
+                    showNotification('No hall tickets loaded. Click "Refresh All" first.', 'error');
                     return;
                 }
-                
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                const safeName = (ticket.studentName || 'Student').replace(/\s+/g, '_');
-                const fileName = `HallTicket_${safeName}_${ticket.studentCode || ticket.studentRoll}.png`;
-                link.download = fileName;
-                link.href = url;
-                link.click();
-                
-                setTimeout(() => {
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                showNotification('✅ Hall ticket downloaded!', 'success');
-                
-                const modal = document.getElementById('adminHallTicketPreview');
-                if (modal && document.body.contains(modal)) {
-                    setTimeout(() => {
-                        document.body.removeChild(modal);
-                    }, 2000);
+
+                const ticket = allHallTickets.find(t => t.hallTicketId === hallTicketId);
+                if (!ticket) {
+                    showNotification('Hall ticket not found. Please refresh and try again.', 'error');
+                    return;
                 }
-            }, 'image/png', 1.0);
+
+                if (typeof html2canvas === 'undefined') {
+                    showNotification('Image library not loaded. Refresh the page.', 'error');
+                    return;
+                }
+
+                const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                const toDate = new Date(ticket.toDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                // Build exam schedule table with INVIGILATOR SIGNATURE column
+                let examScheduleHTML = '';
+                if (ticket.examSchedule && Array.isArray(ticket.examSchedule) && ticket.examSchedule.length > 0) {
+                    examScheduleHTML += `<table style="width: 100%; border-collapse: collapse; margin-top: 5px; border: 1px solid #000; font-family: Arial, Helvetica, sans-serif;">`;
+                    examScheduleHTML += `<thead><tr>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Subject</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Date</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Day</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Timing</th>`;
+                    examScheduleHTML += `<th style="border: 1px solid #000; padding: 4px; background-color: #e8e8e8; font-weight: bold; font-size: 10px; color: #000000;">Invigilator Signature</th>`;
+                    examScheduleHTML += `</tr></thead><tbody>`;
+                    
+                    ticket.examSchedule.forEach(schedule => {
+                        if (schedule.date && schedule.exams && Array.isArray(schedule.exams)) {
+                            const scheduleDate = new Date(schedule.date);
+                            const formattedDate = scheduleDate.toLocaleDateString('en-IN', { 
+                                day: '2-digit', 
+                                month: 'short', 
+                                year: 'numeric' 
+                            });
+                            const dayName = scheduleDate.toLocaleDateString('en-IN', { weekday: 'short' });
+                            
+                            schedule.exams.forEach(exam => {
+                                examScheduleHTML += `<tr style="background: #ffffff;">`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.examName || 'N/A'}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${formattedDate}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${dayName}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 4px; font-size: 10px; color: #000000;">${exam.timing || 'N/A'}</td>`;
+                                examScheduleHTML += `<td style="border: 1px solid #000; padding: 20px; font-size: 10px; color: #000000; background: #ffffff;"></td>`;
+                                examScheduleHTML += `</tr>`;
+                            });
+                        }
+                    });
+                    
+                    examScheduleHTML += `</tbody></table>`;
+                }
+
+                let classDisplay = ticket.studentClass;
+                if (ticket.studentClass === 'nursery') classDisplay = 'Nursery';
+                else if (ticket.studentClass === 'lkg') classDisplay = 'LKG';
+                else if (ticket.studentClass === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + ticket.studentClass;
+
+                const modalOverlay = document.createElement('div');
+                modalOverlay.id = 'adminHallTicketPreview';
+                modalOverlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                `;
+
+                const contentWrapper = document.createElement('div');
+                contentWrapper.style.cssText = `
+                    background: white;
+                    border-radius: 10px;
+                    padding: 20px;
+                    max-width: 500px;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                `;
+
+                const hallTicketDiv = document.createElement('div');
+                hallTicketDiv.id = 'adminHallTicketContent';
+                hallTicketDiv.style.cssText = 'width: 400px; background: #ffffff; padding: 15px;';
+                
+                hallTicketDiv.innerHTML = `
+                    <div style="border: 2px solid #000000; padding: 12px; background: #ffffff;">
+                        <!-- Header Section -->
+                        <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 10px; background: #ffffff;">
+                            <table style="width: 100%; border-collapse: collapse; background: #ffffff;">
+                                <tr>
+                                    <td style="width: 50px; vertical-align: top; padding: 0;">
+                                        <img src="logo.png" alt="Logo" style="width: 40px; height: 40px; display: block;" onerror="this.style.display='none'">
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle; padding: 0 5px; background: #ffffff;">
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; color: #000000; margin: 0 0 4px 0; letter-spacing: 0.5px; line-height: 1.2; white-space: nowrap;">
+                                            VISWA BHARATHI SCHOOL
+                                        </div>
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
+                                            NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)
+                                        </div>
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; color: #000000; margin: 2px 0; line-height: 1.3;">
+                                            Cell: 6301444214, 8555950709
+                                        </div>
+                                    </td>
+                                    <td style="width: 50px;"></td>
+                                </tr>
+                            </table>
+                            <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 12px; font-weight: bold; color: #000000; margin: 8px 0 0 0; text-decoration: underline; text-transform: uppercase;">
+                                HALL TICKET
+                            </div>
+                            <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 11px; font-weight: bold; color: #000000; margin: 4px 0 0 0;">
+                                ${ticket.examName}
+                            </div>
+                        </div>
+                        
+                        <!-- Student Details -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 8px; background: #ffffff; font-family: Arial, Helvetica, sans-serif;">
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; width: 40%; font-weight: bold;">
+                                    Student Name:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${ticket.studentName}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                                    Class & Section:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${classDisplay}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                                    Roll Number:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${ticket.studentRoll}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000; font-weight: bold;">
+                                    Student Code:
+                                </td>
+                                <td style="padding: 3px 0; font-size: 10px; color: #000000;">
+                                    ${ticket.studentCode}
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <!-- Exam Schedule -->
+                        ${examScheduleHTML ? `
+                            <div style="margin: 8px 0; background: #ffffff;">
+                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; color: #000000; margin-bottom: 4px; border-bottom: 1px solid #000000; padding-bottom: 2px;">
+                                    EXAMINATION SCHEDULE
+                                </div>
+                                ${examScheduleHTML}
+                            </div>
+                        ` : ''}
+                        
+                        <!-- Instructions -->
+                        ${ticket.remarks ? `
+                        <div style="margin: 8px 0; padding: 6px; background: #f8f8f8; border: 1px solid #d0d0d0; border-radius: 3px; font-family: Arial, Helvetica, sans-serif;">
+                            <div style="font-weight: bold; margin-bottom: 3px; color: #000000; font-size: 9px;">INSTRUCTIONS:</div>
+                            <div style="font-size: 8px; color: #000000; line-height: 1.4;">${ticket.remarks}</div>
+                        </div>
+                        ` : ''}
+                        
+                        <!-- Signature -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: #ffffff;">
+                            <tr>
+                                <td style="width: 50%;"></td>
+                                <td style="width: 50%; text-align: center;">
+                                    <div style="border-top: 1px solid #000000; padding-top: 4px; margin: 0 auto; width: 100px;">
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 9px; font-weight: bold; color: #000000; margin: 2px 0;">
+                                            Principal
+                                        </div>
+                                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; font-weight: bold; color: #000000; margin: 2px 0;">
+                                            Viswa Bharathi High School
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = '⬇️ Download as PNG';
+                downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+                downloadBtn.onclick = function() {
+                    generateAdminHallTicketImage(hallTicketDiv, ticket);
+                };
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.textContent = '✕ Close';
+                closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
+                closeBtn.onclick = function() {
+                    document.body.removeChild(modalOverlay);
+                };
+
+                buttonContainer.appendChild(downloadBtn);
+                buttonContainer.appendChild(closeBtn);
+                
+                contentWrapper.appendChild(hallTicketDiv);
+                contentWrapper.appendChild(buttonContainer);
+                modalOverlay.appendChild(contentWrapper);
+                document.body.appendChild(modalOverlay);
+
+            } catch (error) {
+                console.error('Error in downloadHallTicket:', error);
+                showNotification('Error: ' + error.message, 'error');
+            }
+        }
+
+        function generateAdminHallTicketImage(element, ticket) {
+            if (typeof html2canvas === 'undefined') {
+                showNotification('Image library not loaded. Refresh the page.', 'error');
+                console.error('html2canvas is not loaded');
+                return;
+            }
             
-        }).catch(function(error) {
-            console.error('❌ html2canvas error:', error);
-            showNotification('Failed to generate image: ' + (error.message || 'Unknown error'), 'error');
-        });
-    }, 300);
-}
+            showNotification('Converting to image...', 'info');
+            
+            setTimeout(function() {
+                html2canvas(element, {
+                    scale: 3,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: false,
+                    width: element.offsetWidth,
+                    height: element.offsetHeight,
+                    windowWidth: element.scrollWidth,
+                    windowHeight: element.scrollHeight,
+                    letterRendering: true,
+                    imageTimeout: 0,
+                    onclone: function(clonedDoc) {
+                        const clonedElement = clonedDoc.getElementById('adminHallTicketContent');
+                        if (clonedElement) {
+                            const allElements = clonedElement.querySelectorAll('*');
+                            allElements.forEach(el => {
+                                el.style.fontFamily = 'Arial, Helvetica, sans-serif';
+                                const currentColor = el.style.color;
+                                if (!currentColor || currentColor === '' || currentColor.includes('blue')) {
+                                    el.style.color = '#000000';
+                                }
+                                el.style.backgroundColor = el.style.backgroundColor || '#ffffff';
+                            });
+                            
+                            const tables = clonedElement.querySelectorAll('table');
+                            tables.forEach(table => {
+                                table.style.borderCollapse = 'collapse';
+                                table.style.backgroundColor = '#ffffff';
+                            });
+                            
+                            const textNodes = clonedElement.querySelectorAll('div, td, th');
+                            textNodes.forEach(node => {
+                                if (node.textContent.trim()) {
+                                    node.style.visibility = 'visible';
+                                    node.style.opacity = '1';
+                                }
+                            });
+                        }
+                    }
+                }).then(function(canvas) {
+                    console.log('✅ Canvas created successfully:', canvas.width, 'x', canvas.height);
+                    
+                    canvas.toBlob(function(blob) {
+                        if (!blob) {
+                            showNotification('Failed to create image file', 'error');
+                            return;
+                        }
+                        
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        const safeName = (ticket.studentName || 'Student').replace(/\s+/g, '_');
+                        const fileName = `HallTicket_${safeName}_${ticket.studentCode || ticket.studentRoll}.png`;
+                        link.download = fileName;
+                        link.href = url;
+                        link.click();
+                        
+                        setTimeout(() => {
+                            URL.revokeObjectURL(url);
+                        }, 100);
+                        
+                        showNotification('✅ Hall ticket downloaded!', 'success');
+                        
+                        const modal = document.getElementById('adminHallTicketPreview');
+                        if (modal && document.body.contains(modal)) {
+                            setTimeout(() => {
+                                document.body.removeChild(modal);
+                            }, 2000);
+                        }
+                    }, 'image/png', 1.0);
+                    
+                }).catch(function(error) {
+                    console.error('❌ html2canvas error:', error);
+                    showNotification('Failed to generate image: ' + (error.message || 'Unknown error'), 'error');
+                });
+            }, 300);
+        }
 
-
-
+        // ===== SINGLE HALL TICKET GENERATION =====
         function showAdminGenerateHallTicket() {
             document.getElementById('adminGenerateHallTicketModal').style.display = 'flex';
             document.getElementById('hallTicketStep1').style.display = 'block';
@@ -1990,8 +2243,7 @@ function generateAdminHallTicketImage(element, ticket) {
                     }
                     
                     const examInputs = examsContainer.querySelectorAll('input[id^="adminExamName-"]');
-                    if (examInputs.length === 0) {
-                        showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
+                    if (examInputs.length === 0) {showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
                         return;
                     }
                     
@@ -2106,6 +2358,415 @@ function generateAdminHallTicketImage(element, ticket) {
             }
         }
 
+        // ===== BULK HALL TICKET GENERATION =====
+        function showAdminBulkHallTicket() {
+            document.getElementById('adminBulkHallTicketModal').style.display = 'flex';
+            resetBulkHallTicketForm();
+        }
+
+        function closeAdminBulkHallTicketModal() {
+            document.getElementById('adminBulkHallTicketModal').style.display = 'none';
+            resetBulkHallTicketForm();
+        }
+
+        function resetBulkHallTicketForm() {
+            currentBulkStep = 1;
+            bulkHallTicketData = {};
+            bulkStudentsList = [];
+            bulkExamSchedule = [];
+            
+            document.getElementById('bulkHallTicketBasicForm').reset();
+            document.getElementById('bulkStudentName').value = '';
+            document.getElementById('bulkStudentRoll').value = '';
+            
+            document.getElementById('bulkHallTicketStep1').style.display = 'block';
+            document.getElementById('bulkHallTicketStep2').style.display = 'none';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            
+            updateBulkStepIndicator(1);
+            updateBulkStudentsList();
+        }
+
+        function updateBulkStepIndicator(step) {
+            const steps = document.querySelectorAll('#bulkStepIndicator .step-item');
+            steps.forEach((stepItem, index) => {
+                const stepNumber = index + 1;
+                stepItem.classList.remove('active', 'completed');
+                
+                if (stepNumber < step) {
+                    stepItem.classList.add('completed');
+                } else if (stepNumber === step) {
+                    stepItem.classList.add('active');
+                }
+            });
+        }
+
+        document.getElementById('bulkHallTicketBasicForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const fromDate = new Date(formData.get('fromDate'));
+            const toDate = new Date(formData.get('toDate'));
+            
+            if (toDate < fromDate) {
+                showNotification('End date cannot be before start date', 'error');
+                return;
+            }
+            
+            bulkHallTicketData = {
+                examName: formData.get('examName'),
+                fromDate: formData.get('fromDate'),
+                toDate: formData.get('toDate'),
+                studentClass: formData.get('studentClass'),
+                remarks: formData.get('remarks') || ''
+            };
+            
+            goToBulkStep2();
+        });
+
+        function goBackToBulkStep1() {
+            currentBulkStep = 1;
+            document.getElementById('bulkHallTicketStep1').style.display = 'block';
+            document.getElementById('bulkHallTicketStep2').style.display = 'none';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            updateBulkStepIndicator(1);
+        }
+
+        function goToBulkStep2() {
+            currentBulkStep = 2;
+            document.getElementById('bulkHallTicketStep1').style.display = 'none';
+            document.getElementById('bulkHallTicketStep2').style.display = 'block';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            updateBulkStepIndicator(2);
+            updateBulkStudentsList();
+        }
+
+        function addBulkStudentToList() {
+            const name = document.getElementById('bulkStudentName').value.trim();
+            const roll = document.getElementById('bulkStudentRoll').value.trim();
+            
+            if (!name || !roll) {
+                showNotification('Please enter both student name and roll number', 'error');
+                return;
+            }
+            
+            if (parseInt(roll) < 1) {
+                showNotification('Roll number must be greater than 0', 'error');
+                return;
+            }
+            
+            if (bulkStudentsList.some(s => s.roll === roll)) {
+                showNotification('A student with this roll number already exists', 'error');
+                return;
+            }
+            
+            bulkStudentsList.push({
+                name: name,
+                roll: roll
+            });
+            
+            document.getElementById('bulkStudentName').value = '';
+            document.getElementById('bulkStudentRoll').value = '';
+            document.getElementById('bulkStudentName').focus();
+            
+            updateBulkStudentsList();
+            showNotification(`${name} added successfully!`);
+        }
+
+        function updateBulkStudentsList() {
+            const container = document.getElementById('bulkStudentsList');
+            const countSpan = document.getElementById('bulkStudentCount');
+            const nextBtn = document.getElementById('nextToBulkScheduleBtn');
+            
+            countSpan.textContent = bulkStudentsList.length;
+            
+            if (bulkStudentsList.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyBulkStudentsMessage">
+                        No students added yet
+                    </div>
+                `;
+                nextBtn.disabled = true;
+                return;
+            }
+            
+            nextBtn.disabled = false;
+            
+            let html = '';
+            bulkStudentsList.forEach((student, index) => {
+                html += `
+                    <div class="student-card">
+                        <div class="student-info">
+                            <div class="student-name">${student.name}</div>
+                            <div class="student-roll">Roll: ${student.roll}</div>
+                        </div>
+                        <button class="remove-student-btn" onclick="removeBulkStudent(${index})">
+                            🗑️ Remove
+                        </button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function removeBulkStudent(index) {
+            const student = bulkStudentsList[index];
+            bulkStudentsList.splice(index, 1);
+            updateBulkStudentsList();
+            showNotification(`${student.name} removed`);
+        }
+
+        function clearAllBulkStudents() {
+            if (bulkStudentsList.length === 0) return;
+            
+            if (confirm(`Are you sure you want to remove all ${bulkStudentsList.length} students?`)) {
+                bulkStudentsList = [];
+                updateBulkStudentsList();
+                showNotification('All students removed');
+            }
+        }
+
+        function goBackToBulkStep2() {
+            currentBulkStep = 2;
+            document.getElementById('bulkHallTicketStep1').style.display = 'none';
+            document.getElementById('bulkHallTicketStep2').style.display = 'block';
+            document.getElementById('bulkHallTicketStep3').style.display = 'none';
+            updateBulkStepIndicator(2);
+        }
+
+        function goToBulkStep3() {
+            if (bulkStudentsList.length === 0) {
+                showNotification('Please add at least one student', 'error');
+                return;
+            }
+            
+            currentBulkStep = 3;
+            document.getElementById('bulkHallTicketStep1').style.display = 'none';
+            document.getElementById('bulkHallTicketStep2').style.display = 'none';
+            document.getElementById('bulkHallTicketStep3').style.display = 'block';
+            updateBulkStepIndicator(3);
+            
+            document.getElementById('totalBulkStudentsCount').textContent = bulkStudentsList.length;
+            generateBulkExamScheduleForm();
+        }
+
+        function generateBulkExamScheduleForm() {
+            const container = document.getElementById('bulkExamScheduleContainer');
+            container.innerHTML = '';
+            
+            const fromDate = new Date(bulkHallTicketData.fromDate);
+            const toDate = new Date(bulkHallTicketData.toDate);
+            
+            const dates = [];
+            const currentDate = new Date(fromDate);
+            
+            while (currentDate <= toDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            dates.forEach((date, index) => {
+                const dateStr = date.toISOString().split('T')[0];
+                const displayDate = date.toLocaleDateString('en-IN', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                const dateSection = document.createElement('div');
+                dateSection.style.cssText = 'background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;';
+                dateSection.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h4 style="margin: 0; color: #1f2937;">📅 ${displayDate}</h4>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="button" onclick="setBulkExamCount('${dateStr}', 1)" 
+                                class="bulk-exam-count-btn" data-date="${dateStr}" data-count="1"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                1 Exam
+                            </button>
+                            <button type="button" onclick="setBulkExamCount('${dateStr}', 2)" 
+                                class="bulk-exam-count-btn" data-date="${dateStr}" data-count="2"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                2 Exams
+                            </button>
+                        </div>
+                    </div>
+                    <div id="bulk-exams-${dateStr}" style="display: none; margin-top: 1rem;"></div>
+                `;
+                
+                container.appendChild(dateSection);
+            });
+        }
+
+        function setBulkExamCount(dateStr, count) {
+            const buttons = document.querySelectorAll(`button[data-date="${dateStr}"]`);
+            buttons.forEach(btn => {
+                if (parseInt(btn.dataset.count) === count) {
+                    btn.style.background = '#3b82f6';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.background = 'white';
+                    btn.style.color = '#3b82f6';
+                }
+            });
+            
+            const examsContainer = document.getElementById(`bulk-exams-${dateStr}`);
+            examsContainer.style.display = 'block';
+            examsContainer.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                const examDiv = document.createElement('div');
+                examDiv.style.cssText = 'background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #cbd5e1;';
+                examDiv.innerHTML = `
+                    <h5 style="margin: 0 0 0.75rem 0; color: #475569;">${count === 1 ? 'Exam Details' : i === 1 ? '🌅 Forenoon Exam' : '🌆 Afternoon Exam'}</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Exam Name:</label>
+                            <input type="text" 
+                                id="bulkExamName-${dateStr}-${i}" 
+                                placeholder="e.g., Mathematics, Science" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Timing:</label>
+                            <input type="text" 
+                                id="bulkExamTiming-${dateStr}-${i}" 
+                                placeholder="e.g., 9:00 AM - 12:00 PM" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                    </div>
+                `;
+                examsContainer.appendChild(examDiv);
+            }
+        }
+
+        async function submitAllBulkHallTickets() {
+            try {
+                bulkExamSchedule = [];
+                const fromDate = new Date(bulkHallTicketData.fromDate);
+                const toDate = new Date(bulkHallTicketData.toDate);
+                
+                const dates = [];
+                const currentDate = new Date(fromDate);
+                
+                while (currentDate <= toDate) {
+                    dates.push(new Date(currentDate));
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+                
+                for (const date of dates) {
+                    const dateStr = date.toISOString().split('T')[0];
+                    const examsContainer = document.getElementById(`bulk-exams-${dateStr}`);
+                    
+                    if (!examsContainer || examsContainer.style.display === 'none') {
+                        showNotification(`Please configure exams for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const examInputs = examsContainer.querySelectorAll('input[id^="bulkExamName-"]');
+                    if (examInputs.length === 0) {
+                        showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const dateExams = [];
+                    for (let i = 1; i <= examInputs.length; i++) {
+                        const examName = document.getElementById(`bulkExamName-${dateStr}-${i}`);
+                        const examTiming = document.getElementById(`bulkExamTiming-${dateStr}-${i}`);
+                        
+                        if (!examName || !examName.value.trim()) {
+                            showNotification(`Please enter exam name for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        if (!examTiming || !examTiming.value.trim()) {
+                            showNotification(`Please enter exam timing for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        dateExams.push({
+                            examName: examName.value.trim(),
+                            timing: examTiming.value.trim()
+                        });
+                    }
+                    
+                    bulkExamSchedule.push({
+                        date: dateStr,
+                        exams: dateExams
+                    });
+                }
+                
+                let successCount = 0;
+                let failCount = 0;
+                
+                showNotification(`Generating ${bulkStudentsList.length} hall tickets...`, 'info');
+                
+                for (const student of bulkStudentsList) {
+                    const studentCode = generateStudentCode(bulkHallTicketData.studentClass, student.roll);
+                    
+                    const hallTicket = {
+                        hallTicketId: `HT_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                        examName: bulkHallTicketData.examName,
+                        fromDate: bulkHallTicketData.fromDate,
+                        toDate: bulkHallTicketData.toDate,
+                        studentName: student.name,
+                        studentRoll: student.roll,
+                        studentClass: bulkHallTicketData.studentClass,
+                        studentCode: studentCode,
+                        examSchedule: bulkExamSchedule,
+                        remarks: bulkHallTicketData.remarks,
+                        issuedBy: 'admin',
+                        createdAt: new Date().toISOString(),
+                        status: 'pending'
+                    };
+                    
+                    try {
+                        const response = await fetch(`${API_BASE}/admin/create-hall-ticket`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(hallTicket)
+                        });
+
+                        if (response.ok) {
+                            successCount++;
+                        } else {
+                            failCount++;
+                            console.error(`Failed for ${student.name}:`, await response.text());
+                        }
+                    } catch (error) {
+                        failCount++;
+                        console.error(`Error for ${student.name}:`, error);
+                    }
+                }
+                
+                if (successCount > 0) {
+                    showNotification(`✅ ${successCount} hall tickets created successfully!`);
+                }
+                
+                if (failCount > 0) {
+                    showNotification(`⚠️ ${failCount} hall tickets failed to create`, 'error');
+                }
+                
+                if (successCount === bulkStudentsList.length) {
+                    clearLocalCache();
+                    loadAllHallTickets();
+                    setTimeout(() => {
+                        closeAdminBulkHallTicketModal();
+                    }, 1500);
+                }
+                
+            } catch (error) {
+                console.error('Bulk hall ticket submission error:', error);
+                showNotification('Error creating hall tickets: ' + error.message, 'error');
+            }
+        }
+
         // ===== FEE CERTIFICATES FUNCTIONS =====
         
         function showViewFeeCertificates() {
@@ -2166,163 +2827,162 @@ function generateAdminHallTicketImage(element, ticket) {
             }
         }
 
-    function displayPendingFeeCertificates(certificates) {
-    const container = document.getElementById('pendingFeeCertificatesDisplay');
-    
-    if (certificates.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 3rem; color: #64748b;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
-                <p>No pending fee certificates</p>
-            </div>
-        `;
-        return;
-    }
-    
-    const groupedByClass = {};
-    certificates.forEach(cert => {
-        if (!groupedByClass[cert.studentClass]) {
-            groupedByClass[cert.studentClass] = [];
-        }
-        groupedByClass[cert.studentClass].push(cert);
-    });
-    
-    let html = '';
-    Object.keys(groupedByClass).sort().forEach(classCode => {
-        const classCerts = groupedByClass[classCode].sort((a,b) => 
-            parseInt(a.studentRoll) - parseInt(b.studentRoll)
-        );
-        
-        html += `
-            <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
-                border-left: 4px solid #f59e0b;">Class ${classCode}</h3>
-            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 700px;">
-                    <thead>
-                        <tr style="background: #f8fafc;">
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
-                            <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
-                            <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
-                            <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
-                            <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
-                            <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+        function displayPendingFeeCertificates(certificates) {
+            const container = document.getElementById('pendingFeeCertificatesDisplay');
+            
+            if (certificates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                        <p>No pending fee certificates</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const groupedByClass = {};
+            certificates.forEach(cert => {
+                if (!groupedByClass[cert.studentClass]) {
+                    groupedByClass[cert.studentClass] = [];
+                }
+                groupedByClass[cert.studentClass].push(cert);
+            });
+            
+            let html = '';
+            Object.keys(groupedByClass).sort().forEach(classCode => {
+                const classCerts = groupedByClass[classCode].sort((a,b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+                
+                html += `
+                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
+                        border-left: 4px solid #f59e0b;">Class ${classCode}</h3>
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 700px;">
+                            <thead>
+                                <tr style="background: #f8fafc;">
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                classCerts.forEach(cert => {
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                                    <button onclick="issueFeeCertificateToStudent('${cert.id}', '${cert.studentCode}')" 
+                                        style="background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                        Issue to Student
+                                    </button>
+                                    <button onclick="deleteFeeCertificate('${cert.id}')" 
+                                        style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-        `;
-        
-        classCerts.forEach(cert => {
-            html += `
-                <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                        <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                            <button onclick="issueFeeCertificateToStudent('${cert.id}', '${cert.studentCode}')" 
-                                style="background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                Issue to Student
-                            </button>
-                            <button onclick="deleteFeeCertificate('${cert.id}')" 
-                                style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        });
-        
-        html += '</tbody></table></div>';
-    });
-    
-    container.innerHTML = html;
-}
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
+            });
+            
+            container.innerHTML = html;
+        }
 
-       function displayIssuedFeeCertificates(certificates) {
-    const container = document.getElementById('issuedFeeCertificatesDisplay');
-    
-    if (certificates.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 3rem; color: #64748b;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
-                <p>No issued fee certificates</p>
-            </div>
-        `;
-        return;
-    }
-    
-    const groupedByClass = {};
-    certificates.forEach(cert => {
-        if (!groupedByClass[cert.studentClass]) {
-            groupedByClass[cert.studentClass] = [];
-        }
-        groupedByClass[cert.studentClass].push(cert);
-    });
-    
-    let html = '';
-    Object.keys(groupedByClass).sort().forEach(classCode => {
-        const classCerts = groupedByClass[classCode].sort((a,b) => 
-            parseInt(a.studentRoll) - parseInt(b.studentRoll)
-        );
-        
-        html += `
-            <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
-                border-left: 4px solid #10b981;">Class ${classCode}</h3>
-            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 700px;">
-                    <thead>
-                        <tr style="background: #f8fafc;">
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
-                            <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
-                            <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
-                            <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
-                            <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
-                            <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+        function displayIssuedFeeCertificates(certificates) {
+            const container = document.getElementById('issuedFeeCertificatesDisplay');
+            
+            if (certificates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                        <p>No issued fee certificates</p></div>
+                `;
+                return;
+            }
+            
+            const groupedByClass = {};
+            certificates.forEach(cert => {
+                if (!groupedByClass[cert.studentClass]) {
+                    groupedByClass[cert.studentClass] = [];
+                }
+                groupedByClass[cert.studentClass].push(cert);
+            });
+            
+            let html = '';
+            Object.keys(groupedByClass).sort().forEach(classCode => {
+                const classCerts = groupedByClass[classCode].sort((a,b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+                
+                html += `
+                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
+                        border-left: 4px solid #10b981;">Class ${classCode}</h3>
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 700px;">
+                            <thead>
+                                <tr style="background: #f8fafc;">
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                classCerts.forEach(cert => {
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                                    <button onclick="downloadFeeCertificateImage('${cert.id}')" 
+                                        style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                        Download
+                                    </button>
+                                    <button onclick="deleteFeeCertificate('${cert.id}')" 
+                                        style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-        `;
-        
-        classCerts.forEach(cert => {
-            html += `
-                <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                        <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                            <button onclick="downloadFeeCertificateImage('${cert.id}')" 
-                                style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                Download
-                            </button>
-                            <button onclick="deleteFeeCertificate('${cert.id}')" 
-                                style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                Delete
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-        });
-        
-        html += '</tbody></table></div>';
-    });
-    
-    container.innerHTML = html;
-}
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
+            });
+            
+            container.innerHTML = html;
+        }
 
         async function issueFeeCertificateToStudent(certificateId, studentCode) {
             if (!confirm('Issue this fee certificate to the student?')) return;
@@ -2397,256 +3057,247 @@ function generateAdminHallTicketImage(element, ticket) {
             }
         }
 
-// ✅ Classic Black Border Fee Certificate (Left logo, centered heading, right padding 50px)
-function downloadFeeCertificateImage(certificateId) {
-  try {
-    const certificate = allFeeCertificates.find(c => c.id === certificateId);
-    if (!certificate) {
-      showNotification('Certificate not found. Please refresh and try again.', 'error');
-      return;
-    }
-    if (typeof html2canvas === 'undefined') {
-      showNotification('Image generation library not loaded. Please refresh the page.', 'error');
-      return;
-    }
+        function downloadFeeCertificateImage(certificateId) {
+            try {
+                const certificate = allFeeCertificates.find(c => c.id === certificateId);
+                if (!certificate) {
+                    showNotification('Certificate not found. Please refresh and try again.', 'error');
+                    return;
+                }
+                if (typeof html2canvas === 'undefined') {
+                    showNotification('Image generation library not loaded. Please refresh the page.', 'error');
+                    return;
+                }
 
-    const currentDate = new Date().toLocaleDateString('en-IN');
-    const academicYear = certificate.academicYear || '2024-25';
-    const fatherName   = certificate.fatherName || 'N/A';
-    const remarks      = certificate.remarks || 'No remarks';
+                const currentDate = new Date().toLocaleDateString('en-IN');
+                const academicYear = certificate.academicYear || '2024-25';
+                const fatherName = certificate.fatherName || 'N/A';
+                const remarks = certificate.remarks || 'No remarks';
+                
+                let classDisplay = certificate.studentClass;
+                if (classDisplay === 'nursery') classDisplay = 'Nursery';
+                else if (classDisplay === 'lkg') classDisplay = 'LKG';
+                else if (classDisplay === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + certificate.studentClass;
 
-    // Format class display
-    let classDisplay = certificate.studentClass;
-    if (classDisplay === 'nursery') classDisplay = 'Nursery';
-    else if (classDisplay === 'lkg') classDisplay = 'LKG';
-    else if (classDisplay === 'ukg') classDisplay = 'UKG';
-    else classDisplay = 'Class ' + certificate.studentClass;
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center;
+                    background:rgba(0,0,0,.75); padding:20px;
+                `;
 
-    // Modal overlay
-    const overlay = document.createElement('div');
-    overlay.style.cssText = `
-      position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center;
-      background:rgba(0,0,0,.75); padding:20px;
-    `;
+                const sheet = document.createElement('div');
+                sheet.style.cssText = `
+                    background:#fff; border-radius:12px; padding:20px; max-width:940px; width:100%;
+                    max-height:92vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,.25);
+                `;
 
-    const sheet = document.createElement('div');
-    sheet.style.cssText = `
-      background:#fff; border-radius:12px; padding:20px; max-width:940px; width:100%;
-      max-height:92vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,.25);
-    `;
+                const card = document.createElement('div');
+                card.id = 'feeCertificateContent';
+                card.style.cssText = `
+                    width:820px; margin:0 auto; background:#fff; font-family:"Times New Roman", Georgia, serif; color:#000;
+                `;
 
-    const card = document.createElement('div');
-    card.id = 'feeCertificateContent';
-    card.style.cssText = `
-      width:820px; margin:0 auto; background:#fff; font-family:"Times New Roman", Georgia, serif; color:#000;
-    `;
+                card.innerHTML = `
+                    <div style="border:3px solid #000; padding:26px; background:#fff; line-height:1.45; color:#000;
+                                -webkit-print-color-adjust:exact; print-color-adjust:exact;">
 
-    // ✅ Certificate Layout
-    card.innerHTML = `
-      <div style="border:3px solid #000; padding:26px; background:#fff; line-height:1.45; color:#000;
-                  -webkit-print-color-adjust:exact; print-color-adjust:exact;">
+                        <!-- Header -->
+                        <div style="display:grid; grid-template-columns:110px 1fr; column-gap:20px; align-items:center;">
+                            <div>
+                                <img src="logo.png" alt="School Logo" width="100" height="100"
+                                    style="width:100px;height:100px;object-fit:contain" crossorigin="anonymous"
+                                    onerror="this.style.display='none'">
+                            </div>
 
-        <!-- Header -->
-        <div style="display:grid; grid-template-columns:110px 1fr; column-gap:20px; align-items:center;">
-          <div>
-            <img src="logo.png" alt="School Logo" width="100" height="100"
-                 style="width:100px;height:100px;object-fit:contain" crossorigin="anonymous"
-                 onerror="this.style.display='none'">
-          </div>
+                            <div style="text-align:center; padding-right:50px;">
+                                <div style="font-size:24px; font-weight:700; letter-spacing:.5px; margin:2px 0 6px 0;">
+                                    VISWA BHARATHI SCHOOL
+                                </div>
+                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. A.P.
+                                </div>
+                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                                    Cell: 6301444214, 8555950709
+                                </div>
+                            </div>
+                        </div>
 
-          <!-- ✅ Centered text, padded 50px to right -->
-          <div style="text-align:center; padding-right:50px;">
-            <div style="font-size:24px; font-weight:700; letter-spacing:.5px; margin:2px 0 6px 0;">
-              VISWA BHARATHI HIGH SCHOOL
-            </div>
-            <div style="font-size:13px; font-weight:700; margin:3px 0;">
-              NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. A.P.
-            </div>
-            <div style="font-size:13px; font-weight:700; margin:3px 0;">
-              Cell: 6301444214, 8555950709
-            </div>
-          </div>
-        </div>
+                        <!-- Title -->
+                        <div style="text-align:center; margin:18px 0 6px 0; font-size:20px; font-weight:700; text-decoration:underline;">
+                            FEE CERTIFICATE
+                        </div>
+                        <div style="height:2px; background:#000; margin:8px 0 18px 0;"></div>
 
-        <!-- Title -->
-        <div style="text-align:center; margin:18px 0 6px 0; font-size:20px; font-weight:700; text-decoration:underline;">
-          FEE CERTIFICATE
-        </div>
-        <div style="height:2px; background:#000; margin:8px 0 18px 0;"></div>
+                        <!-- Certificate Info -->
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:14px;">
+                            <div><span style="font-weight:700">Certificate No:</span> FC${certificate.id || Date.now()}</div>
+                            <div><span style="font-weight:700">Date of Issue:</span> ${currentDate}</div>
+                            <div><span style="font-weight:700">Academic Year:</span> ${academicYear}</div>
+                        </div>
 
-        <!-- Certificate Info -->
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:14px;">
-          <div><span style="font-weight:700">Certificate No:</span> FC${certificate.id || Date.now()}</div>
-          <div><span style="font-weight:700">Date of Issue:</span> ${currentDate}</div>
-          <div><span style="font-weight:700">Academic Year:</span> ${academicYear}</div>
-        </div>
+                        <!-- Student Details -->
+                        <div style="margin:22px 0 10px 0; font-size:16px; font-weight:700;">STUDENT DETAILS</div>
+                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; font-size:14px;">
+                            <div><span style="font-weight:700">Student Name:</span> ${certificate.studentName}</div>
+                            <div><span style="font-weight:700">Student Code:</span> ${certificate.studentCode}</div>
+                            <div><span style="font-weight:700">Roll Number:</span> ${certificate.studentRoll}</div>
+                            <div><span style="font-weight:700">Father's Name:</span> ${fatherName}</div>
+                            <div><span style="font-weight:700">Class:</span> ${classDisplay}</div>
+                        </div>
 
-        <!-- Student Details -->
-        <div style="margin:22px 0 10px 0; font-size:16px; font-weight:700;">STUDENT DETAILS</div>
-        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; font-size:14px;">
-          <div><span style="font-weight:700">Student Name:</span> ${certificate.studentName}</div>
-          <div><span style="font-weight:700">Student Code:</span> ${certificate.studentCode}</div>
-          <div><span style="font-weight:700">Roll Number:</span> ${certificate.studentRoll}</div>
-          <div><span style="font-weight:700">Father's Name:</span> ${fatherName}</div>
-          <div><span style="font-weight:700">Class:</span> ${classDisplay}</div>
-        </div>
+                        <!-- Fee Details -->
+                        <div style="margin:24px 0 10px 0; font-size:16px; font-weight:700;">FEE DETAILS</div>
+                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                        <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                            <thead>
+                                <tr>
+                                    <th style="border:1px solid #000; padding:10px; text-align:left; background:#f2f2f2; font-weight:700;">Description</th>
+                                    <th style="border:1px solid #000; padding:10px; text-align:right; background:#f2f2f2; font-weight:700;">Amount (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Total Fee Amount</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalFee||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Amount Paid</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.amountPaid||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Remaining Due</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.remainingDue||0).toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-        <!-- Fee Details -->
-        <div style="margin:24px 0 10px 0; font-size:16px; font-weight:700;">FEE DETAILS</div>
-        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
-        <table style="width:100%; border-collapse:collapse; font-size:14px;">
-          <thead>
-            <tr>
-              <th style="border:1px solid #000; padding:10px; text-align:left; background:#f2f2f2; font-weight:700;">Description</th>
-              <th style="border:1px solid #000; padding:10px; text-align:right; background:#f2f2f2; font-weight:700;">Amount (₹)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="border:1px solid #000; padding:10px;">Total Fee Amount</td>
-              <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalFee||0).toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #000; padding:10px;">Amount Paid</td>
-              <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.amountPaid||0).toFixed(2)}</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #000; padding:10px;">Remaining Due</td>
-              <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.remainingDue||0).toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
+                        <!-- Remarks -->
+                        <div style="margin:16px 0 0 0; font-size:14px;">
+                            <span style="font-weight:700;">Remarks:</span> ${remarks}
+                        </div>
 
-        <!-- Remarks -->
-        <div style="margin:16px 0 0 0; font-size:14px;">
-          <span style="font-weight:700;">Remarks:</span> ${remarks}
-        </div>
+                        <!-- Signature -->
+                        <div style="margin-top:46px; display:flex; justify-content:flex-end;">
+                            <div style="min-width:220px; text-align:center;">
+                                <div style="border-top:2px solid #000; margin-bottom:6px;"></div>
+                                <div style="font-size:13px; font-weight:700;">Correspondent</div>
+                                <div style="font-size:13px; font-weight:700;">Viswa Bharathi High School</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
 
-        <!-- Signature -->
-        <div style="margin-top:46px; display:flex; justify-content:flex-end;">
-          <div style="min-width:220px; text-align:center;">
-            <div style="border-top:2px solid #000; margin-bottom:6px;"></div>
-            <div style="font-size:13px; font-weight:700;">Correspondent</div>
-            <div style="font-size:13px; font-weight:700;">Viswa Bharathi High School</div>
-          </div>
-        </div>
-      </div>
-    `;
+                const actions = document.createElement('div');
+                actions.style.cssText = 'display:flex; gap:10px; justify-content:center; margin-top:16px;';
+                const dl = document.createElement('button');
+                dl.textContent = '⬇️ Download PNG';
+                dl.style.cssText = 'background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+                dl.onclick = () => generateFeeCertificateImage(card, certificate);
+                const close = document.createElement('button');
+                close.textContent = '✕ Close';
+                close.style.cssText = 'background:#ef4444;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+                close.onclick = () => document.body.removeChild(overlay);
 
-    // Buttons
-    const actions = document.createElement('div');
-    actions.style.cssText = 'display:flex; gap:10px; justify-content:center; margin-top:16px;';
-    const dl = document.createElement('button');
-    dl.textContent = '⬇️ Download PNG';
-    dl.style.cssText = 'background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
-    dl.onclick = () => generateFeeCertificateImage(card, certificate);
-    const close = document.createElement('button');
-    close.textContent = '✕ Close';
-    close.style.cssText = 'background:#ef4444;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
-    close.onclick = () => document.body.removeChild(overlay);
+                actions.append(dl, close);
+                sheet.append(card, actions);
+                overlay.appendChild(sheet);
+                document.body.appendChild(overlay);
 
-    actions.append(dl, close);
-    sheet.append(card, actions);
-    overlay.appendChild(sheet);
-    document.body.appendChild(overlay);
+            } catch (err) {
+                console.error('downloadFeeCertificateImage error:', err);
+                showNotification('Error preparing certificate: ' + err.message, 'error');
+            }
+        }
 
-  } catch (err) {
-    console.error('downloadFeeCertificateImage error:', err);
-    showNotification('Error preparing certificate: ' + err.message, 'error');
-  }
-}
+        function generateFeeCertificateImage(element, certificate) {
+            const notify = (m,t) => { try { showNotification(m,t); } catch(_) {} };
 
+            element.style.maxWidth = '820px';
+            element.style.width = '820px';
+            element.style.margin = '0 auto';
 
-function generateFeeCertificateImage(element, certificate) {
-  const notify = (m,t) => { try { showNotification(m,t); } catch(_) {} };
+            const onClone = (doc) => {
+                doc.querySelectorAll('#feeCertificateContent *').forEach(n => {
+                    n.style.color = '#000';
+                    if (n.tagName === 'IMG') n.setAttribute('crossorigin','anonymous');
+                });
+            };
 
-  element.style.maxWidth = '820px';
-  element.style.width = '820px';
-  element.style.margin = '0 auto';
+            const trimCanvas = (canvas) => {
+                const ctx = canvas.getContext('2d');
+                const { width, height } = canvas;
+                const data = ctx.getImageData(0, 0, width, height).data;
+                let top=null,left=null,right=null,bottom=null;
+                for (let y=0; y<height; y++) {
+                    for (let x=0; x<width; x++) {
+                        const a = data[(y*width+x)*4+3];
+                        if (a !== 0) { if (top===null) top=y; bottom=y; if (left===null||x<left) left=x; if (right===null||x>right) right=x; }
+                    }
+                }
+                if (top===null) return canvas;
+                const w = right-left+1, h = bottom-top+1;
+                const out = document.createElement('canvas');
+                out.width = w; out.height = h;
+                out.getContext('2d').drawImage(canvas, left, top, w, h, 0, 0, w, h);
+                return out;
+            };
 
-  const onClone = (doc) => {
-    doc.querySelectorAll('#feeCertificateContent *').forEach(n => {
-      n.style.color = '#000';
-      if (n.tagName === 'IMG') n.setAttribute('crossorigin','anonymous');
-    });
-  };
+            const padCanvas = (canvas, cssMarginPx, cssWidth) => {
+                const scale = canvas.width / cssWidth;
+                const pad = Math.round(cssMarginPx * scale);
+                const out = document.createElement('canvas');
+                out.width  = canvas.width  + pad * 2;
+                out.height = canvas.height + pad * 2;
+                const ctx = out.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, out.width, out.height);
+                ctx.drawImage(canvas, pad, pad);
+                return out;
+            };
 
-  const trimCanvas = (canvas) => {
-    const ctx = canvas.getContext('2d');
-    const { width, height } = canvas;
-    const data = ctx.getImageData(0, 0, width, height).data;
-    let top=null,left=null,right=null,bottom=null;
-    for (let y=0; y<height; y++) {
-      for (let x=0; x<width; x++) {
-        const a = data[(y*width+x)*4+3];
-        if (a !== 0) { if (top===null) top=y; bottom=y; if (left===null||x<left) left=x; if (right===null||x>right) right=x; }
-      }
-    }
-    if (top===null) return canvas;
-    const w = right-left+1, h = bottom-top+1;
-    const out = document.createElement('canvas');
-    out.width = w; out.height = h;
-    out.getContext('2d').drawImage(canvas, left, top, w, h, 0, 0, w, h);
-    return out;
-  };
+            if (!window.html2canvas) {
+                notify('Image library not loaded. Please refresh.', 'error');
+                return;
+            }
 
-  const padCanvas = (canvas, cssMarginPx, cssWidth) => {
-    const scale = canvas.width / cssWidth;
-    const pad = Math.round(cssMarginPx * scale);
-    const out = document.createElement('canvas');
-    out.width  = canvas.width  + pad * 2;
-    out.height = canvas.height + pad * 2;
-    const ctx = out.getContext('2d');
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, out.width, out.height);
-    ctx.drawImage(canvas, pad, pad);
-    return out;
-  };
+            notify('Generating certificate image...', 'info');
 
-  if (!window.html2canvas) {
-    notify('Image library not loaded. Please refresh.', 'error');
-    return;
-  }
-
-  notify('Generating certificate image...', 'info');
-
-  html2canvas(element, {
-    scale: 3,
-    backgroundColor: '#ffffff',
-    logging: false,
-    useCORS: true,
-    allowTaint: false,
-    scrollX: 0,
-    scrollY: 0,
-    width: element.offsetWidth,
-    height: element.offsetHeight,
-    windowWidth: element.offsetWidth,
-    windowHeight: element.offsetHeight,
-    onclone: onClone
-  })
-  .then(canvas => {
-    const trimmed = trimCanvas(canvas);
-    const padded  = padCanvas(trimmed, 24, element.offsetWidth);
-    padded.toBlob(blob => {
-      if (!blob) { notify('Could not create image file', 'error'); return; }
-      const url = URL.createObjectURL(blob);
-      const safeName = (certificate?.studentName || 'Student').replace(/\s+/g, '_');
-      const a = document.createElement('a');
-      a.download = `FeeCertificate_${safeName}_${certificate?.studentCode || ''}.png`;
-      a.href = url;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 250);
-      notify('✅ Fee certificate downloaded successfully!', 'success');
-    }, 'image/png');
-  })
-  .catch(err => {
-    console.error('html2canvas (certificate) error:', err);
-    notify('❌ Failed to generate image: ' + (err.message || 'Unknown error'), 'error');
-  });
-}
-
-
+            html2canvas(element, {
+                scale: 3,
+                backgroundColor: '#ffffff',
+                logging: false,
+                useCORS: true,
+                allowTaint: false,
+                scrollX: 0,
+                scrollY: 0,
+                width: element.offsetWidth,
+                height: element.offsetHeight,
+                windowWidth: element.offsetWidth,
+                windowHeight: element.offsetHeight,
+                onclone: onClone
+            })
+            .then(canvas => {
+                const trimmed = trimCanvas(canvas);
+                const padded  = padCanvas(trimmed, 24, element.offsetWidth);
+                padded.toBlob(blob => {
+                    if (!blob) { notify('Could not create image file', 'error'); return; }
+                    const url = URL.createObjectURL(blob);
+                    const safeName = (certificate?.studentName || 'Student').replace(/\s+/g, '_');
+                    const a = document.createElement('a');
+                    a.download = `FeeCertificate_${safeName}_${certificate?.studentCode || ''}.png`;
+                    a.href = url;
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 250);
+                    notify('✅ Fee certificate downloaded successfully!', 'success');
+                }, 'image/png');
+            })
+            .catch(err => {
+                console.error('html2canvas (certificate) error:', err);
+                notify('❌ Failed to generate image: ' + (err.message || 'Unknown error'), 'error');
+            });
+        }
 
         // ===== QR CODE FUNCTIONS =====
         
@@ -2734,17 +3385,16 @@ function generateFeeCertificateImage(element, certificate) {
             }, 'image/png');
         }
 
-        function showAdminBulkHallTicket() {
-            showNotification('Bulk hall ticket generation feature coming soon!', 'info');
-        }
-
         // Initialize on page load
         window.onload = function() {
             console.log('✅ Admin Dashboard loaded successfully');
-            console.log('✅ FIXED: Cache-busting with session clear enabled');
-            console.log('✅ FIXED: All text in certificates now BLACK BOLD');
-            console.log('✅ All delete operations clear cache properly');
+            console.log('✅ FIXED: Cache-busting with proper no-cache headers');
+            console.log('✅ FIXED: Bulk hall ticket generation implemented');
+            console.log('✅ FIXED: Invigilator signature column added to hall tickets');
         };
     </script>
+
+
+  
 </body>
 </html>
