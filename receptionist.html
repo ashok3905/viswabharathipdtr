@@ -1726,331 +1726,275 @@
 
     // ========== DOWNLOAD FEE CERTIFICATE (SAME AS ADMIN) ==========
     // ========== DOWNLOAD FEE CERTIFICATE (FIXED VERSION) ==========
+// ========== DOWNLOAD FEE CERTIFICATE (EXACT STRUCTURE WITH AUTO-TRIM) ==========
 function downloadFeeCertificateImage(certificateId) {
     try {
         const certificate = allCertificatesGlobal.find(c => c.id === certificateId);
         if (!certificate) {
-            showNotification('Certificate not found. Please refresh the page and try again.', 'error');
-            console.error('Certificate ID not found:', certificateId);
+            showNotification('Certificate not found. Please refresh and try again.', 'error');
             return;
         }
-
         if (typeof html2canvas === 'undefined') {
             showNotification('Image generation library not loaded. Please refresh the page.', 'error');
-            console.error('html2canvas is not loaded');
             return;
         }
 
-        showNotification('Generating certificate image...', 'info');
-
         const currentDate = new Date().toLocaleDateString('en-IN');
-        
-        const academicYear = certificate.academicYear || '2024-2025';
+        const academicYear = certificate.academicYear || '2024-25';
         const fatherName = certificate.fatherName || 'N/A';
         const remarks = certificate.remarks || 'No remarks';
         
         let classDisplay = certificate.studentClass;
-        if (certificate.studentClass === 'nursery') classDisplay = 'Nursery';
-        else if (certificate.studentClass === 'lkg') classDisplay = 'LKG';
-        else if (certificate.studentClass === 'ukg') classDisplay = 'UKG';
+        if (classDisplay === 'nursery') classDisplay = 'Nursery';
+        else if (classDisplay === 'lkg') classDisplay = 'LKG';
+        else if (classDisplay === 'ukg') classDisplay = 'UKG';
         else classDisplay = 'Class ' + certificate.studentClass;
 
-        // Create modal preview
-        const modalOverlay = document.createElement('div');
-        modalOverlay.id = 'feeCertificatePreview';
-        modalOverlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center;
+            background:rgba(0,0,0,.75); padding:20px;
         `;
 
-        const contentWrapper = document.createElement('div');
-        contentWrapper.style.cssText = `
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
+        const sheet = document.createElement('div');
+        sheet.style.cssText = `
+            background:#fff; border-radius:12px; padding:20px; max-width:940px; width:100%;
+            max-height:92vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,.25);
         `;
 
-        const certificateDiv = document.createElement('div');
-        certificateDiv.id = 'feeCertificateContent';
-        certificateDiv.style.cssText = 'width: 800px; background: #ffffff; padding: 40px;';
-        
-        certificateDiv.innerHTML = `
-            <div style="border: 3px solid #000000; padding: 30px; background: #ffffff;">
-                <!-- Header Section -->
-                <div style="border-bottom: 3px solid #000000; padding-bottom: 20px; margin-bottom: 25px; background: #ffffff;">
-                    <table style="width: 100%; border-collapse: collapse; background: #ffffff;">
-                        <tr>
-                            <td style="width: 120px; vertical-align: top; padding: 0;">
-                                <img src="logo.png" alt="Logo" style="width: 100px; height: 100px; display: block;" onerror="this.style.display='none'">
-                            </td>
-                            <td style="text-align: center; vertical-align: middle; padding: 0 10px; background: #ffffff;">
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: bold; color: #000000; margin: 0 0 12px 0; letter-spacing: 1px; line-height: 1.2;">
-                                    VISWA BHARATHI HIGH SCHOOL
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin: 6px 0; line-height: 1.4;">
-                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. (A.P.)
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; margin: 6px 0; line-height: 1.4;">
-                                    Cell: 6301444214, 8555950709
-                                </div>
-                            </td>
-                            <td style="width: 120px;"></td>
-                        </tr>
-                    </table>
-                    <div style="font-family: Arial, Helvetica, sans-serif; text-align: center; font-size: 22px; font-weight: bold; color: #000000; margin: 20px 0 0 0; text-decoration: underline; text-transform: uppercase;">
-                        FEE CERTIFICATE
+        const card = document.createElement('div');
+        card.id = 'feeCertificateContent';
+        card.style.cssText = `
+            width:820px; margin:0 auto; background:#fff; font-family:"Times New Roman", Georgia, serif; color:#000;
+        `;
+
+        card.innerHTML = `
+            <div style="border:3px solid #000; padding:26px; background:#fff; line-height:1.45; color:#000;
+                        -webkit-print-color-adjust:exact; print-color-adjust:exact;">
+
+                <!-- Header -->
+                <div style="display:grid; grid-template-columns:110px 1fr; column-gap:20px; align-items:center;">
+                    <div>
+                        <img src="logo.png" alt="School Logo" width="100" height="100"
+                            style="width:100px;height:100px;object-fit:contain" crossorigin="anonymous"
+                            onerror="this.style.display='none'">
+                    </div>
+
+                    <div style="text-align:center; padding-right:50px;">
+                        <div style="font-size:24px; font-weight:700; letter-spacing:.5px; margin:2px 0 6px 0;">
+                            VISWA BHARATHI SCHOOL
+                        </div>
+                        <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                            NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. A.P.
+                        </div>
+                        <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                            Cell: 6301444214, 8555950709
+                        </div>
                     </div>
                 </div>
-                
+
+                <!-- Title -->
+                <div style="text-align:center; margin:18px 0 6px 0; font-size:20px; font-weight:700; text-decoration:underline;">
+                    FEE CERTIFICATE
+                </div>
+                <div style="height:2px; background:#000; margin:8px 0 18px 0;"></div>
+
                 <!-- Certificate Info -->
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #ffffff; font-family: Arial, Helvetica, sans-serif;">
-                    <tr>
-                        <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                            <b>Certificate No:</b> FC${certificate.id || Date.now()}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                            <b>Date of Issue:</b> ${currentDate}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                            <b>Academic Year:</b> ${academicYear}
-                        </td>
-                    </tr>
-                </table>
-                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:14px;">
+                    <div><span style="font-weight:700">Certificate No:</span> FC${certificate.id || Date.now()}</div>
+                    <div><span style="font-weight:700">Date of Issue:</span> ${currentDate}</div>
+                    <div><span style="font-weight:700">Academic Year:</span> ${academicYear}</div>
+                </div>
+
                 <!-- Student Details -->
-                <div style="margin-bottom: 20px; background: #ffffff;">
-                    <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #000000;">
-                        STUDENT DETAILS
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif; background: #ffffff;">
-                        <tr>
-                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                                <b>Student Name:</b> ${certificate.studentName}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                                <b>Student Code:</b> ${certificate.studentCode}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                                <b>Roll Number:</b> ${certificate.studentRoll}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                                <b>Father's Name:</b> ${fatherName}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 0; font-size: 14px; color: #000000;">
-                                <b>Class:</b> ${classDisplay}
-                            </td>
-                        </tr>
-                    </table>
+                <div style="margin:22px 0 10px 0; font-size:16px; font-weight:700;">STUDENT DETAILS</div>
+                <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; font-size:14px;">
+                    <div><span style="font-weight:700">Student Name:</span> ${certificate.studentName}</div>
+                    <div><span style="font-weight:700">Student Code:</span> ${certificate.studentCode}</div>
+                    <div><span style="font-weight:700">Roll Number:</span> ${certificate.studentRoll}</div>
+                    <div><span style="font-weight:700">Father's Name:</span> ${fatherName}</div>
+                    <div><span style="font-weight:700">Class:</span> ${classDisplay}</div>
                 </div>
-                
+
                 <!-- Fee Details -->
-                <div style="margin-bottom: 20px; background: #ffffff;">
-                    <div style="border-bottom: 2px solid #000000; padding-bottom: 8px; margin-bottom: 12px; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; color: #000000;">
-                        FEE DETAILS
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif; background: #ffffff;">
-                        <thead>
-                            <tr style="background-color: #e8e8e8;">
-                                <th style="border: 1px solid #000000; padding: 10px; text-align: left; font-size: 14px; color: #000000; font-weight: bold;">
-                                    Description
-                                </th>
-                                <th style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: #000000; font-weight: bold;">
-                                    Amount (₹)
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background: #ffffff;">
-                                <td style="border: 1px solid #000000; padding: 10px; font-size: 14px; color: #000000;">
-                                    Total Fee Amount
-                                </td>
-                                <td style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: #000000;">
-                                    ${certificate.totalFee.toFixed(2)}
-                                </td>
-                            </tr>
-                            <tr style="background: #ffffff;">
-                                <td style="border: 1px solid #000000; padding: 10px; font-size: 14px; color: #000000;">
-                                    Amount Paid
-                                </td>
-                                <td style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: #27ae60; font-weight: bold;">
-                                    ${certificate.amountPaid.toFixed(2)}
-                                </td>
-                            </tr>
-                            <tr style="background-color: #e8e8e8;">
-                                <td style="border: 1px solid #000000; padding: 10px; font-size: 14px; color: #000000; font-weight: bold;">
-                                    Remaining Due
-                                </td>
-                                <td style="border: 1px solid #000000; padding: 10px; text-align: right; font-size: 14px; color: ${certificate.remainingDue > 0 ? '#e74c3c' : '#27ae60'}; font-weight: bold;">
-                                    ${certificate.remainingDue.toFixed(2)}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Remarks -->
-                <div style="margin-bottom: 30px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #000000; background: #ffffff;">
-                    <b>Remarks:</b> ${remarks}
-                </div>
-                
-                <!-- Signature -->
-                <table style="width: 100%; border-collapse: collapse; margin-top: 40px; background: #ffffff;">
-                    <tr>
-                        <td style="width: 50%;"></td>
-                        <td style="width: 50%; text-align: center;">
-                            <div style="border-top: 2px solid #000000; padding-top: 8px; margin: 0 auto; width: 200px;">
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #000000; margin: 5px 0;">
-                                    Correspondent
-                                </div>
-                                <div style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #000000; margin: 5px 0;">
-                                    Viswa Bharathi High School
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                <div style="margin:24px 0 10px 0; font-size:16px; font-weight:700;">FEE DETAILS</div>
+                <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                    <thead>
+                        <tr>
+                            <th style="border:1px solid #000; padding:10px; text-align:left; background:#f2f2f2; font-weight:700;">Description</th>
+                            <th style="border:1px solid #000; padding:10px; text-align:right; background:#f2f2f2; font-weight:700;">Amount (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border:1px solid #000; padding:10px;">Total Fee Amount</td>
+                            <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalFee||0).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid #000; padding:10px;">Amount Paid</td>
+                            <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.amountPaid||0).toFixed(2)}</td>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid #000; padding:10px;">Remaining Due</td>
+                            <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.remainingDue||0).toFixed(2)}</td>
+                        </tr>
+                    </tbody>
                 </table>
+
+                <!-- Remarks -->
+                <div style="margin:16px 0 0 0; font-size:14px;">
+                    <span style="font-weight:700;">Remarks:</span> ${remarks}
+                </div>
+
+                <!-- Signature -->
+                <div style="margin-top:46px; display:flex; justify-content:flex-end;">
+                    <div style="min-width:220px; text-align:center;">
+                        <div style="border-top:2px solid #000; margin-bottom:6px;"></div>
+                        <div style="font-size:13px; font-weight:700;">Correspondent</div>
+                        <div style="font-size:13px; font-weight:700;">Viswa Bharathi School</div>
+                    </div>
+                </div>
             </div>
         `;
 
-        const buttonContainer = document.createElement('div');
-        buttonContainer.style.cssText = 'margin-top: 20px; text-align: center; display: flex; gap: 10px; justify-content: center;';
-        
-        const downloadBtn = document.createElement('button');
-        downloadBtn.textContent = '⬇️ Download as PNG';
-        downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-        downloadBtn.onclick = function() {
-            generateFeeCertificateImage(certificateDiv, certificate);
-        };
-        
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = '✕ Close';
-        closeBtn.style.cssText = 'background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
-        closeBtn.onclick = function() {
-            document.body.removeChild(modalOverlay);
-        };
+        const actions = document.createElement('div');
+        actions.style.cssText = 'display:flex; gap:10px; justify-content:center; margin-top:16px;';
+        const dl = document.createElement('button');
+        dl.textContent = '⬇️ Download PNG';
+        dl.style.cssText = 'background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+        dl.onclick = () => generateFeeCertificateImage(card, certificate);
+        const close = document.createElement('button');
+        close.textContent = '✕ Close';
+        close.style.cssText = 'background:#ef4444;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+        close.onclick = () => document.body.removeChild(overlay);
 
-        buttonContainer.appendChild(downloadBtn);
-        buttonContainer.appendChild(closeBtn);
-        
-        contentWrapper.appendChild(certificateDiv);
-        contentWrapper.appendChild(buttonContainer);
-        modalOverlay.appendChild(contentWrapper);
-        document.body.appendChild(modalOverlay);
+        actions.append(dl, close);
+        sheet.append(card, actions);
+        overlay.appendChild(sheet);
+        document.body.appendChild(overlay);
 
-    } catch (error) {
-        console.error('Error in downloadFeeCertificateImage:', error);
-        showNotification('Error preparing certificate: ' + error.message, 'error');
+    } catch (err) {
+        console.error('downloadFeeCertificateImage error:', err);
+        showNotification('Error preparing certificate: ' + err.message, 'error');
     }
 }
 
-// ========== GENERATE FEE CERTIFICATE IMAGE (FIXED VERSION) ==========
+// ========== GENERATE FEE CERTIFICATE IMAGE (WITH AUTO-TRIM & PADDING) ==========
 function generateFeeCertificateImage(element, certificate) {
-    showNotification('Converting to image...', 'info');
-    
-    // Wait a moment for fonts to load
-    setTimeout(function() {
-        html2canvas(element, {
-            scale: 2,
-            backgroundColor: '#ffffff',
-            logging: false,
-            useCORS: true,
-            allowTaint: false,
-            width: element.offsetWidth,
-            height: element.offsetHeight,
-            windowWidth: element.scrollWidth,
-            windowHeight: element.scrollHeight,
-            letterRendering: true,
-            imageTimeout: 0,
-            onclone: function(clonedDoc) {
-                const clonedElement = clonedDoc.getElementById('feeCertificateContent');
-                if (clonedElement) {
-                    // Force all elements to use system fonts and black color
-                    const allElements = clonedElement.querySelectorAll('*');
-                    allElements.forEach(el => {
-                        el.style.fontFamily = 'Arial, Helvetica, sans-serif';
-                        el.style.color = el.style.color || '#000000';
-                        el.style.backgroundColor = el.style.backgroundColor || '#ffffff';
-                    });
-                    
-                    // Ensure tables render properly
-                    const tables = clonedElement.querySelectorAll('table');
-                    tables.forEach(table => {
-                        table.style.borderCollapse = 'collapse';
-                        table.style.backgroundColor = '#ffffff';
-                    });
-                    
-                    // Force all text to be visible
-                    const textNodes = clonedElement.querySelectorAll('div, td, th, b');
-                    textNodes.forEach(node => {
-                        if (node.textContent.trim()) {
-                            node.style.visibility = 'visible';
-                            node.style.opacity = '1';
-                            node.style.display = node.style.display || (node.tagName === 'TD' || node.tagName === 'TH' ? 'table-cell' : 'block');
-                        }
-                    });
+    const notify = (m, t) => { 
+        try { 
+            showNotification(m, t); 
+        } catch(_) {} 
+    };
+
+    element.style.maxWidth = '820px';
+    element.style.width = '820px';
+    element.style.margin = '0 auto';
+
+    const onClone = (doc) => {
+        doc.querySelectorAll('#feeCertificateContent *').forEach(n => {
+            n.style.color = '#000';
+            if (n.tagName === 'IMG') n.setAttribute('crossorigin', 'anonymous');
+        });
+    };
+
+    const trimCanvas = (canvas) => {
+        const ctx = canvas.getContext('2d');
+        const { width, height } = canvas;
+        const data = ctx.getImageData(0, 0, width, height).data;
+        let top = null, left = null, right = null, bottom = null;
+        
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const a = data[(y * width + x) * 4 + 3];
+                if (a !== 0) {
+                    if (top === null) top = y;
+                    bottom = y;
+                    if (left === null || x < left) left = x;
+                    if (right === null || x > right) right = x;
                 }
             }
-        }).then(function(canvas) {
-            console.log('Canvas created successfully:', canvas.width, 'x', canvas.height);
-            
-            canvas.toBlob(function(blob) {
-                if (!blob) {
-                    showNotification('Failed to create image file', 'error');
-                    return;
-                }
-                
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                const fileName = `FeeCertificate_${certificate.studentName.replace(/\s+/g, '_')}_${certificate.studentCode}.png`;
-                link.download = fileName;
-                link.href = url;
-                link.click();
-                
-                setTimeout(() => {
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                showNotification('✅ Fee certificate downloaded successfully!');
-                
-                const modal = document.getElementById('feeCertificatePreview');
-                if (modal && document.body.contains(modal)) {
-                    setTimeout(() => {
-                        document.body.removeChild(modal);
-                    }, 1000);
-                }
-            }, 'image/png', 1.0);
-            
-        }).catch(function(error) {
-            console.error('html2canvas error:', error);
-            showNotification('Failed to generate image. Error: ' + (error.message || 'Unknown'), 'error');
-        });
-    }, 300); // Wait 300ms for fonts to load
-}
+        }
+        
+        if (top === null) return canvas;
+        
+        const w = right - left + 1, h = bottom - top + 1;
+        const out = document.createElement('canvas');
+        out.width = w;
+        out.height = h;
+        out.getContext('2d').drawImage(canvas, left, top, w, h, 0, 0, w, h);
+        return out;
+    };
 
+    const padCanvas = (canvas, cssMarginPx, cssWidth) => {
+        const scale = canvas.width / cssWidth;
+        const pad = Math.round(cssMarginPx * scale);
+        const out = document.createElement('canvas');
+        out.width = canvas.width + pad * 2;
+        out.height = canvas.height + pad * 2;
+        const ctx = out.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, out.width, out.height);
+        ctx.drawImage(canvas, pad, pad);
+        return out;
+    };
+
+    if (!window.html2canvas) {
+        notify('Image library not loaded. Please refresh.', 'error');
+        return;
+    }
+
+    notify('Generating certificate image...', 'info');
+
+    html2canvas(element, {
+        scale: 3,
+        backgroundColor: '#ffffff',
+        logging: false,
+        useCORS: true,
+        allowTaint: false,
+        scrollX: 0,
+        scrollY: 0,
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+        windowWidth: element.offsetWidth,
+        windowHeight: element.offsetHeight,
+        onclone: onClone
+    })
+    .then(canvas => {
+        const trimmed = trimCanvas(canvas);
+        const padded = padCanvas(trimmed, 24, element.offsetWidth);
+        padded.toBlob(blob => {
+            if (!blob) {
+                notify('Could not create image file', 'error');
+                return;
+            }
+            const url = URL.createObjectURL(blob);
+            const safeName = (certificate?.studentName || 'Student').replace(/\s+/g, '_');
+            const a = document.createElement('a');
+            a.download = `FeeCertificate_${safeName}_${certificate?.studentCode || ''}.png`;
+            a.href = url;
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(url), 250);
+            notify('✅ Fee certificate downloaded successfully!', 'success');
+            
+            // Close modal after download
+            setTimeout(() => {
+                const modal = overlay || document.body.querySelector('[style*="z-index:10000"]');
+                if (modal && document.body.contains(modal)) {
+                    try {
+                        document.body.removeChild(modal);
+                    } catch(_) {}
+                }
+            }, 1000);
+        }, 'image/png');
+    })
+    .catch(err => {
+        console.error('html2canvas (certificate) error:', err);
+        notify('❌ Failed to generate image: ' + (err.message || 'Unknown error'), 'error');
+    });
+}
     // ========== HALL TICKET FUNCTIONS ==========
     function issueHallTicket() {
         document.getElementById('hallTicketModal').style.display = 'flex';
