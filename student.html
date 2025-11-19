@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6777562815878010"
-     crossorigin="anonymous"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: rgb(52,164,220); min-height: 100vh; padding: 20px; }
@@ -2464,7 +2462,7 @@ async function showHallTicketDetail(hallTicketId) {
                 else classDisplay = 'Class ' + ticket.studentClass;
 
                 const modalOverlay = document.createElement('div');
-                modalOverlay.id = 'adminHallTicketPreview';
+                modalOverlay.id = 'studentHallTicketPreview'; 
                 modalOverlay.style.cssText = `
                     position: fixed;
                     top: 0;
@@ -2490,7 +2488,7 @@ async function showHallTicketDetail(hallTicketId) {
                 `;
 
                 const hallTicketDiv = document.createElement('div');
-                hallTicketDiv.id = 'adminHallTicketContent';
+                hallTicketDiv.id = 'studentHallTicketContent';
                 hallTicketDiv.style.cssText = 'width: 400px; background: #ffffff; padding: 15px;';
                 
                 hallTicketDiv.innerHTML = `
@@ -2588,7 +2586,7 @@ async function showHallTicketDetail(hallTicketId) {
                                             Principal
                                         </div>
                                         <div style="font-family: Arial, Helvetica, sans-serif; font-size: 8px; font-weight: bold; color: #000000; margin: 2px 0;">
-                                            Viswa Bharathi High School
+                                            Viswa Bharathi School
                                         </div>
                                     </div>
                                 </td>
@@ -2604,7 +2602,7 @@ async function showHallTicketDetail(hallTicketId) {
                 downloadBtn.textContent = '⬇️ Download as PNG';
                 downloadBtn.style.cssText = 'background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 16px;';
                 downloadBtn.onclick = function() {
-                    generateAdminHallTicketImage(hallTicketDiv, ticket);
+                    generateStudentHallTicketImage(hallTicketDiv, ticket); 
                 };
                 
                 const closeBtn = document.createElement('button');
@@ -2922,7 +2920,7 @@ function generateStudentHallTicketImage(element, ticket) {
             printWindow.document.write(`
                 <html>
                     <head>
-                        <title>Fee Certificate - Viswabharathi School</title>
+                        <title>Fee Certificate - Viswa Bharathi School</title>
                         <style>
                             body { font-family: 'Times New Roman', serif; margin: 0; padding: 20px; }
                             .certificate-container { border: 2px solid #000; padding: 40px; }
@@ -3121,7 +3119,7 @@ function generateStudentHallTicketImage(element, ticket) {
                             <div class="certificate-footer">
                                 <div class="signature-line"></div>
                                 <p class="signature-text">Principal</p>
-                                <p class="signature-title">Viswabharathi School</p>
+                                <p class="signature-title">Viswa Bharathi School</p>
                             </div>
                         </div>
                     </div>
@@ -3324,7 +3322,7 @@ function generateStudentHallTicketImage(element, ticket) {
                             <div class="certificate-footer">
                                 <div class="signature-line"></div>
                                 <p class="signature-text">Principal</p>
-                                <p class="signature-title">Viswabharathi School</p>
+                                <p class="signature-title">Viswa Bharathi School</p>
                             </div>
                         </div>
                     </div>
@@ -3818,4 +3816,3 @@ function generateStudentHallTicketImage(element, ticket) {
     </script>
 </body>
 </html>
-
