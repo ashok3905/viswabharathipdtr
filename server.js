@@ -1,6 +1,3 @@
-// NOTE: This is the COMPLETE server.js file with ALL existing functionality preserved
-// Fee certificate endpoints have been added following the hall ticket pattern
-
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
@@ -9,11 +6,8 @@ const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Use local file for development
 const DATA_FILE = 'schoolData.json';
 
-// Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
@@ -27,13 +21,12 @@ const storage = multer.diskStorage({
 const upload = multer({ 
     storage: storage,
     limits: {
-        fileSize: 10 * 1024 * 1024 // 10MB limit
+        fileSize: 10 * 1024 * 1024
     },
     fileFilter: function (req, file, cb) {
         const allowedTypes = /jpeg|jpg|png|gif|pdf|doc|docx/;
         const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = allowedTypes.test(file.mimetype);
-        
         if (mimetype && extname) {
             return cb(null, true);
         } else {
@@ -42,46 +35,40 @@ const upload = multer({
     }
 });
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '.')));
 app.use('/uploads', express.static('uploads'));
 
-// Input sanitization function
 function sanitizeInput(input) {
     if (typeof input !== 'string') return input;
     return input.trim().replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 }
+
 function setNoCacheHeaders(res) {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     res.setHeader('Surrogate-Control', 'no-store');
 }
-// Validate date range for attendance
+
 function isValidAttendanceDate(month, year) {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
-    
     if (year < currentYear - 1 || year > currentYear + 1) {
         return false;
     }
-    
     if (year === currentYear && month > currentMonth) {
         return false;
     }
-    
     return true;
 }
 
-// Validate roll number format
 function isValidRollNumber(rollNumber) {
     return /^\d{1,2}$/.test(rollNumber) && parseInt(rollNumber) >= 1 && parseInt(rollNumber) <= 60;
 }
 
-// Parse student code for CB25 format
 function parseStudentCode(studentCode) {
     const nurseryMatch = studentCode.match(/^CB25N(\d{3})$/i);
     if (nurseryMatch) {
@@ -92,7 +79,6 @@ function parseStudentCode(studentCode) {
             type: 'nursery'
         };
     }
-    
     const lkgMatch = studentCode.match(/^CB25L(\d{3})$/i);
     if (lkgMatch) {
         return {
@@ -102,7 +88,6 @@ function parseStudentCode(studentCode) {
             type: 'lkg'
         };
     }
-    
     const ukgMatch = studentCode.match(/^CB25U(\d{3})$/i);
     if (ukgMatch) {
         return {
@@ -112,7 +97,6 @@ function parseStudentCode(studentCode) {
             type: 'ukg'
         };
     }
-    
     const classMatch = studentCode.match(/^CB25-(0[1-9]|10)-([1-9]|[1-5][0-9]|60)$/i);
     if (classMatch) {
         return {
@@ -122,42 +106,45 @@ function parseStudentCode(studentCode) {
             type: 'class'
         };
     }
-    
     return null;
 }
 
-// Generate student code from class and roll
+// Replace generateStudentCode() in server.js (around line 80)
+
 function generateStudentCode(studentClass, studentRoll) {
     const classStr = studentClass.toString().toLowerCase();
     const rollNum = parseInt(studentRoll);
     
+    // Nursery
     if (classStr === 'nursery' && rollNum >= 1 && rollNum <= 999) {
         return `CB25N${rollNum.toString().padStart(3, '0')}`;
-    } else if (classStr === 'lkg' && rollNum >= 1 && rollNum <= 999) {
+    }
+    
+    // LKG
+    if (classStr === 'lkg' && rollNum >= 1 && rollNum <= 999) {
         return `CB25L${rollNum.toString().padStart(3, '0')}`;
-    } else if (classStr === 'ukg' && rollNum >= 1 && rollNum <= 999) {
+    }
+    
+    // UKG
+    if (classStr === 'ukg' && rollNum >= 1 && rollNum <= 999) {
         return `CB25U${rollNum.toString().padStart(3, '0')}`;
-    } else {
-        const classNum = parseInt(studentClass);
-        if (classNum >= 1 && classNum <= 10 && rollNum >= 1 && rollNum <= 60) {
-            const formattedClass = classNum.toString().padStart(2, '0');
-            return `CB25-${formattedClass}-${rollNum}`;
-        }
+    }
+    
+    // Classes 1-10 - CHANGED FROM 60 TO 999
+    const classNum = parseInt(studentClass);
+    if (classNum >= 1 && classNum <= 10 && rollNum >= 1 && rollNum <= 999) {
+        const formattedClass = classNum.toString().padStart(2, '0');
+        return `CB25-${formattedClass}-${rollNum}`;
     }
     
     return null;
 }
 
-// Validate class codes
 function isValidClassCode(classCode) {
-    const validClasses = [
-        'nursery', 'lkg', 'ukg',
-        '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'
-    ];
+    const validClasses = ['nursery', 'lkg', 'ukg', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
     return validClasses.includes(classCode.toLowerCase());
 }
 
-// Ensure uploads directory exists
 async function ensureUploadsDir() {
     try {
         await fs.access('uploads');
@@ -168,63 +155,57 @@ async function ensureUploadsDir() {
     }
 }
 
-// Initialize data file if it doesn't exist
 async function initializeData() {
     try {
         await fs.access(DATA_FILE);
         console.log('✅ Data file exists');
-        
         const data = await readData();
         let updated = false;
-        
-        // Migrate old notification structure to new one
         if (data.notifications && typeof data.notifications === 'object' && !Array.isArray(data.notifications)) {
             console.log('🔄 Migrating old notification structure to new array format...');
             const oldNotifications = data.notifications;
             data.notifications = [];
-            
-            // Migrate admin notifications
             if (oldNotifications.admin && Array.isArray(oldNotifications.admin)) {
                 data.notifications.push(...oldNotifications.admin);
                 console.log(`✅ Migrated ${oldNotifications.admin.length} admin notifications`);
             }
-            
-            // Migrate faculty notifications
             if (oldNotifications.faculty && Array.isArray(oldNotifications.faculty)) {
                 data.notifications.push(...oldNotifications.faculty);
                 console.log(`✅ Migrated ${oldNotifications.faculty.length} faculty notifications`);
             }
-            
             updated = true;
         }
-        
-        // CRITICAL: Add studentFeeCertificates if missing
+        if (!data.studentMasterRecords) {
+            data.studentMasterRecords = {};
+            updated = true;
+            console.log('✅ Added studentMasterRecords field');
+        }
+        if (data.receptionistFeeCertificates && !data.feeCertificates) {
+            data.feeCertificates = data.receptionistFeeCertificates;
+            delete data.receptionistFeeCertificates;
+            updated = true;
+            console.log('✅ Renamed receptionistFeeCertificates to feeCertificates');
+        }
+        if (!data.feeCertificates) {
+            data.feeCertificates = [];
+            updated = true;
+        }
         if (!data.studentFeeCertificates) {
             data.studentFeeCertificates = {};
             updated = true;
-            console.log('✅ Added studentFeeCertificates field');
         }
-        
-        if (!data.receptionistFeeCertificates) {
-            data.receptionistFeeCertificates = [];
-            updated = true;
-        }
-        
         if (!data.hallTickets) {
             data.hallTickets = [];
             updated = true;
         }
-        
         if (!data.studentHallTickets) {
             data.studentHallTickets = {};
             updated = true;
         }
-        
         if (!data.notifications || !Array.isArray(data.notifications)) {
             data.notifications = [];
             updated = true;
         }
-        
         if (updated) {
             await writeData(data);
             console.log('✅ Data structure updated successfully');
@@ -236,8 +217,9 @@ async function initializeData() {
             assignmentResults: {},
             progressCards: {},
             monthlyAttendance: [],
-            receptionistFeeCertificates: [],
-            studentFeeCertificates: {}, // NEW: For issued certificates only
+            studentMasterRecords: {},
+            feeCertificates: [],
+            studentFeeCertificates: {},
             hallTickets: [],
             studentHallTickets: {},
             notifications: [],
@@ -252,42 +234,38 @@ async function initializeData() {
     }
 }
 
-// Read data from JSON file
 async function readData() {
     try {
         const data = await fs.readFile(DATA_FILE, 'utf8');
         const parsedData = JSON.parse(data);
-        
-        // Ensure all required fields exist
         if (!parsedData.facultyPosts) parsedData.facultyPosts = {};
         if (!parsedData.assignments) parsedData.assignments = {};
         if (!parsedData.assignmentResults) parsedData.assignmentResults = {};
         if (!parsedData.progressCards) parsedData.progressCards = {};
         if (!parsedData.monthlyAttendance) parsedData.monthlyAttendance = [];
-        if (!parsedData.receptionistFeeCertificates) parsedData.receptionistFeeCertificates = [];
-        if (!parsedData.studentFeeCertificates) parsedData.studentFeeCertificates = {}; // NEW
+        if (!parsedData.studentMasterRecords) parsedData.studentMasterRecords = {};
+        if (!parsedData.feeCertificates) parsedData.feeCertificates = [];
+        if (!parsedData.studentFeeCertificates) parsedData.studentFeeCertificates = {};
         if (!parsedData.hallTickets) parsedData.hallTickets = [];
         if (!parsedData.studentHallTickets) parsedData.studentHallTickets = {};
-        
-        // CRITICAL FIX: Convert old notification structure to array
+        if (parsedData.receptionistFeeCertificates && !parsedData.feeCertificates) {
+            parsedData.feeCertificates = parsedData.receptionistFeeCertificates;
+            delete parsedData.receptionistFeeCertificates;
+        }
         if (!parsedData.notifications || typeof parsedData.notifications !== 'object') {
             parsedData.notifications = [];
         } else if (!Array.isArray(parsedData.notifications)) {
             const oldNotifications = parsedData.notifications;
             parsedData.notifications = [];
-            
             if (oldNotifications.admin && Array.isArray(oldNotifications.admin)) {
                 parsedData.notifications.push(...oldNotifications.admin);
             }
-            
             if (oldNotifications.faculty && Array.isArray(oldNotifications.faculty)) {
                 parsedData.notifications.push(...oldNotifications.faculty);
             }
         }
-        
         if (!parsedData.history) parsedData.history = { admin: [], faculty: {}, receptionist: [] };
         if (!parsedData.history.receptionist) parsedData.history.receptionist = [];
-        
         return parsedData;
     } catch (error) {
         console.error('❌ Error reading data:', error);
@@ -297,8 +275,9 @@ async function readData() {
             assignmentResults: {},
             progressCards: {},
             monthlyAttendance: [],
-            receptionistFeeCertificates: [],
-            studentFeeCertificates: {},  // NEW
+            studentMasterRecords: {},
+            feeCertificates: [],
+            studentFeeCertificates: {},
             hallTickets: [],
             studentHallTickets: {},
             notifications: [],
@@ -311,10 +290,8 @@ async function readData() {
     }
 }
 
-// Write data to JSON file with backup
 async function writeData(data) {
     try {
-        // Create backup
         try {
             const backupFile = DATA_FILE + '.backup';
             const currentData = await fs.readFile(DATA_FILE, 'utf8');
@@ -322,26 +299,21 @@ async function writeData(data) {
         } catch (backupError) {
             console.log('⚠️ Could not create backup:', backupError.message);
         }
-        
-        // Ensure all required fields
         if (!data.facultyPosts) data.facultyPosts = {};
         if (!data.assignments) data.assignments = {};
         if (!data.assignmentResults) data.assignmentResults = {};
         if (!data.progressCards) data.progressCards = {};
         if (!data.monthlyAttendance) data.monthlyAttendance = [];
-        if (!data.receptionistFeeCertificates) data.receptionistFeeCertificates = [];
-        if (!data.studentFeeCertificates) data.studentFeeCertificates = {}; // NEW
+        if (!data.studentMasterRecords) data.studentMasterRecords = {};
+        if (!data.feeCertificates) data.feeCertificates = [];
+        if (!data.studentFeeCertificates) data.studentFeeCertificates = {};
         if (!data.hallTickets) data.hallTickets = [];
         if (!data.studentHallTickets) data.studentHallTickets = {};
-        
-        // Ensure notifications is always an array
         if (!Array.isArray(data.notifications)) {
             data.notifications = [];
         }
-        
         if (!data.history) data.history = { admin: [], faculty: {}, receptionist: [] };
         if (!data.history.receptionist) data.history.receptionist = [];
-        
         await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
         console.log('✅ Data written successfully');
         return true;
@@ -351,10 +323,8 @@ async function writeData(data) {
     }
 }
 
-// Helper function to clean expired posts and notifications
 function cleanExpiredPosts(data) {
     const now = new Date();
-    
     if (data.facultyPosts) {
         Object.keys(data.facultyPosts).forEach(classCode => {
             Object.keys(data.facultyPosts[classCode]).forEach(type => {
@@ -365,7 +335,6 @@ function cleanExpiredPosts(data) {
             });
         });
     }
-    
     if (data.assignments) {
         Object.keys(data.assignments).forEach(classCode => {
             data.assignments[classCode] = data.assignments[classCode].filter(assignment => {
@@ -374,7 +343,6 @@ function cleanExpiredPosts(data) {
             });
         });
     }
-    
     if (data.progressCards) {
         Object.keys(data.progressCards).forEach(classCode => {
             data.progressCards[classCode] = data.progressCards[classCode].filter(card => {
@@ -383,30 +351,24 @@ function cleanExpiredPosts(data) {
             });
         });
     }
-    
-    // Clean expired notifications
     if (Array.isArray(data.notifications)) {
         data.notifications = data.notifications.filter(notif => {
             if (!notif.expiryDate) return true;
             return new Date(notif.expiryDate) > now;
         });
     }
-    
     return data;
 }
 
-// Helper function to add to history
 function addToHistory(data, type, userCode, post) {
     if (!data.history) {
         data.history = { admin: [], faculty: {}, receptionist: [] };
     }
-    
     const historyPost = {
         ...post,
         type: type,
         originalDate: post.date || post.postedAt
     };
-    
     if (userCode === 'admin') {
         if (!data.history.admin) data.history.admin = [];
         data.history.admin.push(historyPost);
@@ -422,38 +384,30 @@ function addToHistory(data, type, userCode, post) {
     }
 }
 
-// ===== NOTIFICATION SYSTEM ENDPOINTS (ALL EXISTING - PRESERVED) =====
-
-// 1. Create Notification (Admin only)
 app.post('/api/admin/notifications', upload.single('file'), async (req, res) => {
     try {
         console.log('📩 Notification request received');
         console.log('Body:', req.body);
         console.log('File:', req.file);
-
         let { title, message, type, targetAudience, targetClass, displayDays, priority } = req.body;
-        
         title = sanitizeInput(title);
         message = sanitizeInput(message);
         type = sanitizeInput(type) || 'general';
         targetAudience = sanitizeInput(targetAudience) || 'all';
         targetClass = sanitizeInput(targetClass) || 'all';
         priority = sanitizeInput(priority) || 'normal';
-        
         if (!title || !message) {
             return res.status(400).json({ 
                 success: false,
                 error: 'Title and message are required' 
             });
         }
-
         if (title.length > 200 || message.length > 1000) {
             return res.status(400).json({ 
                 success: false,
                 error: 'Title or message too long' 
             });
         }
-
         const parsedDisplayDays = parseInt(displayDays);
         if (!displayDays || isNaN(parsedDisplayDays) || parsedDisplayDays < 1 || parsedDisplayDays > 365) {
             return res.status(400).json({ 
@@ -461,17 +415,12 @@ app.post('/api/admin/notifications', upload.single('file'), async (req, res) => 
                 error: 'Display days must be between 1 and 365' 
             });
         }
-
         const data = await readData();
-        
-        // Ensure notifications is an array
         if (!Array.isArray(data.notifications)) {
             data.notifications = [];
         }
-
         const now = new Date();
         const expiryDate = new Date(now.getTime() + (parsedDisplayDays * 24 * 60 * 60 * 1000));
-        
         const notification = {
             id: `notif_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             source: 'admin',
@@ -488,14 +437,11 @@ app.post('/api/admin/notifications', upload.single('file'), async (req, res) => 
             file: req.file ? `/uploads/${req.file.filename}` : null,
             fileName: req.file ? req.file.originalname : null
         };
-        
         data.notifications.push(notification);
-        
         addToHistory(data, 'notification-sent', 'admin', {
             text: `Notification sent: ${notification.title} to ${targetAudience}`,
             date: notification.createdAt
         });
-        
         if (await writeData(data)) {
             console.log('✅ Notification created:', notification.id);
             res.json({ success: true, notification: notification });
@@ -516,22 +462,18 @@ app.post('/api/admin/notifications', upload.single('file'), async (req, res) => 
     }
 });
 
-// 2. Get All Notifications (Admin view)
 app.get('/api/admin/notifications', async (req, res) => {
     try {
         setNoCacheHeaders(res); 
         let data = await readData();
         data = cleanExpiredPosts(data);
         await writeData(data);
-        
         if (!Array.isArray(data.notifications)) {
             return res.json([]);
         }
-        
         const adminNotifications = data.notifications
             .filter(notif => notif.source === 'admin')
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        
         res.json(adminNotifications);
     } catch (error) {
         console.error('❌ Error fetching admin notifications:', error);
@@ -539,37 +481,28 @@ app.get('/api/admin/notifications', async (req, res) => {
     }
 });
 
-// 3. Delete Single Notification (Admin only)
 app.delete('/api/admin/notifications/:notificationId', async (req, res) => {
     try {
         const { notificationId } = req.params;
         const sanitizedNotificationId = sanitizeInput(notificationId);
-        
         if (!sanitizedNotificationId) {
             return res.status(400).json({ error: 'Notification ID is required' });
         }
-        
         const data = await readData();
-        
         if (!Array.isArray(data.notifications)) {
             return res.status(404).json({ error: 'Notification not found' });
         }
-        
         const initialLength = data.notifications.length;
-        
         data.notifications = data.notifications.filter(n => 
             !(n.id === sanitizedNotificationId && n.source === 'admin')
         );
-        
         if (data.notifications.length === initialLength) {
             return res.status(404).json({ error: 'Notification not found' });
         }
-        
         addToHistory(data, 'notification-deleted', 'admin', {
             text: `Notification deleted: ${sanitizedNotificationId}`,
             date: new Date().toISOString()
         });
-        
         if (await writeData(data)) {
             res.json({ success: true, message: 'Notification deleted successfully' });
         } else {
@@ -581,25 +514,19 @@ app.delete('/api/admin/notifications/:notificationId', async (req, res) => {
     }
 });
 
-// 4. Delete All Notifications (Admin only)
 app.delete('/api/admin/delete-all-notifications', async (req, res) => {
     try {
         const data = await readData();
-        
         if (!Array.isArray(data.notifications)) {
             return res.json({ success: true, message: 'No notifications to delete', deletedCount: 0 });
         }
-        
         const adminNotifications = data.notifications.filter(n => n.source === 'admin');
         const deletedCount = adminNotifications.length;
-        
         data.notifications = data.notifications.filter(n => n.source !== 'admin');
-        
         addToHistory(data, 'all-notifications-deleted', 'admin', {
             text: `All notifications deleted (${deletedCount} notifications)`,
             date: new Date().toISOString()
         });
-        
         if (await writeData(data)) {
             console.log(`✅ All ${deletedCount} admin notifications deleted`);
             res.json({ 
@@ -616,40 +543,32 @@ app.delete('/api/admin/delete-all-notifications', async (req, res) => {
     }
 });
 
-// 5. Get Faculty Notifications
 app.get('/api/faculty/:facultyCode/notifications', async (req, res) => {
     try {
         const { facultyCode } = req.params;
         const sanitizedFacultyCode = sanitizeInput(facultyCode);
-        
         if (!sanitizedFacultyCode) {
             return res.status(400).json({ error: 'Faculty code is required' });
         }
-        
         let data = await readData();
         data = cleanExpiredPosts(data);
         await writeData(data);
-        
         if (!Array.isArray(data.notifications)) {
             return res.json([]);
         }
-        
         const facultyNotifications = data.notifications.filter(notif => {
             if (notif.targetAudience === 'all' || notif.targetAudience === 'faculty') {
                 return true;
             }
             return false;
         });
-        
         const notificationsWithReadStatus = facultyNotifications.map(notif => ({
             ...notif,
             isRead: notif.readBy && notif.readBy.includes(sanitizedFacultyCode)
         }));
-        
         notificationsWithReadStatus.sort((a, b) => 
             new Date(b.createdAt) - new Date(a.createdAt)
         );
-        
         res.json(notificationsWithReadStatus);
     } catch (error) {
         console.error('❌ Error fetching faculty notifications:', error);
@@ -657,31 +576,24 @@ app.get('/api/faculty/:facultyCode/notifications', async (req, res) => {
     }
 });
 
-// 6. Get Student Notifications
 app.get('/api/student/notifications/:studentCode', async (req, res) => {
     try {
         const { studentCode } = req.params;
         const sanitizedStudentCode = sanitizeInput(studentCode);
-        
         if (!sanitizedStudentCode) {
             return res.status(400).json({ error: 'Student code is required' });
         }
-        
         let data = await readData();
         data = cleanExpiredPosts(data);
         await writeData(data);
-        
         const parsedCode = parseStudentCode(sanitizedStudentCode);
         if (!parsedCode) {
             return res.status(400).json({ error: 'Invalid student code format' });
         }
-        
         const studentClass = parsedCode.classCode;
-        
         if (!Array.isArray(data.notifications)) {
             return res.json([]);
         }
-        
         const studentNotifications = data.notifications.filter(notif => {
             if (notif.targetAudience === 'all' || notif.targetAudience === 'students') {
                 if (notif.targetClass === 'all' || notif.targetClass === studentClass) {
@@ -690,16 +602,13 @@ app.get('/api/student/notifications/:studentCode', async (req, res) => {
             }
             return false;
         });
-        
         const notificationsWithReadStatus = studentNotifications.map(notif => ({
             ...notif,
             isRead: notif.readBy && notif.readBy.includes(sanitizedStudentCode)
         }));
-        
         notificationsWithReadStatus.sort((a, b) => 
             new Date(b.createdAt) - new Date(a.createdAt)
         );
-        
         res.json(notificationsWithReadStatus);
     } catch (error) {
         console.error('❌ Error fetching student notifications:', error);
@@ -707,39 +616,29 @@ app.get('/api/student/notifications/:studentCode', async (req, res) => {
     }
 });
 
-// 7. Mark Notification as Read
 app.post('/api/notifications/:notificationId/read', async (req, res) => {
     try {
         const { notificationId } = req.params;
         const { userCode } = req.body;
-        
         const sanitizedNotificationId = sanitizeInput(notificationId);
         const sanitizedUserCode = sanitizeInput(userCode);
-        
         if (!sanitizedNotificationId || !sanitizedUserCode) {
             return res.status(400).json({ error: 'Notification ID and user code are required' });
         }
-        
         const data = await readData();
-        
         if (!Array.isArray(data.notifications)) {
             return res.status(404).json({ error: 'Notification not found' });
         }
-        
         const notification = data.notifications.find(n => n.id === sanitizedNotificationId);
-        
         if (!notification) {
             return res.status(404).json({ error: 'Notification not found' });
         }
-        
         if (!notification.readBy) {
             notification.readBy = [];
         }
-        
         if (!notification.readBy.includes(sanitizedUserCode)) {
             notification.readBy.push(sanitizedUserCode);
         }
-        
         if (await writeData(data)) {
             res.json({ success: true, message: 'Notification marked as read' });
         } else {
@@ -751,25 +650,19 @@ app.post('/api/notifications/:notificationId/read', async (req, res) => {
     }
 });
 
-// 8. Mark All Notifications as Read
 app.post('/api/notifications/read-all', async (req, res) => {
     try {
         const { userCode, userType } = req.body;
-        
         const sanitizedUserCode = sanitizeInput(userCode);
         const sanitizedUserType = sanitizeInput(userType);
-        
         if (!sanitizedUserCode || !sanitizedUserType) {
             return res.status(400).json({ error: 'User code and user type are required' });
         }
-        
         const data = await readData();
         let markedCount = 0;
-        
         if (!Array.isArray(data.notifications)) {
             return res.json({ success: true, message: '0 notifications marked as read' });
         }
-        
         data.notifications.forEach(notif => {
             if (!notif.readBy) {
                 notif.readBy = [];
@@ -779,7 +672,6 @@ app.post('/api/notifications/read-all', async (req, res) => {
                 markedCount++;
             }
         });
-        
         if (await writeData(data)) {
             res.json({ success: true, message: `${markedCount} notifications marked as read` });
         } else {
@@ -791,33 +683,24 @@ app.post('/api/notifications/read-all', async (req, res) => {
     }
 });
 
-// ===== END NOTIFICATION SYSTEM ENDPOINTS =====
-
-// Get all data (PRESERVED)
 app.get('/api/data', async (req, res) => {
-     setNoCacheHeaders(res);
+    setNoCacheHeaders(res);
     let data = await readData();
     data = cleanExpiredPosts(data);
     await writeData(data);
-    
     const responseData = {
         ...data,
-        feeCertificates: data.receptionistFeeCertificates || []
+        feeCertificates: data.feeCertificates || []
     };
-    
     res.json(responseData);
 });
 
-// Get history (PRESERVED)
 app.get('/api/history/:userType/:userCode?', async (req, res) => {
     const { userType, userCode } = req.params;
     const data = await readData();
-    
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    
     let history = [];
-    
     if (userType === 'admin') {
         history = data.history?.admin || [];
     } else if (userType === 'receptionist') {
@@ -825,7 +708,6 @@ app.get('/api/history/:userType/:userCode?', async (req, res) => {
     } else if (userType === 'faculty' && userCode) {
         history = data.history?.faculty?.[userCode] || [];
     }
-    
     const recentHistory = history.filter(post => {
         try {
             const postDate = new Date(post.date || post.originalDate || post.postedAt);
@@ -834,42 +716,31 @@ app.get('/api/history/:userType/:userCode?', async (req, res) => {
             return false;
         }
     });
-    
     res.json(recentHistory);
 });
 
-// ===== FACULTY POSTS, ASSIGNMENTS, PROGRESS CARDS (ALL PRESERVED) =====
-
-// Post faculty message (PRESERVED)
 app.post('/api/faculty-posts', upload.single('file'), async (req, res) => {
     try {
         let { classCode, type, text, facultyCode, displayDays } = req.body;
-        
         classCode = sanitizeInput(classCode);
         type = sanitizeInput(type);
         text = sanitizeInput(text);
         facultyCode = sanitizeInput(facultyCode);
-        
         if (!classCode || !type || !text || !facultyCode) {
             return res.status(400).json({ error: 'All fields are required' });
         }
-
         if (!isValidClassCode(classCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-
         if (!['homework', 'assignment', 'subject'].includes(type)) {
             return res.status(400).json({ error: 'Invalid post type' });
         }
-
         if (text.length > 1000) {
             return res.status(400).json({ error: 'Text must be less than 1000 characters' });
         }
-
         const data = await readData();
         const now = new Date();
         const expiryDate = displayDays ? new Date(now.getTime() + (parseInt(displayDays) * 24 * 60 * 60 * 1000)) : null;
-        
         const newPost = {
             id: Date.now(),
             text: text,
@@ -879,7 +750,6 @@ app.post('/api/faculty-posts', upload.single('file'), async (req, res) => {
             fileName: req.file ? req.file.originalname : null,
             expiryDate: expiryDate
         };
-
         if (!data.facultyPosts[classCode]) {
             data.facultyPosts[classCode] = {
                 homework: [],
@@ -887,14 +757,11 @@ app.post('/api/faculty-posts', upload.single('file'), async (req, res) => {
                 subject: []
             };
         }
-
         if (!data.facultyPosts[classCode][type]) {
             data.facultyPosts[classCode][type] = [];
         }
-
         data.facultyPosts[classCode][type].push(newPost);
         addToHistory(data, `faculty-${type}`, facultyCode, newPost);
-        
         if (await writeData(data)) {
             console.log(`Faculty post (${type}) for class ${classCode}:`, newPost);
             res.json({ success: true, post: newPost });
@@ -907,46 +774,36 @@ app.post('/api/faculty-posts', upload.single('file'), async (req, res) => {
     }
 });
 
-// Create assignment (PRESERVED)
 app.post('/api/create-assignment', async (req, res) => {
     try {
         let { classCode, facultyCode, title, assignmentDate, questions, displayDays } = req.body;
-        
         classCode = sanitizeInput(classCode);
         facultyCode = sanitizeInput(facultyCode);
         title = sanitizeInput(title);
-        
         if (!classCode || !facultyCode || !title || !questions || questions.length === 0) {
             return res.status(400).json({ error: 'All fields are required' });
         }
-        
         assignmentDate = sanitizeInput(assignmentDate);
         if (!assignmentDate) {
             return res.status(400).json({ error: 'Assignment date is required' });
         }
-
         if (!isValidClassCode(classCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-
         if (title.length > 200) {
             return res.status(400).json({ error: 'Title must be less than 200 characters' });
         }
-
         if (questions.length > 20) {
             return res.status(400).json({ error: 'Maximum 20 questions allowed' });
         }
-
         const sanitizedQuestions = questions.map((q, index) => {
             if (!q.question || !q.options || !q.correctAnswer) {
                 throw new Error(`Question ${index + 1} is incomplete`);
             }
-            
             const sanitizedQuestion = sanitizeInput(q.question);
             if (sanitizedQuestion.length > 500) {
                 throw new Error(`Question ${index + 1} is too long`);
             }
-            
             const sanitizedOptions = {};
             ['a', 'b', 'c', 'd'].forEach(option => {
                 if (!q.options[option]) {
@@ -957,22 +814,18 @@ app.post('/api/create-assignment', async (req, res) => {
                     throw new Error(`Question ${index + 1} option ${option.toUpperCase()} is too long`);
                 }
             });
-            
             if (!['a', 'b', 'c', 'd'].includes(q.correctAnswer)) {
                 throw new Error(`Question ${index + 1} has invalid correct answer`);
             }
-            
             return {
                 question: sanitizedQuestion,
                 options: sanitizedOptions,
                 correctAnswer: q.correctAnswer
             };
         });
-
         const data = await readData();
         const now = new Date();
         const expiryDate = displayDays ? new Date(now.getTime() + (parseInt(displayDays) * 24 * 60 * 60 * 1000)) : null;
-        
         const assignmentId = Date.now();
         const newAssignment = {
             id: assignmentId,
@@ -985,18 +838,15 @@ app.post('/api/create-assignment', async (req, res) => {
             expiryDate: expiryDate,
             isActive: true
         };
-
         if (!data.assignments[classCode]) {
             data.assignments[classCode] = [];
         }
-        
         data.assignments[classCode].push(newAssignment);
         addToHistory(data, 'assignment-created', facultyCode, {
             title: newAssignment.title,
             text: `Assignment created: ${newAssignment.title} for Class ${classCode}`,
             date: newAssignment.date
         });
-        
         if (await writeData(data)) {
             console.log('Assignment created:', newAssignment);
             res.json({ success: true, assignment: newAssignment });
@@ -1009,36 +859,29 @@ app.post('/api/create-assignment', async (req, res) => {
     }
 });
 
-// Delete assignment (PRESERVED)
 app.delete('/api/delete-assignment/:assignmentId', async (req, res) => {
     try {
         const { assignmentId } = req.params;
         const { facultyCode } = req.body;
-        
         if (!assignmentId || !facultyCode) {
             return res.status(400).json({ error: 'Assignment ID and faculty code are required' });
         }
-        
         const data = await readData();
         let assignmentFound = false;
         let assignmentDeleted = false;
-        
         if (data.assignments) {
             Object.keys(data.assignments).forEach(classCode => {
                 const classAssignments = data.assignments[classCode] || [];
                 const assignmentIndex = classAssignments.findIndex(assignment => 
                     assignment.id == assignmentId && assignment.facultyCode === facultyCode
                 );
-                
                 if (assignmentIndex >= 0) {
                     assignmentFound = true;
                     const deletedAssignment = classAssignments.splice(assignmentIndex, 1)[0];
                     assignmentDeleted = true;
-                    
                     if (data.assignmentResults && data.assignmentResults[assignmentId]) {
                         delete data.assignmentResults[assignmentId];
                     }
-                    
                     addToHistory(data, 'assignment-deleted', facultyCode, {
                         text: `Assignment deleted: ${deletedAssignment.title} for Class ${classCode}`,
                         date: new Date().toISOString()
@@ -1046,11 +889,9 @@ app.delete('/api/delete-assignment/:assignmentId', async (req, res) => {
                 }
             });
         }
-        
         if (!assignmentFound) {
             return res.status(404).json({ error: 'Assignment not found' });
         }
-        
         if (assignmentDeleted && await writeData(data)) {
             console.log(`Assignment ${assignmentId} deleted`);
             res.json({ success: true, message: 'Assignment deleted successfully' });
@@ -1063,65 +904,51 @@ app.delete('/api/delete-assignment/:assignmentId', async (req, res) => {
     }
 });
 
-// Submit assignment (PRESERVED)
 app.post('/api/submit-assignment', async (req, res) => {
     try {
         let { assignmentId, classCode, studentCode, answers } = req.body;
-        
         assignmentId = sanitizeInput(assignmentId);
         classCode = sanitizeInput(classCode);
         studentCode = sanitizeInput(studentCode);
-        
         if (!assignmentId || !classCode || !studentCode || !answers) {
             return res.status(400).json({ error: 'All fields are required' });
         }
-
         if (!Array.isArray(answers)) {
             return res.status(400).json({ error: 'Answers must be an array' });
         }
-
         if (!isValidClassCode(classCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-
         const parsedCode = parseStudentCode(studentCode);
         if (!parsedCode) {
             return res.status(400).json({ error: 'Invalid student code format' });
         }
-
         if (parsedCode.classCode !== classCode) {
             return res.status(400).json({ error: 'Student does not belong to this class' });
         }
-
         const data = await readData();
-        
         const assignments = data.assignments[classCode] || [];
         const assignment = assignments.find(a => a.id == assignmentId);
         if (!assignment) {
             return res.status(404).json({ error: 'Assignment not found' });
         }
-
         if (!assignment.isActive) {
             return res.status(400).json({ error: 'Assignment is no longer active' });
         }
-
         if (answers.length !== assignment.questions.length) {
             return res.status(400).json({ error: 'Number of answers must match number of questions' });
         }
-
         const validAnswers = answers.map((answer, index) => {
             if (!['a', 'b', 'c', 'd'].includes(answer)) {
                 throw new Error(`Invalid answer for question ${index + 1}`);
             }
             return answer;
         });
-
         let score = 0;
         const results = assignment.questions.map((question, index) => {
             const studentAnswer = validAnswers[index];
             const isCorrect = studentAnswer === question.correctAnswer;
             if (isCorrect) score++;
-            
             return {
                 question: question.question,
                 options: question.options,
@@ -1130,7 +957,6 @@ app.post('/api/submit-assignment', async (req, res) => {
                 isCorrect: isCorrect
             };
         });
-
         const submission = {
             assignmentId: assignmentId,
             studentCode: studentCode.toUpperCase(),
@@ -1141,18 +967,15 @@ app.post('/api/submit-assignment', async (req, res) => {
             results: results,
             submittedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
         };
-
         if (!data.assignmentResults[assignmentId]) {
             data.assignmentResults[assignmentId] = [];
         }
-        
         const existingIndex = data.assignmentResults[assignmentId].findIndex(r => r.studentCode === studentCode.toUpperCase());
         if (existingIndex >= 0) {
             data.assignmentResults[assignmentId][existingIndex] = submission;
         } else {
             data.assignmentResults[assignmentId].push(submission);
         }
-        
         if (await writeData(data)) {
             console.log('Assignment submitted:', submission);
             res.json({ success: true, submission: submission });
@@ -1165,33 +988,26 @@ app.post('/api/submit-assignment', async (req, res) => {
     }
 });
 
-// Create Progress Card (PRESERVED)
 app.post('/api/create-progress-card', async (req, res) => {
     try {
         let { classCode, facultyCode, rollNumber, fullName, fatherName, examType, subjects, totalMarks, obtainedMarks, percentage, performance, postingDate, displayDays, expiryDate } = req.body;
-        
         classCode = sanitizeInput(classCode);
         facultyCode = sanitizeInput(facultyCode);
         rollNumber = sanitizeInput(rollNumber);
         fullName = sanitizeInput(fullName);
         fatherName = sanitizeInput(fatherName);
         examType = sanitizeInput(examType);
-        
         if (!classCode || !facultyCode || !rollNumber || !fullName || !fatherName || !examType || !totalMarks || obtainedMarks === undefined || !postingDate || !displayDays) {
             return res.status(400).json({ error: 'All required fields must be provided' });
         }
-
         if (!isValidClassCode(classCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-
         const studentCode = generateStudentCode(classCode, rollNumber);
         if (!studentCode) {
             return res.status(400).json({ error: 'Invalid class or roll number combination' });
         }
-
         const data = await readData();
-        
         const progressCardId = Date.now();
         const newProgressCard = {
             id: progressCardId,
@@ -1212,26 +1028,21 @@ app.post('/api/create-progress-card', async (req, res) => {
             expiryDate: expiryDate,
             date: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
         };
-
         if (!data.progressCards[classCode]) {
             data.progressCards[classCode] = [];
         }
-        
         const existingIndex = data.progressCards[classCode].findIndex(
             card => (card.rollNumber === rollNumber || card.studentCode === studentCode) && card.examType === examType
         );
-        
         if (existingIndex >= 0) {
             data.progressCards[classCode][existingIndex] = newProgressCard;
         } else {
             data.progressCards[classCode].push(newProgressCard);
         }
-        
         addToHistory(data, 'progress-card', facultyCode, {
             text: `Progress card for ${newProgressCard.fullName} (${newProgressCard.studentCode}) - Class ${classCode}`,
             date: newProgressCard.date
         });
-        
         if (await writeData(data)) {
             res.json({ success: true, progressCard: newProgressCard });
         } else {
@@ -1243,37 +1054,28 @@ app.post('/api/create-progress-card', async (req, res) => {
     }
 });
 
-// Delete Progress Card (PRESERVED)
 app.delete('/api/delete-progress-card/:cardId', async (req, res) => {
     try {
         const { cardId } = req.params;
         const { facultyCode, classCode } = req.body;
-        
         if (!cardId || !facultyCode || !classCode) {
             return res.status(400).json({ error: 'Card ID, faculty code, and class code are required' });
         }
-        
         const data = await readData();
-        
         if (!data.progressCards || !data.progressCards[classCode]) {
             return res.status(404).json({ error: 'No progress cards found' });
         }
-        
         const cardIndex = data.progressCards[classCode].findIndex(card => 
             card.id == cardId && card.facultyCode === facultyCode
         );
-        
         if (cardIndex === -1) {
             return res.status(404).json({ error: 'Progress card not found' });
         }
-        
         const deletedCard = data.progressCards[classCode].splice(cardIndex, 1)[0];
-        
         addToHistory(data, 'progress-card-deleted', facultyCode, {
             text: `Progress card deleted for ${deletedCard.fullName}`,
             date: new Date().toISOString()
         });
-        
         if (await writeData(data)) {
             res.json({ success: true, message: 'Progress card deleted successfully' });
         } else {
@@ -1285,51 +1087,39 @@ app.delete('/api/delete-progress-card/:cardId', async (req, res) => {
     }
 });
 
-// Post Monthly Attendance (PRESERVED)
 app.post('/api/post-monthly-attendance', async (req, res) => {
     try {
         let { classCode, facultyCode, month, year, studentName, studentRoll, totalWorkingDays, attendedDays } = req.body;
-        
         classCode = sanitizeInput(classCode);
         facultyCode = sanitizeInput(facultyCode);
         studentName = sanitizeInput(studentName);
         studentRoll = sanitizeInput(studentRoll);
-        
         if (!classCode || !facultyCode || !month || !year || !studentName || !studentRoll || 
             totalWorkingDays === undefined || attendedDays === undefined) {
             return res.status(400).json({ error: 'All fields are required' });
         }
-
         if (!isValidClassCode(classCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-
         month = parseInt(month);
         year = parseInt(year);
         totalWorkingDays = parseInt(totalWorkingDays);
         attendedDays = parseInt(attendedDays);
-        
         if (isNaN(month) || isNaN(year) || isNaN(totalWorkingDays) || isNaN(attendedDays)) {
             return res.status(400).json({ error: 'Invalid numeric values' });
         }
-
         if (!isValidAttendanceDate(month, year)) {
             return res.status(400).json({ error: 'Invalid attendance date' });
         }
-
         const studentCode = generateStudentCode(classCode, studentRoll);
         if (!studentCode) {
             return res.status(400).json({ error: 'Invalid class or roll number combination' });
         }
-
         const data = await readData();
-        
         if (!data.monthlyAttendance) {
             data.monthlyAttendance = [];
         }
-        
         const percentage = totalWorkingDays > 0 ? Math.round((attendedDays / totalWorkingDays) * 100) : 0;
-        
         const attendanceRecord = {
             id: Date.now() + Math.random(),
             classCode: classCode,
@@ -1344,24 +1134,20 @@ app.post('/api/post-monthly-attendance', async (req, res) => {
             percentage: percentage,
             postedAt: new Date().toISOString()
         };
-        
         const existingIndex = data.monthlyAttendance.findIndex(
             record => record.studentCode === studentCode && 
                       record.month === month && 
                       record.year === year
         );
-        
         if (existingIndex >= 0) {
             data.monthlyAttendance[existingIndex] = attendanceRecord;
         } else {
             data.monthlyAttendance.push(attendanceRecord);
         }
-        
         addToHistory(data, 'monthly-attendance', facultyCode, {
             text: `Monthly attendance posted for ${studentName} (${studentCode})`,
             date: attendanceRecord.postedAt
         });
-        
         if (await writeData(data)) {
             console.log('Monthly attendance posted:', attendanceRecord);
             res.json({ success: true, record: attendanceRecord });
@@ -1374,34 +1160,26 @@ app.post('/api/post-monthly-attendance', async (req, res) => {
     }
 });
 
-// Get monthly attendance records (PRESERVED)
 app.get('/api/monthly-attendance/:classCode', async (req, res) => {
     try {
         const { classCode } = req.params;
         const sanitizedClassCode = sanitizeInput(classCode);
-        
         if (!sanitizedClassCode) {
             return res.status(400).json({ error: 'Class code is required' });
         }
-        
         if (!isValidClassCode(sanitizedClassCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-        
         const data = await readData();
-        
         if (!data.monthlyAttendance) data.monthlyAttendance = [];
-        
         const classAttendanceRecords = data.monthlyAttendance.filter(record => 
             record.classCode === sanitizedClassCode
         );
-        
         classAttendanceRecords.sort((a, b) => {
             const dateA = new Date(a.year, a.month - 1);
             const dateB = new Date(b.year, b.month - 1);
             return dateB - dateA;
         });
-        
         res.json(classAttendanceRecords);
     } catch (error) {
         console.error('Error fetching attendance:', error);
@@ -1409,37 +1187,28 @@ app.get('/api/monthly-attendance/:classCode', async (req, res) => {
     }
 });
 
-// Delete monthly attendance record (PRESERVED)
 app.delete('/api/delete-monthly-attendance/:recordId', async (req, res) => {
     try {
         const { recordId } = req.params;
         const { facultyCode } = req.body;
-        
         if (!recordId || !facultyCode) {
             return res.status(400).json({ error: 'Record ID and faculty code are required' });
         }
-        
         const data = await readData();
-        
         if (!data.monthlyAttendance) {
             return res.status(404).json({ error: 'No attendance records found' });
         }
-        
         const recordIndex = data.monthlyAttendance.findIndex(record => 
             record.id == recordId && record.facultyCode === facultyCode
         );
-        
         if (recordIndex === -1) {
             return res.status(404).json({ error: 'Attendance record not found or unauthorized' });
         }
-        
         const deletedRecord = data.monthlyAttendance.splice(recordIndex, 1)[0];
-        
         addToHistory(data, 'attendance-deleted', facultyCode, {
             text: `Monthly attendance deleted for ${deletedRecord.studentName} (${deletedRecord.studentCode})`,
             date: new Date().toISOString()
         });
-        
         if (await writeData(data)) {
             console.log(`Attendance record ${recordId} deleted by ${facultyCode}`);
             res.json({ success: true, message: 'Attendance record deleted successfully' });
@@ -1452,29 +1221,21 @@ app.delete('/api/delete-monthly-attendance/:recordId', async (req, res) => {
     }
 });
 
-// Get progress cards for class (PRESERVED)
 app.get('/api/progress-cards/:classCode', async (req, res) => {
     try {
         const { classCode } = req.params;
         const sanitizedClassCode = sanitizeInput(classCode);
-        
         if (!sanitizedClassCode) {
             return res.status(400).json({ error: 'Class code is required' });
         }
-        
         if (!isValidClassCode(sanitizedClassCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-        
         const data = await readData();
-        
         if (!data.progressCards) data.progressCards = {};
         if (!data.progressCards[sanitizedClassCode]) data.progressCards[sanitizedClassCode] = [];
-        
         const progressCards = data.progressCards[sanitizedClassCode];
-        
         progressCards.sort((a, b) => parseInt(a.rollNumber) - parseInt(b.rollNumber));
-        
         res.json(progressCards);
     } catch (error) {
         console.error('Error fetching progress cards:', error);
@@ -1482,22 +1243,16 @@ app.get('/api/progress-cards/:classCode', async (req, res) => {
     }
 });
 
-// Get assignment results (PRESERVED)
 app.get('/api/assignment-results/:assignmentId', async (req, res) => {
     try {
         const { assignmentId } = req.params;
         const sanitizedAssignmentId = sanitizeInput(assignmentId);
-        
         if (!sanitizedAssignmentId) {
             return res.status(400).json({ error: 'Assignment ID is required' });
         }
-        
         const data = await readData();
-        
         const results = data.assignmentResults[sanitizedAssignmentId] || [];
-        
         results.sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
-        
         res.json(results);
     } catch (error) {
         console.error('Error fetching assignment results:', error);
@@ -1505,31 +1260,23 @@ app.get('/api/assignment-results/:assignmentId', async (req, res) => {
     }
 });
 
-// Get assignments for class (PRESERVED)
 app.get('/api/assignments/:classCode', async (req, res) => {
     try {
         const { classCode } = req.params;
         const sanitizedClassCode = sanitizeInput(classCode);
-        
         if (!sanitizedClassCode) {
             return res.status(400).json({ error: 'Class code is required' });
         }
-        
         if (!isValidClassCode(sanitizedClassCode)) {
             return res.status(400).json({ error: 'Invalid class code' });
         }
-        
         let data = await readData();
         data = cleanExpiredPosts(data);
-        
         if (!data.assignments) data.assignments = {};
         if (!data.assignments[sanitizedClassCode]) data.assignments[sanitizedClassCode] = [];
-        
         const assignments = data.assignments[sanitizedClassCode];
         const activeAssignments = assignments.filter(a => a.isActive);
-        
         activeAssignments.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
         res.json(activeAssignments);
     } catch (error) {
         console.error('Error fetching assignments:', error);
@@ -1537,92 +1284,259 @@ app.get('/api/assignments/:classCode', async (req, res) => {
     }
 });
 
-// ===== COMPLETE FEE CERTIFICATE SYSTEM (FOLLOWING HALL TICKET PATTERN) =====
-
-// 1. Create Fee Certificate - Receptionist sends to Admin (status: 'pending')
-app.post('/api/fee-certificates', async (req, res) => {
+app.post('/api/register-student', async (req, res) => {
     try {
-        console.log('📜 Fee Certificate request received');
+        console.log('📝 Student registration request received');
         console.log('Body:', req.body);
         
-        let { studentClass, studentRoll, studentName, fatherName, totalFee, amountPaid, remainingDue, academicYear, remarks, postedBy } = req.body;
+        let { studentClass, studentRoll, studentName, fatherName, totalFee, academicYear, registeredBy } = req.body;
         
         studentClass = sanitizeInput(studentClass);
         studentRoll = sanitizeInput(studentRoll);
         studentName = sanitizeInput(studentName);
         fatherName = sanitizeInput(fatherName);
         academicYear = sanitizeInput(academicYear);
-        remarks = sanitizeInput(remarks) || '';
         
-        if (postedBy !== 'receptionist') {
-            return res.status(403).json({ error: 'Only receptionist can generate fee certificates' });
+        // Validate registeredBy
+        if (!registeredBy || !['admin', 'receptionist'].includes(registeredBy)) {
+            console.error('❌ Invalid registeredBy value:', registeredBy);
+            return res.status(403).json({ error: 'Invalid user type for registration' });
         }
         
-        if (!studentClass || !studentRoll || !studentName || !fatherName || !academicYear ||
-            totalFee === undefined || amountPaid === undefined || remainingDue === undefined) {
+        if (!studentClass || !studentRoll || !studentName || !fatherName || !academicYear || totalFee === undefined) {
+            console.error('❌ Missing required fields');
             return res.status(400).json({ error: 'All fields are required' });
         }
-
+        
         if (!isValidClassCode(studentClass)) {
+            console.error('❌ Invalid class code:', studentClass);
             return res.status(400).json({ error: 'Invalid class selected' });
         }
-
-        totalFee = parseFloat(totalFee);
-        amountPaid = parseFloat(amountPaid);
-        remainingDue = parseFloat(remainingDue);
         
-        if (isNaN(totalFee) || isNaN(amountPaid) || isNaN(remainingDue)) {
-            return res.status(400).json({ error: 'Invalid numeric values' });
+        totalFee = parseFloat(totalFee);
+        if (isNaN(totalFee) || totalFee < 0) {
+            console.error('❌ Invalid fee amount:', totalFee);
+            return res.status(400).json({ error: 'Invalid total fee amount' });
         }
-
+        
         const studentCode = generateStudentCode(studentClass, studentRoll);
         if (!studentCode) {
+            console.error('❌ Could not generate student code');
             return res.status(400).json({ error: 'Invalid class or roll number combination' });
+        }
+        
+        const data = await readData();
+        if (!data.studentMasterRecords) {
+            data.studentMasterRecords = {};
+        }
+        
+        const existingStudent = data.studentMasterRecords[studentCode];
+        if (existingStudent && existingStudent.academicYear === academicYear) {
+            console.log('⚠️ Student already exists:', studentCode);
+            return res.status(400).json({ 
+                error: `Student ${studentCode} already registered for ${academicYear}`,
+                existingRecord: existingStudent
+            });
+        }
+        
+        const studentRecord = {
+            studentCode: studentCode,
+            studentName: studentName,
+            fatherName: fatherName,
+            studentClass: studentClass,
+            studentRoll: studentRoll,
+            totalFee: totalFee,
+            currentDue: totalFee,
+            academicYear: academicYear,
+            registeredDate: new Date().toISOString(),
+            lastUpdated: new Date().toISOString()
+        };
+        
+        data.studentMasterRecords[studentCode] = studentRecord;
+        
+        addToHistory(data, 'student-registered', registeredBy, {
+            text: `Student registered: ${studentName} (${studentCode}) - Total Fee: ₹${totalFee}`,
+            date: studentRecord.registeredDate
+        });
+        
+        if (await writeData(data)) {
+            console.log('✅ Student registered:', studentCode);
+            res.json({ success: true, studentRecord: studentRecord });
+        } else {
+            console.error('❌ Failed to write data');
+            res.status(500).json({ error: 'Failed to register student' });
+        }
+    } catch (error) {
+        console.error('❌ Error registering student:', error);
+        res.status(500).json({ error: 'Internal server error: ' + error.message });
+    }
+});
+
+// Replace the /api/student-balance/:studentCode endpoint in server.js
+
+app.get('/api/student-balance/:studentCode', async (req, res) => {
+    try {
+        const { studentCode } = req.params;
+        const sanitizedStudentCode = sanitizeInput(studentCode);
+        
+        if (!sanitizedStudentCode) {
+            return res.status(400).json({ 
+                success: false,
+                error: 'Student code is required' 
+            });
+        }
+        
+        const data = await readData();
+        
+        if (!data.studentMasterRecords) {
+            return res.status(404).json({ 
+                success: false,
+                error: 'No student records found in system' 
+            });
+        }
+        
+        const upperStudentCode = sanitizedStudentCode.toUpperCase();
+        const studentRecord = data.studentMasterRecords[upperStudentCode];
+        
+        if (!studentRecord) {
+            console.log(`❌ Student not found: ${upperStudentCode}`);
+            return res.status(404).json({ 
+                success: false,
+                error: `Student ${upperStudentCode} not found. Please register this student first.`,
+                studentCode: upperStudentCode
+            });
+        }
+        
+        console.log(`✅ Student found: ${upperStudentCode}`);
+        res.json({
+            success: true,
+            studentCode: studentRecord.studentCode,
+            studentName: studentRecord.studentName,
+            fatherName: studentRecord.fatherName,
+            studentClass: studentRecord.studentClass,
+            studentRoll: studentRecord.studentRoll,
+            totalFee: studentRecord.totalFee,
+            currentDue: studentRecord.currentDue,
+            academicYear: studentRecord.academicYear,
+            lastUpdated: studentRecord.lastUpdated
+        });
+    } catch (error) {
+        console.error('❌ Error fetching student balance:', error);
+        res.status(500).json({ 
+            success: false,
+            error: 'Internal server error: ' + error.message 
+        });
+    }
+});
+
+// ===== CONTINUATION FROM app.post('/api/fee-certificates'...) =====
+
+app.post('/api/fee-certificates', async (req, res) => {
+    try {
+        console.log('📜 Fee Certificate generation request');
+        console.log('Body:', req.body);
+        
+        let { studentCode, amountPaid, remarks, generatedBy } = req.body;
+        
+        studentCode = sanitizeInput(studentCode);
+        remarks = sanitizeInput(remarks) || '';
+        
+        if (!['admin', 'receptionist'].includes(generatedBy)) {
+            return res.status(403).json({ error: 'Invalid user type for fee certificate generation' });
+        }
+        
+        if (!studentCode || amountPaid === undefined) {
+            return res.status(400).json({ error: 'Student code and amount paid are required' });
+        }
+
+        amountPaid = parseFloat(amountPaid);
+        if (isNaN(amountPaid) || amountPaid <= 0) {
+            return res.status(400).json({ error: 'Invalid amount paid' });
         }
 
         const data = await readData();
         
-        if (!data.receptionistFeeCertificates) {
-            data.receptionistFeeCertificates = [];
+        if (!data.studentMasterRecords) {
+            return res.status(404).json({ error: 'No student records found' });
         }
         
-        // CRITICAL: Certificate goes to admin first with 'pending' status
-        const feeCertificate = {
+        const upperStudentCode = studentCode.toUpperCase();
+        const studentRecord = data.studentMasterRecords[upperStudentCode];
+        
+        if (!studentRecord) {
+            return res.status(404).json({ error: 'Student not found. Please register the student first.' });
+        }
+        
+        // Validate payment amount
+        if (amountPaid > studentRecord.currentDue) {
+            return res.status(400).json({ 
+                error: `Amount paid (₹${amountPaid}) exceeds current due (₹${studentRecord.currentDue})` 
+            });
+        }
+        
+        // Calculate new balance
+        const newDue = studentRecord.currentDue - amountPaid;
+        const totalPaid = studentRecord.totalFee - newDue;
+        
+        // Create certificate
+        if (!data.feeCertificates) {
+            data.feeCertificates = [];
+        }
+        
+        if (!data.studentFeeCertificates) {
+            data.studentFeeCertificates = {};
+        }
+        
+        const certificate = {
             id: `FEE_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            studentClass: studentClass,
-            studentRoll: studentRoll,
-            studentCode: studentCode,
-            studentName: studentName,
-            fatherName: fatherName,
-            totalFee: totalFee,
+            studentCode: upperStudentCode,
+            studentName: studentRecord.studentName,
+            fatherName: studentRecord.fatherName,
+            studentClass: studentRecord.studentClass,
+            studentRoll: studentRecord.studentRoll,
+            totalFee: studentRecord.totalFee,
             amountPaid: amountPaid,
-            remainingDue: remainingDue,
-            academicYear: academicYear,
+            previousDue: studentRecord.currentDue,
+            remainingDue: newDue,
+            totalPaidToDate: totalPaid,
+            academicYear: studentRecord.academicYear,
             remarks: remarks,
-            date: new Date().toISOString(),
-            generatedBy: 'receptionist',
-            status: 'pending',        // NEW: Pending until admin issues it
-            issuedDate: null          // NEW: Will be set when admin issues
+            generatedBy: generatedBy,
+            generatedAt: new Date().toISOString(),
+            status: 'issued' // Always issued immediately
         };
         
-        const existingIndex = data.receptionistFeeCertificates.findIndex(
-            cert => cert.studentCode === studentCode && cert.academicYear === academicYear
-        );
+        // Update student master record
+        studentRecord.currentDue = newDue;
+        studentRecord.lastUpdated = certificate.generatedAt;
+        data.studentMasterRecords[upperStudentCode] = studentRecord;
         
-        if (existingIndex >= 0) {
-            data.receptionistFeeCertificates[existingIndex] = feeCertificate;
-        } else {
-            data.receptionistFeeCertificates.push(feeCertificate);
+        // Add to feeCertificates array (visible to both admin and receptionist)
+        data.feeCertificates.push(certificate);
+        
+        // Add to studentFeeCertificates (visible to student)
+        if (!data.studentFeeCertificates[upperStudentCode]) {
+            data.studentFeeCertificates[upperStudentCode] = [];
         }
+        data.studentFeeCertificates[upperStudentCode].push(certificate);
         
-        addToHistory(data, 'fee-certificate-generated', 'receptionist', {
-            text: `Fee certificate generated for ${feeCertificate.studentName} (${feeCertificate.studentCode})`,
-            date: feeCertificate.date
+        // Add to history
+        addToHistory(data, 'fee-certificate-generated', generatedBy, {
+            text: `Fee certificate: ${studentRecord.studentName} (${upperStudentCode}) - Paid: ₹${amountPaid}, Due: ₹${newDue}`,
+            date: certificate.generatedAt
         });
         
         if (await writeData(data)) {
-            console.log('✅ Fee certificate sent to admin (pending):', feeCertificate.id);
-            res.json({ success: true, certificate: feeCertificate });
+            console.log('✅ Fee certificate generated and issued:', certificate.id);
+            res.json({ 
+                success: true, 
+                certificate: certificate,
+                newBalance: {
+                    currentDue: newDue,
+                    totalPaid: totalPaid,
+                    totalFee: studentRecord.totalFee
+                }
+            });
         } else {
             res.status(500).json({ error: 'Failed to save fee certificate' });
         }
@@ -1632,18 +1546,18 @@ app.post('/api/fee-certificates', async (req, res) => {
     }
 });
 
-// 2. Get all fee certificates (Admin view - all certificates)
+// 4. Get all fee certificates (Admin view - ALL certificates)
 app.get('/api/admin/fee-certificates', async (req, res) => {
     try {
         setNoCacheHeaders(res);
         console.log('📋 Admin requesting all fee certificates');
         const data = await readData();
         
-        if (!data.receptionistFeeCertificates) data.receptionistFeeCertificates = [];
+        if (!data.feeCertificates) data.feeCertificates = [];
         
-        // Return all certificates sorted by date
-        const allCertificates = data.receptionistFeeCertificates.sort((a, b) => 
-            new Date(b.date) - new Date(a.date)
+        // Return ALL certificates sorted by date
+        const allCertificates = data.feeCertificates.sort((a, b) => 
+            new Date(b.generatedAt) - new Date(a.generatedAt)
         );
         
         console.log(`✅ Returning ${allCertificates.length} fee certificates to admin`);
@@ -1654,65 +1568,52 @@ app.get('/api/admin/fee-certificates', async (req, res) => {
     }
 });
 
-// 3. Issue fee certificate to student (Admin only)
-app.post('/api/admin/issue-fee-certificate', async (req, res) => {
+// 5. Get all fee certificates (Receptionist view - ALL certificates)
+app.get('/api/receptionist/fee-certificates', async (req, res) => {
     try {
-        console.log('📤 Admin issuing fee certificate');
-        console.log('Body:', req.body);
-        
-        const { certificateId, studentCode, issuedDate } = req.body;
-        
-        if (!certificateId || !studentCode) {
-            return res.status(400).json({ error: 'Certificate ID and student code are required' });
-        }
-
+        setNoCacheHeaders(res);
+        console.log('📋 Receptionist requesting all fee certificates');
         const data = await readData();
-        if (!data.receptionistFeeCertificates) data.receptionistFeeCertificates = [];
-        if (!data.studentFeeCertificates) data.studentFeeCertificates = {};
         
-        const certificate = data.receptionistFeeCertificates.find(cert => cert.id === certificateId);
-        if (!certificate) {
-            return res.status(404).json({ error: 'Fee certificate not found' });
-        }
+        if (!data.feeCertificates) data.feeCertificates = [];
         
-        // Update certificate status to 'issued'
-        certificate.status = 'issued';
-        certificate.issuedDate = issuedDate || new Date().toISOString();
-        
-        // Add to student's certificates
-        const upperStudentCode = studentCode.toUpperCase();
-        if (!data.studentFeeCertificates[upperStudentCode]) {
-            data.studentFeeCertificates[upperStudentCode] = [];
-        }
-        
-        const existingIndex = data.studentFeeCertificates[upperStudentCode].findIndex(
-            cert => cert.id === certificateId
+        // Return ALL certificates sorted by date (same as admin)
+        const allCertificates = data.feeCertificates.sort((a, b) => 
+            new Date(b.generatedAt) - new Date(a.generatedAt)
         );
         
-        if (existingIndex >= 0) {
-            data.studentFeeCertificates[upperStudentCode][existingIndex] = certificate;
-        } else {
-            data.studentFeeCertificates[upperStudentCode].push(certificate);
-        }
-        
-        addToHistory(data, 'fee-certificate-issued', 'admin', {
-            text: `Fee certificate issued to student: ${certificate.studentName} (${studentCode})`,
-            date: certificate.issuedDate
-        });
-        
-        if (await writeData(data)) {
-            console.log('✅ Fee certificate issued:', certificateId, 'to', studentCode);
-            res.json({ success: true, message: 'Fee certificate issued successfully' });
-        } else {
-            res.status(500).json({ error: 'Failed to issue fee certificate' });
-        }
+        console.log(`✅ Returning ${allCertificates.length} fee certificates to receptionist`);
+        res.json(allCertificates);
     } catch (error) {
-        console.error('❌ Error issuing fee certificate:', error);
-        res.status(500).json({ error: 'Internal server error: ' + error.message });
+        console.error('❌ Error fetching receptionist fee certificates:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 });
 
-// 4. Delete single fee certificate (Admin only)
+// 6. Get all registered students (Admin & Receptionist)
+app.get('/api/registered-students', async (req, res) => {
+    try {
+        setNoCacheHeaders(res);
+        const data = await readData();
+        
+        if (!data.studentMasterRecords) {
+            return res.json([]);
+        }
+        
+        // Convert object to array
+        const students = Object.values(data.studentMasterRecords);
+        
+        // Sort by student code
+        students.sort((a, b) => a.studentCode.localeCompare(b.studentCode));
+        
+        res.json(students);
+    } catch (error) {
+        console.error('❌ Error fetching registered students:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// 7. Delete single fee certificate (Admin only)
 app.delete('/api/admin/delete-fee-certificate/:certificateId', async (req, res) => {
     try {
         console.log('🗑️ Admin deleting fee certificate:', req.params.certificateId);
@@ -1724,17 +1625,17 @@ app.delete('/api/admin/delete-fee-certificate/:certificateId', async (req, res) 
         }
 
         const data = await readData();
-        if (!data.receptionistFeeCertificates) data.receptionistFeeCertificates = [];
+        if (!data.feeCertificates) data.feeCertificates = [];
         
-        const certIndex = data.receptionistFeeCertificates.findIndex(cert => cert.id === certificateId);
+        const certIndex = data.feeCertificates.findIndex(cert => cert.id === certificateId);
         
         if (certIndex === -1) {
             return res.status(404).json({ error: 'Fee certificate not found' });
         }
         
-        const deletedCert = data.receptionistFeeCertificates.splice(certIndex, 1)[0];
+        const deletedCert = data.feeCertificates.splice(certIndex, 1)[0];
         
-        // CRITICAL: Also remove from student's certificates if it was issued
+        // Remove from student's certificates
         if (data.studentFeeCertificates && deletedCert.studentCode) {
             const studentCode = deletedCert.studentCode.toUpperCase();
             if (data.studentFeeCertificates[studentCode]) {
@@ -1742,7 +1643,6 @@ app.delete('/api/admin/delete-fee-certificate/:certificateId', async (req, res) 
                     cert => cert.id !== certificateId
                 );
                 
-                // Remove empty arrays
                 if (data.studentFeeCertificates[studentCode].length === 0) {
                     delete data.studentFeeCertificates[studentCode];
                 }
@@ -1750,7 +1650,7 @@ app.delete('/api/admin/delete-fee-certificate/:certificateId', async (req, res) 
         }
         
         addToHistory(data, 'fee-certificate-deleted', 'admin', {
-            text: `Fee certificate deleted: ${deletedCert.studentName} (${deletedCert.studentCode})`,
+            text: `Fee certificate deleted: ${deletedCert.studentName} (${deletedCert.studentCode}) - ₹${deletedCert.amountPaid}`,
             date: new Date().toISOString()
         });
         
@@ -1766,16 +1666,16 @@ app.delete('/api/admin/delete-fee-certificate/:certificateId', async (req, res) 
     }
 });
 
-// 5. Delete all fee certificates (Admin only)
+// 8. Delete all fee certificates (Admin only)
 app.delete('/api/admin/delete-all-fee-certificates', async (req, res) => {
     try {
         console.log('🗑️ Admin deleting ALL fee certificates');
         
         const data = await readData();
-        const deletedCount = data.receptionistFeeCertificates ? data.receptionistFeeCertificates.length : 0;
+        const deletedCount = data.feeCertificates ? data.feeCertificates.length : 0;
         
-        // CRITICAL: Clear both arrays
-        data.receptionistFeeCertificates = [];
+        // Clear both arrays
+        data.feeCertificates = [];
         data.studentFeeCertificates = {};
         
         addToHistory(data, 'all-fee-certificates-deleted', 'admin', {
@@ -1799,7 +1699,7 @@ app.delete('/api/admin/delete-all-fee-certificates', async (req, res) => {
     }
 });
 
-// 6. Get student's fee certificates (ONLY issued ones)
+// 9. Get student's fee certificates (Student view - ONLY issued ones)
 app.get('/api/student-fee-certificates/:studentCode', async (req, res) => {
     try {
         console.log('📜 Student requesting fee certificates:', req.params.studentCode);
@@ -1820,35 +1720,17 @@ app.get('/api/student-fee-certificates/:studentCode', async (req, res) => {
             return res.status(400).json({ error: 'Invalid student code format' });
         }
         
-        // Get only issued certificates for this student
+        // Get issued certificates for this student
         const studentFeeCertificates = data.studentFeeCertificates[sanitizedStudentCode.toUpperCase()] || [];
         
         studentFeeCertificates.sort((a, b) => 
-            new Date(b.issuedDate || b.date) - new Date(a.issuedDate || a.date)
+            new Date(b.generatedAt) - new Date(a.generatedAt)
         );
         
-        console.log(`✅ Returning ${studentFeeCertificates.length} issued certificates for student ${sanitizedStudentCode}`);
+        console.log(`✅ Returning ${studentFeeCertificates.length} certificates for student ${sanitizedStudentCode}`);
         res.json(studentFeeCertificates);
     } catch (error) {
         console.error('❌ Error fetching student fee certificates:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-// 7. Get fee certificates (Receptionist view - all certificates they created)
-app.get('/api/fee-certificates', async (req, res) => {
-    try {
-        const data = await readData();
-        
-        if (!data.receptionistFeeCertificates) data.receptionistFeeCertificates = [];
-        
-        const feeCertificates = data.receptionistFeeCertificates.sort((a, b) => 
-            new Date(b.date) - new Date(a.date)
-        );
-        
-        res.json(feeCertificates);
-    } catch (error) {
-        console.error('❌ Error fetching fee certificates:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -1857,7 +1739,6 @@ app.get('/api/fee-certificates', async (req, res) => {
 
 // ===== HALL TICKET SYSTEM (ALL PRESERVED) =====
 
-// Create Hall Ticket
 app.post('/api/admin/create-hall-ticket', async (req, res) => {
     try {
         const hallTicketData = req.body;
@@ -1907,9 +1788,7 @@ app.post('/api/admin/create-hall-ticket', async (req, res) => {
     }
 });
 
-// Get all Hall Tickets
 app.get('/api/admin/hall-tickets', async (req, res) => {
-
     try {
         setNoCacheHeaders(res);
         const data = await readData();
@@ -1929,7 +1808,6 @@ app.get('/api/admin/hall-tickets', async (req, res) => {
     }
 });
 
-// Issue Hall Ticket to Student
 app.post('/api/admin/issue-hall-ticket', async (req, res) => {
     try {
         const { hallTicketId, studentCode, issuedDate } = req.body;
@@ -1981,7 +1859,6 @@ app.post('/api/admin/issue-hall-ticket', async (req, res) => {
     }
 });
 
-// Delete single Hall Ticket
 app.delete('/api/admin/delete-hall-ticket/:hallTicketId', async (req, res) => {
     try {
         const { hallTicketId } = req.params;
@@ -2026,7 +1903,6 @@ app.delete('/api/admin/delete-hall-ticket/:hallTicketId', async (req, res) => {
     }
 });
 
-// Delete all Hall Tickets
 app.delete('/api/admin/delete-all-hall-tickets', async (req, res) => {
     try {
         const data = await readData();
@@ -2056,7 +1932,6 @@ app.delete('/api/admin/delete-all-hall-tickets', async (req, res) => {
     }
 });
 
-// Get student's hall tickets
 app.get('/api/student-hall-tickets/:studentCode', async (req, res) => {
     try {
         const { studentCode } = req.params;
@@ -2085,7 +1960,7 @@ app.get('/api/student-hall-tickets/:studentCode', async (req, res) => {
 
 // ===== END HALL TICKET SYSTEM =====
 
-// Get student-specific data (UPDATED to use studentFeeCertificates)
+// Get student-specific data (UPDATED to use new fee certificate system)
 app.get('/api/student-data/:studentCode', async (req, res) => {
     try {
         const { studentCode } = req.params;
@@ -2131,7 +2006,7 @@ app.get('/api/student-data/:studentCode', async (req, res) => {
             record => record.studentCode === sanitizedStudentCode.toUpperCase()
         );
         
-        // CHANGED: Get only issued certificates from studentFeeCertificates
+        // Get issued certificates from studentFeeCertificates
         const studentFeeCertificates = (data.studentFeeCertificates && data.studentFeeCertificates[sanitizedStudentCode.toUpperCase()]) || [];
         
         const studentHallTickets = (data.studentHallTickets && data.studentHallTickets[sanitizedStudentCode.toUpperCase()]) || [];
@@ -2244,18 +2119,22 @@ async function startServer() {
         
         app.listen(PORT, () => {
             console.log(`\n🚀 Server running at http://localhost:${PORT}`);
-            console.log('\n==== FEE CERTIFICATE SYSTEM READY ====');
-            console.log('✅ Fee Certificate endpoints following Hall Ticket pattern');
-            console.log('✅ Receptionist generates → Admin approves → Student receives');
-            console.log('✅ All existing features preserved');
+            console.log('\n==== NEW FEE CERTIFICATE SYSTEM ACTIVE ====');
+            console.log('✅ Direct Issue System (No Approval Required)');
+            console.log('✅ Both Admin & Receptionist can generate certificates');
+            console.log('✅ Running balance tracking per student');
+            console.log('✅ All certificates visible to both roles');
             console.log('\n==== FEE CERTIFICATE ENDPOINTS ====');
-            console.log('POST   /api/fee-certificates - Generate certificate (Receptionist)');
+            console.log('POST   /api/register-student - Register student (Receptionist)');
+            console.log('GET    /api/student-balance/:code - Get current balance');
+            console.log('POST   /api/fee-certificates - Generate & issue certificate (Both)');
             console.log('GET    /api/admin/fee-certificates - Get all certificates (Admin)');
-            console.log('POST   /api/admin/issue-fee-certificate - Issue to student (Admin)');
+            console.log('GET    /api/receptionist/fee-certificates - Get all certificates (Receptionist)');
+            console.log('GET    /api/registered-students - Get all registered students');
             console.log('DELETE /api/admin/delete-fee-certificate/:id - Delete single (Admin)');
             console.log('DELETE /api/admin/delete-all-fee-certificates - Delete all (Admin)');
-            console.log('GET    /api/student-fee-certificates/:code - Student view (issued only)');
-            console.log('\n✨ Server ready! Fee certificate system fully integrated! ✨\n');
+            console.log('GET    /api/student-fee-certificates/:code - Student view');
+            console.log('\n✨ Server ready! New fee certificate system fully operational! ✨\n');
         });
     } catch (error) {
         console.error('❌ Failed to start server:', error);
