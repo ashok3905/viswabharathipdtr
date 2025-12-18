@@ -947,42 +947,143 @@ button[onclick*="index.html"]:hover {
             </div>
         </div>
 
-        <!-- Fee Certificates Management Section -->
+        <!-- Fee Certificates Management Section (NEW SYSTEM) -->
         <div class="section" id="viewFeeCertSection" style="display: none;">
             <h2>💰 Fee Certificates Management</h2>
             
-            <!-- Tab Navigation -->
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0;">
-                <button id="pendingFeeCertTab" onclick="switchFeeCertTab('pending')" 
-                    style="padding: 0.75rem 1.5rem; border: none; background: none; cursor: pointer; 
-                    font-weight: 600; border-bottom: 3px solid #3b82f6; color: #3b82f6;">
-                    ⏳ Pending (<span id="pendingFeeCertCount">0</span>)
-                </button>
-                <button id="issuedFeeCertTab" onclick="switchFeeCertTab('issued')" 
-                    style="padding: 0.75rem 1.5rem; border: none; background: none; cursor: pointer; 
-                    font-weight: 600; border-bottom: 3px solid transparent; color: #6b7280;">
-                    ✅ Issued (<span id="issuedFeeCertCount">0</span>)
-                </button>
+            <!-- NEW: Student Registration Section -->
+            <div style="background: #f0f9ff; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #0ea5e9;">
+                <h3>📝 Register New Student</h3>
+                <form id="adminStudentRegistrationForm">
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="adminRegStudentName">Student Name:</label>
+                            <input type="text" id="adminRegStudentName" placeholder="Enter full name" required minlength="2" maxlength="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="adminRegFatherName">Father Name:</label>
+                            <input type="text" id="adminRegFatherName" placeholder="Enter father's name" required minlength="2" maxlength="50">
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="adminRegStudentClass">Select Class:</label>
+                            <select id="adminRegStudentClass" required>
+                                <option value="">Choose class...</option>
+                                <option value="nursery">Nursery</option>
+                                <option value="lkg">LKG</option>
+                                <option value="ukg">UKG</option>
+                                <option value="1">Class 1</option>
+                                <option value="2">Class 2</option>
+                                <option value="3">Class 3</option>
+                                <option value="4">Class 4</option>
+                                <option value="5">Class 5</option>
+                                <option value="6">Class 6</option>
+                                <option value="7">Class 7</option>
+                                <option value="8">Class 8</option>
+                                <option value="9">Class 9</option>
+                                <option value="10">Class 10</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminRegStudentRoll">Student Roll Number:</label>
+                            <input type="number" id="adminRegStudentRoll" placeholder="Enter roll number" min="1" max="999" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="adminRegTotalFee">Annual Total Fee (₹):</label>
+                            <input type="number" id="adminRegTotalFee" placeholder="Enter total annual fee" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminRegAcademicYear">Academic Year:</label>
+                            <input type="text" id="adminRegAcademicYear" placeholder="e.g., 2024-25" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="primary-btn" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">
+                        <span>👤</span> Register Student Only
+                    </button>
+                </form>
+            </div>
+
+            <!-- NEW: Payment Collection Section -->
+            <div style="background: #f8fafc; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #e2e8f0;">
+                <h3>💰 Collect Fee Payment & Generate Certificate</h3>
+                
+                <!-- Student Search Section -->
+                <div style="background: #ecfdf5; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; border: 1px solid #10b981;">
+                    <h4>🔍 Find Student</h4>
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="adminPaymentClass">Select Class:</label>
+                            <select id="adminPaymentClass" required>
+                                <option value="">Choose class...</option>
+                                <option value="nursery">Nursery</option>
+                                <option value="lkg">LKG</option>
+                                <option value="ukg">UKG</option>
+                                <option value="1">Class 1</option>
+                                <option value="2">Class 2</option>
+                                <option value="3">Class 3</option>
+                                <option value="4">Class 4</option>
+                                <option value="5">Class 5</option>
+                                <option value="6">Class 6</option>
+                                <option value="7">Class 7</option>
+                                <option value="8">Class 8</option>
+                                <option value="9">Class 9</option>
+                                <option value="10">Class 10</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPaymentRollNumber">Roll Number:</label>
+                            <input type="number" id="adminPaymentRollNumber" placeholder="Enter roll number" min="1" max="999">
+                        </div>
+                        <div style="display: flex; align-items: flex-end;">
+                            <button type="button" onclick="adminSearchStudentForPayment()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap;">🔍 Search</button>
+                        </div>
+                    </div>
+                    <div id="adminStudentSearchResults"></div>
+                </div>
+
+                <!-- Payment Form -->
+                <form id="adminPaymentForm" style="display: none;">
+                    <div id="adminStudentInfo" style="background: #fef3c7; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #f59e0b;">
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="adminPaymentAmount">Payment Amount (₹):</label>
+                            <input type="number" id="adminPaymentAmount" placeholder="Enter payment amount" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminPaymentRemarks">Payment Remarks:</label>
+                            <textarea id="adminPaymentRemarks" placeholder="Enter receipt number, transaction details, etc." rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="primary-btn" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">
+                        <span>💳</span> Collect Fee & Generate Certificate
+                    </button>
+                </form>
             </div>
 
             <!-- Action Buttons -->
             <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                <button onclick="loadFeeCertificates()" class="primary-btn" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">🔄 Refresh</button>
+                <button onclick="loadAllAdminFeeCertificates()" class="primary-btn" style="background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">🔄 Refresh All Certificates</button>
                 <button onclick="deleteAllFeeCertificates()" class="danger-btn" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">🗑️ Delete All</button>
                 <button onclick="hideViewFeeCertSection()" class="secondary-btn" style="background: rgba(100, 116, 139, 0.1); color: #64748b; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer;">✕ Close</button>
             </div>
 
-            <!-- Pending Certificates Content -->
-            <div id="pendingFeeCertContent">
-                <div id="pendingFeeCertificatesDisplay"></div>
-            </div>
-
-            <!-- Issued Certificates Content -->
-            <div id="issuedFeeCertContent" style="display: none;">
-                <div id="issuedFeeCertificatesDisplay"></div>
+            <!-- All Certificates Display -->
+            <div id="allAdminFeeCertificatesDisplay">
+                <div style="text-align: center; padding: 3rem; color: #64748b;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                    <p>Click "Refresh All Certificates" to load</p>
+                </div>
             </div>
         </div>
-
         <!-- Admin Generate Single Hall Ticket Modal -->
         <div id="adminGenerateHallTicketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; align-items: center; justify-content: center;">
             <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 800px; width: 90%; max-height: 90%; overflow-y: auto;" onclick="event.stopPropagation()">
@@ -1074,7 +1175,7 @@ button[onclick*="index.html"]:hover {
             </div>
         </div>
 
-        <!-- NEW: Admin Bulk Hall Ticket Modal -->
+        <!-- Admin Bulk Hall Ticket Modal -->
         <div id="adminBulkHallTicketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1002; align-items: center; justify-content: center;">
             <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 1000px; width: 90%; max-height: 90%; overflow-y: auto;" onclick="event.stopPropagation()">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -1257,6 +1358,112 @@ button[onclick*="index.html"]:hover {
         </div>
     </div>
 
+    <style>
+    .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        flex: 1;
+    }
+
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e5e7eb;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s;
+    }
+
+    .step-item.active .step-circle {
+        background: #3b82f6;
+        color: white;
+    }
+
+    .step-item.completed .step-circle {
+        background: #10b981;
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .step-item.active .step-label {
+        color: #3b82f6;
+        font-weight: 600;
+    }
+
+    .step-line {
+        height: 2px;
+        background: #e5e7eb;
+        flex: 1;
+        margin: 20px 10px 0 10px;
+    }
+
+    .student-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s;
+    }
+
+    .student-card:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+    }
+
+    .student-info {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .student-name {
+        font-weight: 600;
+        color: #1f2937;
+        font-size: 1rem;
+    }
+
+    .student-roll {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .remove-student-btn {
+        background: #fee2e2;
+        color: #dc2626;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .remove-student-btn:hover {
+        background: #fecaca;
+    }
+    </style>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
@@ -1265,15 +1472,62 @@ button[onclick*="index.html"]:hover {
         let adminHallTicketData = {};
         let adminExamSchedule = [];
         let allNotifications = [];
-        let currentFeeCertTab = 'pending';
-        let allFeeCertificates = [];
+        let allAdminFeeCertificates = [];
+        let currentAdminStudentCode = null;
 
         // NEW: Bulk hall ticket variables
         let bulkHallTicketData = {};
         let bulkStudentsList = [];
         let bulkExamSchedule = [];
         let currentBulkStep = 1;
+        // Add these functions to BOTH receptionist.html and admin.html
+// Place them in the <script> section with other utility functions
 
+let loadingOverlay = null;
+
+function showLoadingOverlay(message = 'Loading...') {
+    // Remove existing overlay if any
+    if (loadingOverlay && document.body.contains(loadingOverlay)) {
+        document.body.removeChild(loadingOverlay);
+    }
+    
+    loadingOverlay = document.createElement('div');
+    loadingOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    `;
+    
+    loadingOverlay.innerHTML = `
+        <div style="background: white; padding: 2rem; border-radius: 15px; text-align: center; min-width: 200px;">
+            <div style="width: 50px; height: 50px; border: 5px solid #f3f4f6; border-top: 5px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem auto;"></div>
+            <p style="margin: 0; font-weight: 600; color: #1f2937;">${message}</p>
+        </div>
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    `;
+    
+    document.body.appendChild(loadingOverlay);
+}
+
+function hideLoadingOverlay() {
+    if (loadingOverlay && document.body.contains(loadingOverlay)) {
+        document.body.removeChild(loadingOverlay);
+        loadingOverlay = null;
+    }
+}
         // ===== ENHANCED CACHE BUSTING =====
         async function fetchWithNoCache(url, options = {}) {
             const defaultOptions = {
@@ -1325,24 +1579,69 @@ button[onclick*="index.html"]:hover {
             }, 4000);
         }
 
-        function generateStudentCode(classCode, rollNum) {
-            const classStr = classCode.toString().toLowerCase();
-            const rollNumber = parseInt(rollNum);
-            if (classStr === 'nursery' && rollNumber >= 1 && rollNumber <= 999) {
-                return `CB25N${rollNumber.toString().padStart(3, '0')}`;
-            } else if (classStr === 'lkg' && rollNumber >= 1 && rollNumber <= 999) {
-                return `CB25L${rollNumber.toString().padStart(3, '0')}`;
-            } else if (classStr === 'ukg' && rollNumber >= 1 && rollNumber <= 999) {
-                return `CB25U${rollNumber.toString().padStart(3, '0')}`;
-            } else {
-                const classNum = parseInt(classCode);
-                if (classNum >= 1 && classNum <= 10 && rollNumber >= 1 && rollNumber <= 60) {
-                    const formattedClass = classNum.toString().padStart(2, '0');
-                    return `CB25-${formattedClass}-${rollNumber}`;
-                }
-            }
+        // Replace generateStudentCode() in BOTH receptionist.html and admin.html
+
+function generateStudentCode(classCode, rollNum) {
+    console.log('generateStudentCode called with:', { classCode, rollNum });
+    
+    const classStr = classCode.toString().toLowerCase().trim();
+    const rollNumber = parseInt(rollNum);
+    
+    // Validate roll number
+    if (isNaN(rollNumber) || rollNumber < 1) {
+        console.error('Invalid roll number:', rollNum);
+        return null;
+    }
+    
+    // Nursery
+    if (classStr === 'nursery') {
+        if (rollNumber > 999) {
+            console.error('Nursery roll number must be between 1-999');
             return null;
         }
+        const code = `CB25N${rollNumber.toString().padStart(3, '0')}`;
+        console.log('Generated nursery code:', code);
+        return code;
+    }
+    
+    // LKG
+    if (classStr === 'lkg') {
+        if (rollNumber > 999) {
+            console.error('LKG roll number must be between 1-999');
+            return null;
+        }
+        const code = `CB25L${rollNumber.toString().padStart(3, '0')}`;
+        console.log('Generated LKG code:', code);
+        return code;
+    }
+    
+    // UKG
+    if (classStr === 'ukg') {
+        if (rollNumber > 999) {
+            console.error('UKG roll number must be between 1-999');
+            return null;
+        }
+        const code = `CB25U${rollNumber.toString().padStart(3, '0')}`;
+        console.log('Generated UKG code:', code);
+        return code;
+    }
+    
+    // Classes 1-10
+    const classNumber = parseInt(classCode);
+    if (!isNaN(classNumber) && classNumber >= 1 && classNumber <= 10) {
+        if (rollNumber > 999) { // Changed from 60 to 999
+            console.error('Class roll number must be between 1-999');
+            return null;
+        }
+        const formattedClass = classNumber.toString().padStart(2, '0');
+        const code = `CB25-${formattedClass}-${rollNumber}`;
+        console.log('Generated class code:', code);
+        return code;
+    }
+    
+    console.error('Invalid class code:', classCode);
+    return null;
+}
 
         // ===== NOTIFICATION SYSTEM FUNCTIONS =====
         
@@ -1560,6 +1859,563 @@ button[onclick*="index.html"]:hover {
             }
         }
 
+        // ===== NEW FEE CERTIFICATE SYSTEM =====
+
+        function showViewFeeCertificates() {
+            document.getElementById('viewFeeCertSection').style.display = 'block';
+            document.getElementById('viewFeeCertSection').scrollIntoView({ behavior: 'smooth' });
+            loadAllAdminFeeCertificates();
+        }
+
+        function hideViewFeeCertSection() {
+            document.getElementById('viewFeeCertSection').style.display = 'none';
+        }
+
+        // ========== ADMIN STUDENT REGISTRATION ==========
+        document.getElementById('adminStudentRegistrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                const studentClass = document.getElementById('adminRegStudentClass').value;
+                const studentRoll = document.getElementById('adminRegStudentRoll').value;
+                const studentName = document.getElementById('adminRegStudentName').value;
+                const fatherName = document.getElementById('adminRegFatherName').value;
+                const totalFee = parseFloat(document.getElementById('adminRegTotalFee').value);
+                const academicYear = document.getElementById('adminRegAcademicYear').value;
+                
+                const response = await fetch(`${API_BASE}/register-student`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        studentClass: studentClass,
+                        studentRoll: parseInt(studentRoll),
+                        studentName: studentName,
+                        fatherName: fatherName,
+                        totalFee: totalFee,
+                        academicYear: academicYear,
+                        registeredBy: 'admin'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    const studentCode = generateStudentCode(studentClass, studentRoll);
+                    showNotification(`✅ Student registered successfully! Code: ${studentCode}`);
+                    e.target.reset();
+                } else {
+                    showNotification(result.error || 'Failed to register student', 'error');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showNotification('Error registering student: ' + error.message, 'error');
+            }
+        });
+
+        // ========== ADMIN SEARCH STUDENT FOR PAYMENT ==========
+        async function adminSearchStudentForPayment() {
+            const studentClass = document.getElementById('adminPaymentClass').value;
+            const studentRoll = document.getElementById('adminPaymentRollNumber').value;
+            const resultsContainer = document.getElementById('adminStudentSearchResults');
+            
+            if (!studentClass || !studentRoll) {
+                resultsContainer.innerHTML = '';
+                document.getElementById('adminPaymentForm').style.display = 'none';
+                return;
+            }
+
+            try {
+                const studentCode = generateStudentCode(studentClass, studentRoll);
+                
+                const response = await fetch(`${API_BASE}/student-balance/${studentCode}`);
+                
+                if (response.ok) {
+                    const studentRecord = await response.json();
+                    currentAdminStudentCode = studentCode;
+                    displayAdminStudentForPayment(studentRecord);
+                    resultsContainer.innerHTML = '';
+                } else {
+                    resultsContainer.innerHTML = `
+                        <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <p style="color: #92400e; margin: 0;">⚠️ Student ${studentCode} not found</p>
+                            <p style="color: #6b7280; margin: 0.5rem 0 0 0; font-size: 0.875rem;">Please register this student first.</p>
+                        </div>
+                    `;
+                    document.getElementById('adminPaymentForm').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+                showNotification('Error searching student: ' + error.message, 'error');
+            }
+        }
+
+        function displayAdminStudentForPayment(student) {
+            const status = student.currentDue === 0 ? 'Fully Paid' : student.currentDue < student.totalFee ? 'Partially Paid' : 'Unpaid';
+            const statusColor = student.currentDue === 0 ? '#10b981' : student.currentDue < student.totalFee ? '#f59e0b' : '#ef4444';
+            const totalPaid = student.totalFee - student.currentDue;
+
+            document.getElementById('adminStudentInfo').innerHTML = `
+                <h4 style="margin-top: 0; color: #92400e;">📋 Student Details</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <strong>Student Code:</strong> ${student.studentCode}<br>
+                        <strong>Name:</strong> ${student.studentName}<br>
+                        <strong>Father:</strong> ${student.fatherName}<br>
+                        <strong>Class:</strong> ${student.studentClass}
+                    </div>
+                    <div>
+                        <strong>Academic Year:</strong> ${student.academicYear}<br>
+                        <strong>Last Updated:</strong> ${new Date(student.lastUpdated).toLocaleString()}<br>
+                        <strong>Status:</strong> <span style="color: ${statusColor}; font-weight: 600;">${status}</span>
+                    </div>
+                </div>
+                <hr style="margin: 1rem 0;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; text-align: center;">
+                    <div>
+                        <div style="color: #1f2937; font-weight: 600;">Total Fee</div>
+                        <div style="font-size: 1.25rem; color: #1f2937;">₹${student.totalFee.toLocaleString()}</div>
+                    </div>
+                    <div>
+                        <div style="color: #10b981; font-weight: 600;">Paid</div>
+                        <div style="font-size: 1.25rem; color: #10b981;">₹${totalPaid.toLocaleString()}</div>
+                    </div>
+                    <div>
+                        <div style="color: #ef4444; font-weight: 600;">Due</div>
+                        <div style="font-size: 1.25rem; color: #ef4444;">₹${student.currentDue.toLocaleString()}</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('adminPaymentForm').style.display = 'block';
+            document.getElementById('adminPaymentAmount').max = student.currentDue;
+            document.getElementById('adminPaymentAmount').value = '';
+
+            if (student.currentDue === 0) {
+                document.getElementById('adminPaymentAmount').disabled = true;
+                document.getElementById('adminPaymentAmount').placeholder = 'Student has fully paid';
+            } else {
+                document.getElementById('adminPaymentAmount').disabled = false;
+                document.getElementById('adminPaymentAmount').placeholder = `Max: ₹${student.currentDue.toLocaleString()}`;
+            }
+        }
+        // ========== ADMIN PROCESS PAYMENT & GENERATE CERTIFICATE ==========
+        document.getElementById('adminPaymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!currentAdminStudentCode) {
+                showNotification('Please select a student first', 'error');
+                return;
+            }
+
+            try {
+                const paymentAmount = parseFloat(document.getElementById('adminPaymentAmount').value);
+
+                if (paymentAmount <= 0) {
+                    showNotification('Payment amount must be greater than 0', 'error');
+                    return;
+                }
+
+                const remarks = document.getElementById('adminPaymentRemarks').value;
+
+                // Generate certificate via API
+                const response = await fetch(`${API_BASE}/fee-certificates`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        studentCode: currentAdminStudentCode,
+                        amountPaid: paymentAmount,
+                        remarks: remarks,
+                        generatedBy: 'admin'
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    showNotification(`✅ Payment processed! Certificate generated. New balance: ₹${result.newBalance.currentDue.toLocaleString()}`);
+                    e.target.reset();
+                    document.getElementById('adminPaymentForm').style.display = 'none';
+                    document.getElementById('adminStudentSearchResults').innerHTML = '';
+                    document.getElementById('adminPaymentClass').value = '';
+                    document.getElementById('adminPaymentRollNumber').value = '';
+                    clearLocalCache();
+                    loadAllAdminFeeCertificates();
+                } else {
+                    showNotification(result.error || 'Failed to process payment', 'error');
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                showNotification('Error processing payment: ' + error.message, 'error');
+            }
+        });
+
+        // ========== LOAD ALL ADMIN FEE CERTIFICATES ==========
+        async function loadAllAdminFeeCertificates() {
+            try {
+                const response = await fetchWithNoCache(`${API_BASE}/admin/fee-certificates`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                allAdminFeeCertificates = await response.json();
+                displayAllAdminFeeCertificates();
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                document.getElementById('allAdminFeeCertificatesDisplay').innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #ef4444;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                        <p>Error loading certificates: ${error.message}</p>
+                        <button onclick="loadAllAdminFeeCertificates()" style="margin-top: 1rem; background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Retry</button>
+                    </div>
+                `;
+                showNotification('Error loading certificates: ' + error.message, 'error');
+            }
+        }
+
+        function displayAllAdminFeeCertificates() {
+            const container = document.getElementById('allAdminFeeCertificatesDisplay');
+            
+            if (!allAdminFeeCertificates || allAdminFeeCertificates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                        <p>No certificates available yet</p>
+                        <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 0.5rem;">Generated certificates will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const groupedByClass = {};
+            allAdminFeeCertificates.forEach(cert => {
+                if (!groupedByClass[cert.studentClass]) {
+                    groupedByClass[cert.studentClass] = [];
+                }
+                groupedByClass[cert.studentClass].push(cert);
+            });
+
+            let html = '';
+            Object.keys(groupedByClass).sort().forEach(classCode => {
+                const classCerts = groupedByClass[classCode].sort((a,b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+                
+                let classDisplay = classCode;
+                if (classCode === 'nursery') classDisplay = 'Nursery';
+                else if (classCode === 'lkg') classDisplay = 'LKG';
+                else if (classCode === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + classCode;
+                
+                html += `
+                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
+                        border-left: 4px solid #3b82f6;">${classDisplay}</h3>
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 900px;">
+                            <thead>
+                                <tr style="background: #f8fafc;">
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total Fee</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Amount Paid</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Generated By</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Date</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                classCerts.forEach(cert => {
+                    const generatedByColor = cert.generatedBy === 'admin' ? '#3b82f6' : '#10b981';
+                    const generatedByLabel = cert.generatedBy === 'admin' ? 'Admin' : 'Receptionist';
+                    const generatedDate = new Date(cert.generatedAt).toLocaleString();
+                    
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <span style="background: ${generatedByColor}20; color: ${generatedByColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${generatedByLabel}</span>
+                            </td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center; font-size: 0.875rem; white-space: nowrap;">${generatedDate}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                                    <button onclick="downloadAdminFeeCertificate('${cert.id}')" 
+                                        style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                        ⬇️ Download
+                                    </button>
+                                    <button onclick="deleteAdminFeeCertificate('${cert.id}')" 
+                                        style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                        🗑️ Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // ========== DOWNLOAD ADMIN FEE CERTIFICATE ==========
+        function downloadAdminFeeCertificate(certificateId) {
+            try {
+                const certificate = allAdminFeeCertificates.find(c => c.id === certificateId);
+                if (!certificate) {
+                    showNotification('Certificate not found. Please refresh and try again.', 'error');
+                    return;
+                }
+                if (typeof html2canvas === 'undefined') {
+                    showNotification('Image generation library not loaded. Please refresh the page.', 'error');
+                    return;
+                }
+
+                const currentDate = new Date().toLocaleDateString('en-IN');
+                const academicYear = certificate.academicYear || '2024-25';
+                const fatherName = certificate.fatherName || 'N/A';
+                const remarks = certificate.remarks || 'No remarks';
+                
+                let classDisplay = certificate.studentClass;
+                if (classDisplay === 'nursery') classDisplay = 'Nursery';
+                else if (classDisplay === 'lkg') classDisplay = 'LKG';
+                else if (classDisplay === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + certificate.studentClass;
+
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center;
+                    background:rgba(0,0,0,.75); padding:20px;
+                `;
+
+                const sheet = document.createElement('div');
+                sheet.style.cssText = `
+                    background:#fff; border-radius:12px; padding:20px; max-width:940px; width:100%;
+                    max-height:92vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,.25);
+                `;
+
+                const card = document.createElement('div');
+                card.id = 'adminFeeCertificateContent';
+                card.style.cssText = `
+                    width:820px; margin:0 auto; background:#fff; font-family:"Times New Roman", Georgia, serif; color:#000;
+                `;
+
+                card.innerHTML = `
+                    <div style="border:3px solid #000; padding:26px; background:#fff; line-height:1.45; color:#000;
+                                -webkit-print-color-adjust:exact; print-color-adjust:exact;">
+
+                        <!-- Header -->
+                        <div style="display:grid; grid-template-columns:110px 1fr; column-gap:20px; align-items:center;">
+                            <div>
+                                <img src="logo.png" alt="School Logo" width="100" height="100"
+                                    style="width:100px;height:100px;object-fit:contain" crossorigin="anonymous"
+                                    onerror="this.style.display='none'">
+                            </div>
+
+                            <div style="text-align:center; padding-right:50px;">
+                                <div style="font-size:24px; font-weight:700; letter-spacing:.5px; margin:2px 0 6px 0;">
+                                    VISWA BHARATHI SCHOOL
+                                </div>
+                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. A.P.
+                                </div>
+                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                                    Cell: 6301444214, 8555950709
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Title -->
+                        <div style="text-align:center; margin:18px 0 6px 0; font-size:20px; font-weight:700; text-decoration:underline;">
+                            FEE CERTIFICATE
+                        </div>
+                        <div style="height:2px; background:#000; margin:8px 0 18px 0;"></div>
+
+                        <!-- Certificate Info -->
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:14px;">
+                            <div><span style="font-weight:700">Certificate No:</span> ${certificate.id}</div>
+                            <div><span style="font-weight:700">Date of Issue:</span> ${currentDate}</div>
+                            <div><span style="font-weight:700">Academic Year:</span> ${academicYear}</div>
+                        </div>
+
+                        <!-- Student Details -->
+                        <div style="margin:22px 0 10px 0; font-size:16px; font-weight:700;">STUDENT DETAILS</div>
+                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; font-size:14px;">
+                            <div><span style="font-weight:700">Student Name:</span> ${certificate.studentName}</div>
+                            <div><span style="font-weight:700">Student Code:</span> ${certificate.studentCode}</div>
+                            <div><span style="font-weight:700">Roll Number:</span> ${certificate.studentRoll}</div>
+                            <div><span style="font-weight:700">Father's Name:</span> ${fatherName}</div>
+                            <div><span style="font-weight:700">Class:</span> ${classDisplay}</div>
+                        </div>
+
+                        <!-- Fee Details -->
+                        <div style="margin:24px 0 10px 0; font-size:16px; font-weight:700;">FEE DETAILS</div>
+                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                        <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                            <thead>
+                                <tr>
+                                    <th style="border:1px solid #000; padding:10px; text-align:left; background:#f2f2f2; font-weight:700;">Description</th>
+                                    <th style="border:1px solid #000; padding:10px; text-align:right; background:#f2f2f2; font-weight:700;">Amount (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Total Fee Amount</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalFee||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Amount Paid (This Payment)</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.amountPaid||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Total Paid to Date</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalPaidToDate||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Remaining Due</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.remainingDue||0).toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Remarks -->
+                        <div style="margin:16px 0 0 0; font-size:14px;">
+                            <span style="font-weight:700;">Remarks:</span> ${remarks}
+                        </div>
+
+                        <!-- Signature -->
+                        <div style="margin-top:46px; display:flex; justify-content:flex-end;">
+                            <div style="min-width:220px; text-align:center;">
+                                <div style="border-top:2px solid #000; margin-bottom:6px;"></div>
+                                <div style="font-size:13px; font-weight:700;">Correspondent</div>
+                                <div style="font-size:13px; font-weight:700;">Viswa Bharathi School</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const actions = document.createElement('div');
+                actions.style.cssText = 'display:flex; gap:10px; justify-content:center; margin-top:16px;';
+                const dl = document.createElement('button');
+                dl.textContent = '⬇️ Download PNG';
+                dl.style.cssText = 'background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+                dl.onclick = () => generateAdminFeeCertificateImage(card, certificate, overlay);
+                const close = document.createElement('button');
+                close.textContent = '✕ Close';
+                close.style.cssText = 'background:#ef4444;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+                close.onclick = () => document.body.removeChild(overlay);
+
+                actions.append(dl, close);
+                sheet.append(card, actions);
+                overlay.appendChild(sheet);
+                document.body.appendChild(overlay);
+
+            } catch (err) {
+                console.error('downloadAdminFeeCertificate error:', err);
+                showNotification('Error preparing certificate: ' + err.message, 'error');
+            }
+        }
+
+        function generateAdminFeeCertificateImage(element, certificate, overlay) {
+            showNotification('Generating certificate image...', 'info');
+            
+            html2canvas(element, {
+                scale: 3,
+                backgroundColor: '#ffffff',
+                logging: false,
+                useCORS: true,
+                allowTaint: false,
+                onclone: (doc) => {
+                    doc.querySelectorAll('#adminFeeCertificateContent *').forEach(n => {
+                        n.style.color = '#000';
+                    });
+                }
+            })
+            .then(canvas => {
+                canvas.toBlob(blob => {
+                    if (!blob) {
+                        showNotification('Could not create image file', 'error');
+                        return;
+                    }
+                    const url = URL.createObjectURL(blob);
+                    const safeName = (certificate.studentName || 'Student').replace(/\s+/g, '_');
+                    const a = document.createElement('a');
+                    a.download = `FeeCertificate_${safeName}_${certificate.studentCode}.png`;
+                    a.href = url;
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 250);
+                    showNotification('✅ Fee certificate downloaded successfully!', 'success');
+                    setTimeout(() => {
+                        if (document.body.contains(overlay)) {
+                            document.body.removeChild(overlay);
+                        }
+                    }, 1000);
+                }, 'image/png');
+            })
+            .catch(err => {
+                console.error('html2canvas error:', err);
+                showNotification('Failed to generate image: ' + (err.message || 'Unknown error'), 'error');
+            });
+        }
+
+        async function deleteAdminFeeCertificate(certificateId) {
+            if (!confirm('Delete this fee certificate? This action cannot be undone.')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/admin/delete-fee-certificate/${certificateId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('Fee certificate deleted successfully!');
+                    clearLocalCache();
+                    loadAllAdminFeeCertificates();
+                }
+            } catch (error) {
+                showNotification('Error deleting certificate: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteAllFeeCertificates() {
+            if (!confirm('Delete ALL fee certificates? This action cannot be undone.')) return;
+            if (!confirm('This will permanently delete all certificates. Click OK to confirm.')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/admin/delete-all-fee-certificates`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const result = await response.json();
+                if (result.success) {
+                    showNotification(`All ${result.deletedCount} certificates deleted successfully!`);
+                    clearLocalCache();
+                    allAdminFeeCertificates = [];
+                    displayAllAdminFeeCertificates();
+                }
+            } catch (error) {
+                showNotification('Error deleting certificates: ' + error.message, 'error');
+            }
+        }
         // ===== HALL TICKETS FUNCTIONS =====
         
         function showIssueHallTickets() {
@@ -1717,7 +2573,8 @@ button[onclick*="index.html"]:hover {
                 `;
 
                 sortedTickets.forEach(ticket => {
-                    const isIssued = ticket.status === 'issued';const statusColor = isIssued ? '#10b981' : '#f59e0b';
+                    const isIssued = ticket.status === 'issued';
+                    const statusColor = isIssued ? '#10b981' : '#f59e0b';
                     const statusBg = isIssued ? '#f0fdf4' : '#fef3c7';
                     const statusDisplay = isIssued ? 'Issued' : 'Pending';
                     const fromDate = new Date(ticket.fromDate).toLocaleDateString('en-IN');
@@ -1755,6 +2612,42 @@ button[onclick*="index.html"]:hover {
             });
 
             container.innerHTML = html;
+        }
+
+        async function issueHallTicketToStudent(hallTicketId, studentCode) {
+            if (!confirm('Are you sure you want to issue this hall ticket to the student?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/admin/issue-hall-ticket`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        hallTicketId: hallTicketId,
+                        studentCode: studentCode,
+                        issuedDate: new Date().toISOString()
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    showNotification('Hall Ticket issued to student successfully!');
+                    clearLocalCache();
+                    loadAllHallTickets();
+                } else {
+                    showNotification('Error: ' + (result.error || 'Failed to issue hall ticket'), 'error');
+                }
+            } catch (error) {
+                console.error('Error issuing hall ticket:', error);
+                showNotification('Error issuing hall ticket: ' + error.message, 'error');
+            }
         }
 
         // ========== HALL TICKET DOWNLOAD WITH INVIGILATOR SIGNATURE COLUMN ==========
@@ -1986,7 +2879,6 @@ button[onclick*="index.html"]:hover {
                 showNotification('Error: ' + error.message, 'error');
             }
         }
-
         function generateAdminHallTicketImage(element, ticket) {
             if (typeof html2canvas === 'undefined') {
                 showNotification('Image library not loaded. Refresh the page.', 'error');
@@ -2243,7 +3135,8 @@ button[onclick*="index.html"]:hover {
                     }
                     
                     const examInputs = examsContainer.querySelectorAll('input[id^="adminExamName-"]');
-                    if (examInputs.length === 0) {showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
+                    if (examInputs.length === 0) {
+                        showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
                         return;
                     }
                     
@@ -2319,42 +3212,6 @@ button[onclick*="index.html"]:hover {
             } catch (error) {
                 console.error('Error creating hall ticket:', error);
                 showNotification('Error creating hall ticket: ' + error.message, 'error');
-            }
-        }
-
-        async function issueHallTicketToStudent(hallTicketId, studentCode) {
-            if (!confirm('Are you sure you want to issue this hall ticket to the student?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/admin/issue-hall-ticket`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        hallTicketId: hallTicketId,
-                        studentCode: studentCode,
-                        issuedDate: new Date().toISOString()
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                if (result.success) {
-                    showNotification('Hall Ticket issued to student successfully!');
-                    clearLocalCache();
-                    loadAllHallTickets();
-                } else {
-                    showNotification('Error: ' + (result.error || 'Failed to issue hall ticket'), 'error');
-                }
-            } catch (error) {
-                console.error('Error issuing hall ticket:', error);
-                showNotification('Error issuing hall ticket: ' + error.message, 'error');
             }
         }
 
@@ -2767,538 +3624,6 @@ button[onclick*="index.html"]:hover {
             }
         }
 
-        // ===== FEE CERTIFICATES FUNCTIONS =====
-        
-        function showViewFeeCertificates() {
-            document.getElementById('viewFeeCertSection').style.display = 'block';
-            document.getElementById('viewFeeCertSection').scrollIntoView({ behavior: 'smooth' });
-            loadFeeCertificates();
-        }
-
-        function hideViewFeeCertSection() {
-            document.getElementById('viewFeeCertSection').style.display = 'none';
-        }
-
-        function switchFeeCertTab(tab) {
-            currentFeeCertTab = tab;
-            
-            document.getElementById('pendingFeeCertTab').style.borderBottom = 
-                tab === 'pending' ? '3px solid #3b82f6' : '3px solid transparent';
-            document.getElementById('pendingFeeCertTab').style.color = 
-                tab === 'pending' ? '#3b82f6' : '#6b7280';
-            
-            document.getElementById('issuedFeeCertTab').style.borderBottom = 
-                tab === 'issued' ? '3px solid #3b82f6' : '3px solid transparent';
-            document.getElementById('issuedFeeCertTab').style.color = 
-                tab === 'issued' ? '#3b82f6' : '#6b7280';
-            
-            document.getElementById('pendingFeeCertContent').style.display = 
-                tab === 'pending' ? 'block' : 'none';
-            document.getElementById('issuedFeeCertContent').style.display = 
-                tab === 'issued' ? 'block' : 'none';
-            
-            displayFeeCertificatesByTab();
-        }
-
-        async function loadFeeCertificates() {
-            try {
-                const response = await fetchWithNoCache(`${API_BASE}/admin/fee-certificates`);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                allFeeCertificates = await response.json();
-                displayFeeCertificatesByTab();
-            } catch (error) {
-                console.error('Error loading certificates:', error);
-                showNotification('Error loading certificates: ' + error.message, 'error');
-            }
-        }
-
-        function displayFeeCertificatesByTab() {
-            const pendingCerts = allFeeCertificates.filter(c => c.status === 'pending');
-            const issuedCerts = allFeeCertificates.filter(c => c.status === 'issued');
-            
-            document.getElementById('pendingFeeCertCount').textContent = pendingCerts.length;
-            document.getElementById('issuedFeeCertCount').textContent = issuedCerts.length;
-            
-            if (currentFeeCertTab === 'pending') {
-                displayPendingFeeCertificates(pendingCerts);
-            } else {
-                displayIssuedFeeCertificates(issuedCerts);
-            }
-        }
-
-        function displayPendingFeeCertificates(certificates) {
-            const container = document.getElementById('pendingFeeCertificatesDisplay');
-            
-            if (certificates.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 3rem; color: #64748b;">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
-                        <p>No pending fee certificates</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const groupedByClass = {};
-            certificates.forEach(cert => {
-                if (!groupedByClass[cert.studentClass]) {
-                    groupedByClass[cert.studentClass] = [];
-                }
-                groupedByClass[cert.studentClass].push(cert);
-            });
-            
-            let html = '';
-            Object.keys(groupedByClass).sort().forEach(classCode => {
-                const classCerts = groupedByClass[classCode].sort((a,b) => 
-                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
-                );
-                
-                html += `
-                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
-                        border-left: 4px solid #f59e0b;">Class ${classCode}</h3>
-                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 700px;">
-                            <thead>
-                                <tr style="background: #f8fafc;">
-                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
-                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
-                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
-                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
-                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
-                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
-                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-                
-                classCerts.forEach(cert => {
-                    html += `
-                        <tr>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                                    <button onclick="issueFeeCertificateToStudent('${cert.id}', '${cert.studentCode}')" 
-                                        style="background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                        Issue to Student
-                                    </button>
-                                    <button onclick="deleteFeeCertificate('${cert.id}')" 
-                                        style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                        Delete
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
-                
-                html += '</tbody></table></div>';
-            });
-            
-            container.innerHTML = html;
-        }
-
-        function displayIssuedFeeCertificates(certificates) {
-            const container = document.getElementById('issuedFeeCertificatesDisplay');
-            
-            if (certificates.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 3rem; color: #64748b;">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
-                        <p>No issued fee certificates</p></div>
-                `;
-                return;
-            }
-            
-            const groupedByClass = {};
-            certificates.forEach(cert => {
-                if (!groupedByClass[cert.studentClass]) {
-                    groupedByClass[cert.studentClass] = [];
-                }
-                groupedByClass[cert.studentClass].push(cert);
-            });
-            
-            let html = '';
-            Object.keys(groupedByClass).sort().forEach(classCode => {
-                const classCerts = groupedByClass[classCode].sort((a,b) => 
-                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
-                );
-                
-                html += `
-                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
-                        border-left: 4px solid #10b981;">Class ${classCode}</h3>
-                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 700px;">
-                            <thead>
-                                <tr style="background: #f8fafc;">
-                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
-                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
-                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
-                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
-                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
-                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
-                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-                
-                classCerts.forEach(cert => {
-                    html += `
-                        <tr>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
-                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                                    <button onclick="downloadFeeCertificateImage('${cert.id}')" 
-                                        style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                        Download
-                                    </button>
-                                    <button onclick="deleteFeeCertificate('${cert.id}')" 
-                                        style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; 
-                                        border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
-                                        Delete
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
-                
-                html += '</tbody></table></div>';
-            });
-            
-            container.innerHTML = html;
-        }
-
-        async function issueFeeCertificateToStudent(certificateId, studentCode) {
-            if (!confirm('Issue this fee certificate to the student?')) return;
-            
-            try {
-                const response = await fetch(`${API_BASE}/admin/issue-fee-certificate`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        certificateId: certificateId,
-                        studentCode: studentCode,
-                        issuedDate: new Date().toISOString()
-                    })
-                });
-                
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                const result = await response.json();
-                if (result.success) {
-                    showNotification('Fee certificate issued to student successfully!');
-                    clearLocalCache();
-                    await loadFeeCertificates();
-                    switchFeeCertTab('issued');
-                }
-            } catch (error) {
-                console.error('Error issuing certificate:', error);
-                showNotification('Error issuing certificate: ' + error.message, 'error');
-            }
-        }
-
-        async function deleteFeeCertificate(certificateId) {
-            if (!confirm('Delete this fee certificate? This action cannot be undone.')) return;
-            
-            try {
-                const response = await fetch(`${API_BASE}/admin/delete-fee-certificate/${certificateId}`, {
-                    method: 'DELETE'
-                });
-                
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                const result = await response.json();
-                if (result.success) {
-                    showNotification('Fee certificate deleted successfully!');
-                    clearLocalCache();
-                    loadFeeCertificates();
-                }
-            } catch (error) {
-                showNotification('Error deleting certificate: ' + error.message, 'error');
-            }
-        }
-
-        async function deleteAllFeeCertificates() {
-            if (!confirm('Delete ALL fee certificates? This action cannot be undone.')) return;
-            if (!confirm('This will permanently delete all certificates. Click OK to confirm.')) return;
-            
-            try {
-                const response = await fetch(`${API_BASE}/admin/delete-all-fee-certificates`, {
-                    method: 'DELETE'
-                });
-                
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                
-                const result = await response.json();
-                if (result.success) {
-                    showNotification(`All ${result.deletedCount} certificates deleted successfully!`);
-                    clearLocalCache();
-                    allFeeCertificates = [];
-                    displayFeeCertificatesByTab();
-                }
-            } catch (error) {
-                showNotification('Error deleting certificates: ' + error.message, 'error');
-            }
-        }
-
-        function downloadFeeCertificateImage(certificateId) {
-            try {
-                const certificate = allFeeCertificates.find(c => c.id === certificateId);
-                if (!certificate) {
-                    showNotification('Certificate not found. Please refresh and try again.', 'error');
-                    return;
-                }
-                if (typeof html2canvas === 'undefined') {
-                    showNotification('Image generation library not loaded. Please refresh the page.', 'error');
-                    return;
-                }
-
-                const currentDate = new Date().toLocaleDateString('en-IN');
-                const academicYear = certificate.academicYear || '2024-25';
-                const fatherName = certificate.fatherName || 'N/A';
-                const remarks = certificate.remarks || 'No remarks';
-                
-                let classDisplay = certificate.studentClass;
-                if (classDisplay === 'nursery') classDisplay = 'Nursery';
-                else if (classDisplay === 'lkg') classDisplay = 'LKG';
-                else if (classDisplay === 'ukg') classDisplay = 'UKG';
-                else classDisplay = 'Class ' + certificate.studentClass;
-
-                const overlay = document.createElement('div');
-                overlay.style.cssText = `
-                    position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center;
-                    background:rgba(0,0,0,.75); padding:20px;
-                `;
-
-                const sheet = document.createElement('div');
-                sheet.style.cssText = `
-                    background:#fff; border-radius:12px; padding:20px; max-width:940px; width:100%;
-                    max-height:92vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,.25);
-                `;
-
-                const card = document.createElement('div');
-                card.id = 'feeCertificateContent';
-                card.style.cssText = `
-                    width:820px; margin:0 auto; background:#fff; font-family:"Times New Roman", Georgia, serif; color:#000;
-                `;
-
-                card.innerHTML = `
-                    <div style="border:3px solid #000; padding:26px; background:#fff; line-height:1.45; color:#000;
-                                -webkit-print-color-adjust:exact; print-color-adjust:exact;">
-
-                        <!-- Header -->
-                        <div style="display:grid; grid-template-columns:110px 1fr; column-gap:20px; align-items:center;">
-                            <div>
-                                <img src="logo.png" alt="School Logo" width="100" height="100"
-                                    style="width:100px;height:100px;object-fit:contain" crossorigin="anonymous"
-                                    onerror="this.style.display='none'">
-                            </div>
-
-                            <div style="text-align:center; padding-right:50px;">
-                                <div style="font-size:24px; font-weight:700; letter-spacing:.5px; margin:2px 0 6px 0;">
-                                    VISWA BHARATHI SCHOOL
-                                </div>
-                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
-                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. A.P.
-                                </div>
-                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
-                                    Cell: 6301444214, 8555950709
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Title -->
-                        <div style="text-align:center; margin:18px 0 6px 0; font-size:20px; font-weight:700; text-decoration:underline;">
-                            FEE CERTIFICATE
-                        </div>
-                        <div style="height:2px; background:#000; margin:8px 0 18px 0;"></div>
-
-                        <!-- Certificate Info -->
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:14px;">
-                            <div><span style="font-weight:700">Certificate No:</span> FC${certificate.id || Date.now()}</div>
-                            <div><span style="font-weight:700">Date of Issue:</span> ${currentDate}</div>
-                            <div><span style="font-weight:700">Academic Year:</span> ${academicYear}</div>
-                        </div>
-
-                        <!-- Student Details -->
-                        <div style="margin:22px 0 10px 0; font-size:16px; font-weight:700;">STUDENT DETAILS</div>
-                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; font-size:14px;">
-                            <div><span style="font-weight:700">Student Name:</span> ${certificate.studentName}</div>
-                            <div><span style="font-weight:700">Student Code:</span> ${certificate.studentCode}</div>
-                            <div><span style="font-weight:700">Roll Number:</span> ${certificate.studentRoll}</div>
-                            <div><span style="font-weight:700">Father's Name:</span> ${fatherName}</div>
-                            <div><span style="font-weight:700">Class:</span> ${classDisplay}</div>
-                        </div>
-
-                        <!-- Fee Details -->
-                        <div style="margin:24px 0 10px 0; font-size:16px; font-weight:700;">FEE DETAILS</div>
-                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
-                        <table style="width:100%; border-collapse:collapse; font-size:14px;">
-                            <thead>
-                                <tr>
-                                    <th style="border:1px solid #000; padding:10px; text-align:left; background:#f2f2f2; font-weight:700;">Description</th>
-                                    <th style="border:1px solid #000; padding:10px; text-align:right; background:#f2f2f2; font-weight:700;">Amount (₹)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="border:1px solid #000; padding:10px;">Total Fee Amount</td>
-                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalFee||0).toFixed(2)}</td>
-                                </tr>
-                                <tr>
-                                    <td style="border:1px solid #000; padding:10px;">Amount Paid</td>
-                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.amountPaid||0).toFixed(2)}</td>
-                                </tr>
-                                <tr>
-                                    <td style="border:1px solid #000; padding:10px;">Remaining Due</td>
-                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.remainingDue||0).toFixed(2)}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <!-- Remarks -->
-                        <div style="margin:16px 0 0 0; font-size:14px;">
-                            <span style="font-weight:700;">Remarks:</span> ${remarks}
-                        </div>
-
-                        <!-- Signature -->
-                        <div style="margin-top:46px; display:flex; justify-content:flex-end;">
-                            <div style="min-width:220px; text-align:center;">
-                                <div style="border-top:2px solid #000; margin-bottom:6px;"></div>
-                                <div style="font-size:13px; font-weight:700;">Correspondent</div>
-                                <div style="font-size:13px; font-weight:700;">Viswa Bharathi High School</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                const actions = document.createElement('div');
-                actions.style.cssText = 'display:flex; gap:10px; justify-content:center; margin-top:16px;';
-                const dl = document.createElement('button');
-                dl.textContent = '⬇️ Download PNG';
-                dl.style.cssText = 'background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
-                dl.onclick = () => generateFeeCertificateImage(card, certificate);
-                const close = document.createElement('button');
-                close.textContent = '✕ Close';
-                close.style.cssText = 'background:#ef4444;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
-                close.onclick = () => document.body.removeChild(overlay);
-
-                actions.append(dl, close);
-                sheet.append(card, actions);
-                overlay.appendChild(sheet);
-                document.body.appendChild(overlay);
-
-            } catch (err) {
-                console.error('downloadFeeCertificateImage error:', err);
-                showNotification('Error preparing certificate: ' + err.message, 'error');
-            }
-        }
-
-        function generateFeeCertificateImage(element, certificate) {
-            const notify = (m,t) => { try { showNotification(m,t); } catch(_) {} };
-
-            element.style.maxWidth = '820px';
-            element.style.width = '820px';
-            element.style.margin = '0 auto';
-
-            const onClone = (doc) => {
-                doc.querySelectorAll('#feeCertificateContent *').forEach(n => {
-                    n.style.color = '#000';
-                    if (n.tagName === 'IMG') n.setAttribute('crossorigin','anonymous');
-                });
-            };
-
-            const trimCanvas = (canvas) => {
-                const ctx = canvas.getContext('2d');
-                const { width, height } = canvas;
-                const data = ctx.getImageData(0, 0, width, height).data;
-                let top=null,left=null,right=null,bottom=null;
-                for (let y=0; y<height; y++) {
-                    for (let x=0; x<width; x++) {
-                        const a = data[(y*width+x)*4+3];
-                        if (a !== 0) { if (top===null) top=y; bottom=y; if (left===null||x<left) left=x; if (right===null||x>right) right=x; }
-                    }
-                }
-                if (top===null) return canvas;
-                const w = right-left+1, h = bottom-top+1;
-                const out = document.createElement('canvas');
-                out.width = w; out.height = h;
-                out.getContext('2d').drawImage(canvas, left, top, w, h, 0, 0, w, h);
-                return out;
-            };
-
-            const padCanvas = (canvas, cssMarginPx, cssWidth) => {
-                const scale = canvas.width / cssWidth;
-                const pad = Math.round(cssMarginPx * scale);
-                const out = document.createElement('canvas');
-                out.width  = canvas.width  + pad * 2;
-                out.height = canvas.height + pad * 2;
-                const ctx = out.getContext('2d');
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, out.width, out.height);
-                ctx.drawImage(canvas, pad, pad);
-                return out;
-            };
-
-            if (!window.html2canvas) {
-                notify('Image library not loaded. Please refresh.', 'error');
-                return;
-            }
-
-            notify('Generating certificate image...', 'info');
-
-            html2canvas(element, {
-                scale: 3,
-                backgroundColor: '#ffffff',
-                logging: false,
-                useCORS: true,
-                allowTaint: false,
-                scrollX: 0,
-                scrollY: 0,
-                width: element.offsetWidth,
-                height: element.offsetHeight,
-                windowWidth: element.offsetWidth,
-                windowHeight: element.offsetHeight,
-                onclone: onClone
-            })
-            .then(canvas => {
-                const trimmed = trimCanvas(canvas);
-                const padded  = padCanvas(trimmed, 24, element.offsetWidth);
-                padded.toBlob(blob => {
-                    if (!blob) { notify('Could not create image file', 'error'); return; }
-                    const url = URL.createObjectURL(blob);
-                    const safeName = (certificate?.studentName || 'Student').replace(/\s+/g, '_');
-                    const a = document.createElement('a');
-                    a.download = `FeeCertificate_${safeName}_${certificate?.studentCode || ''}.png`;
-                    a.href = url;
-                    a.click();
-                    setTimeout(() => URL.revokeObjectURL(url), 250);
-                    notify('✅ Fee certificate downloaded successfully!', 'success');
-                }, 'image/png');
-            })
-            .catch(err => {
-                console.error('html2canvas (certificate) error:', err);
-                notify('❌ Failed to generate image: ' + (err.message || 'Unknown error'), 'error');
-            });
-        }
-
         // ===== QR CODE FUNCTIONS =====
         
         function showQRGenerator() {
@@ -3388,13 +3713,14 @@ button[onclick*="index.html"]:hover {
         // Initialize on page load
         window.onload = function() {
             console.log('✅ Admin Dashboard loaded successfully');
-            console.log('✅ FIXED: Cache-busting with proper no-cache headers');
-            console.log('✅ FIXED: Bulk hall ticket generation implemented');
-            console.log('✅ FIXED: Invigilator signature column added to hall tickets');
+            console.log('✅ NEW FEE CERTIFICATE SYSTEM: Direct generation without approval');
+            console.log('✅ Both Admin & Receptionist can generate certificates');
+            console.log('✅ Running balance tracking per student');
+            console.log('✅ All certificates visible to both roles with "Generated By" badges');
+            
+            // Set default academic year
+            document.getElementById('adminRegAcademicYear').value = '2024-25';
         };
     </script>
-
-
-  
 </body>
 </html>
