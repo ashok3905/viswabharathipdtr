@@ -460,6 +460,23 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        .error-message {
+    background: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.success-message {
+    background: #d1fae5;
+    border: 1px solid #10b981;
+    color: #065f46;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
     </style>
 </head>
 <!-- This is the COMPLETE receptionist.html body tag with updated fee certificate functionality -->
@@ -472,9 +489,9 @@
             <p class="subtitle">Student Fee Management System</p>
             <div class="header-buttons">
                 <button class="secondary-btn" onclick="issueHallTicket()">🎫 Issue Hall Ticket</button>
-                <button class="history-btn" onclick="viewFeeHistory()">View Fee Records</button>
+                <button class="history-btn" onclick="viewFeeHistory()">📊 View Fee Records</button>
                 <button class="primary-btn" onclick="viewFeeCertificates()">📜 Fee Certificates</button>
-                <button class="danger-btn" onclick="clearAllData()">Clear All Data</button>
+                <button class="danger-btn" onclick="clearAllData()">🗑️ Clear All Data</button>
                 <button class="logout-btn" onclick="window.location.href='index.html'">Logout</button>
             </div>
         </div>
@@ -489,7 +506,6 @@
                             <label for="regStudentName">Student Name:</label>
                             <input type="text" id="regStudentName" name="regStudentName" placeholder="Enter full name" required minlength="2" maxlength="50">
                         </div>
-
                         <div class="form-group">
                             <label for="regFatherName">Father Name:</label>
                             <input type="text" id="regFatherName" name="regFatherName" placeholder="Enter father's name" required minlength="2" maxlength="50">
@@ -498,21 +514,12 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="regMobileNumber">Mobile Number:</label>
-                            <input type="tel" id="regMobileNumber" name="regMobileNumber" placeholder="Enter 10-digit mobile" required pattern="[0-9]{10}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="regLocation">Location:</label>
-                            <input type="text" id="regLocation" name="regLocation" placeholder="Enter location/address" required maxlength="100">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
                             <label for="regStudentClass">Select Class:</label>
                             <select id="regStudentClass" name="regStudentClass" required>
                                 <option value="">Choose class...</option>
+                                <option value="nursery">Nursery</option>
+                                <option value="lkg">LKG</option>
+                                <option value="ukg">UKG</option>
                                 <option value="1">Class 1</option>
                                 <option value="2">Class 2</option>
                                 <option value="3">Class 3</option>
@@ -525,10 +532,9 @@
                                 <option value="10">Class 10</option>
                             </select>
                         </div>
-
                         <div class="form-group">
                             <label for="regStudentRoll">Student Roll Number:</label>
-                            <input type="number" id="regStudentRoll" name="regStudentRoll" placeholder="Enter roll number (1-60)" min="1" max="60" required>
+                            <input type="number" id="regStudentRoll" name="regStudentRoll" placeholder="Enter roll number" min="1" max="999" required>
                         </div>
                     </div>
 
@@ -537,7 +543,6 @@
                             <label for="regTotalFee">Annual Total Fee (₹):</label>
                             <input type="number" id="regTotalFee" name="regTotalFee" placeholder="Enter total annual fee" min="0" step="0.01" required>
                         </div>
-
                         <div class="form-group">
                             <label for="regAcademicYear">Academic Year:</label>
                             <input type="text" id="regAcademicYear" name="regAcademicYear" placeholder="e.g., 2024-25" required>
@@ -545,7 +550,7 @@
                     </div>
 
                     <button type="submit" class="primary-btn">
-                        <span>👤</span> Register Student
+                        <span>👤</span> Register Student Only
                     </button>
                 </form>
             </div>
@@ -553,7 +558,7 @@
 
         <!-- Payment Collection Section -->
         <div class="section">
-            <h2>💰 Collect Fee Payment</h2>
+            <h2>💰 Collect Fee Payment & Generate Certificate</h2>
             <div style="background: #f8fafc; border-radius: 15px; padding: 2rem; margin-bottom: 2rem; border: 1px solid #e2e8f0;">
                 
                 <!-- Student Search Section -->
@@ -564,6 +569,9 @@
                             <label for="paymentClass">Select Class:</label>
                             <select id="paymentClass" name="paymentClass" required>
                                 <option value="">Choose class...</option>
+                                <option value="nursery">Nursery</option>
+                                <option value="lkg">LKG</option>
+                                <option value="ukg">UKG</option>
                                 <option value="1">Class 1</option>
                                 <option value="2">Class 2</option>
                                 <option value="3">Class 3</option>
@@ -578,10 +586,10 @@
                         </div>
                         <div class="form-group">
                             <label for="paymentRollNumber">Roll Number:</label>
-                            <input type="number" id="paymentRollNumber" placeholder="Enter roll number (1-60)" min="1" max="60">
+                            <input type="number" id="paymentRollNumber" placeholder="Enter roll number" min="1" max="999">
                         </div>
                         <div style="display: flex; align-items: flex-end;">
-                            <button type="button" onclick="searchStudentByRoll()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Search</button>
+                            <button type="button" onclick="searchStudentForPayment()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">🔍 Search</button>
                         </div>
                     </div>
                     <div id="studentSearchResults"></div>
@@ -597,56 +605,31 @@
                             <label for="paymentAmount">Payment Amount (₹):</label>
                             <input type="number" id="paymentAmount" name="paymentAmount" placeholder="Enter payment amount" min="0" step="0.01" required>
                         </div>
-
                         <div class="form-group">
-                            <label for="paymentMethod">Payment Method:</label>
-                            <select id="paymentMethod" name="paymentMethod" required>
-                                <option value="">Select payment method...</option>
-                                <option value="cash">Cash</option>
-                                <option value="cheque">Cheque</option>
-                                <option value="online">Online Transfer</option>
-                                <option value="card">Card Payment</option>
-                                <option value="upi">UPI</option>
-                            </select>
+                            <label for="paymentRemarks">Payment Remarks:</label>
+                            <textarea id="paymentRemarks" name="paymentRemarks" placeholder="Enter receipt number, transaction details, etc." rows="3"></textarea>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="paymentRemarks">Payment Remarks:</label>
-                        <textarea id="paymentRemarks" name="paymentRemarks" placeholder="Enter receipt number, cheque details, etc." rows="3"></textarea>
-                    </div>
-
                     <button type="submit" class="primary-btn">
-                        <span>💳</span> Process Payment
+                        <span>💳</span> Collect Fee & Generate Certificate
                     </button>
                 </form>
             </div>
         </div>
 
-        <!-- Fee Status Overview -->
+        <!-- Fee Certificates Display -->
         <div class="section">
-            <h2>📊 Fee Status Overview</h2>
+            <h2>📜 All Fee Certificates</h2>
             <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                <button onclick="loadFeeOverview()" class="history-btn">
-                    <span>🔄</span> Refresh Overview
+                <button onclick="loadAllCertificates()" class="primary-btn">
+                    <span>🔄</span> Refresh Certificates
                 </button>
             </div>
-
-            <div id="feeOverview">
+            <div id="allCertificatesDisplay">
                 <div class="empty-state">
                     <div class="icon">📋</div>
-                    <p>Loading fee overview...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Payment History Section -->
-        <div class="section">
-            <h2>📈 Recent Payment Transactions</h2>
-            <div id="paymentHistory">
-                <div class="empty-state">
-                    <div class="icon">💳</div>
-                    <p>No recent transactions</p>
+                    <p>Click "Refresh Certificates" to load all certificates</p>
                 </div>
             </div>
         </div>
@@ -667,1623 +650,1351 @@
     <div id="feeCertificateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
         <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 1200px; width: 90%; max-height: 85%; overflow-y: auto;" onclick="event.stopPropagation()">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h3 style="margin: 0;">📜 Fee Certificates Management</h3>
+                <h3 style="margin: 0;">📜 All Fee Certificates</h3>
                 <button onclick="closeFeeCertificateModal()" style="background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 20px;">×</button>
             </div>
 
-            <!-- Tab Navigation -->
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb;">
-                <button id="pendingCertTab" onclick="switchCertificateTab('pending')" style="padding: 0.75rem 1.5rem; border: none; background: none; cursor: pointer; font-weight: 600; border-bottom: 3px solid #3b82f6; color: #3b82f6;">
-                    ⏳ Pending (<span id="pendingCertCount">0</span>)
-                </button>
-                <button id="sentCertTab" onclick="switchCertificateTab('sent')" style="padding: 0.75rem 1.5rem; border: none; background: none; cursor: pointer; font-weight: 600; border-bottom: 3px solid transparent; color: #6b7280;">
-                    ✅ Issued (<span id="sentCertCount">0</span>)
-                </button>
+            <div style="background: #dbeafe; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #3b82f6;">
+                <p style="margin: 0; font-weight: 600; color: #1e40af;">📋 All certificates from both Admin & Receptionist are displayed here</p>
             </div>
 
-            <!-- Pending Certificates Content -->
-            <div id="pendingCertificatesContent">
-                <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #f59e0b;">
-                    <p style="margin: 0; font-weight: 600; color: #92400e;">💡 These certificates are ready to be sent to Admin for approval</p>
-                </div>
-                <div id="pendingCertificatesList"></div>
-            </div>
-
-            <!-- Sent Certificates Content -->
-            <div id="sentCertificatesContent" style="display: none;">
-                <div style="background: #dbeafe; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #3b82f6;">
-                    <p style="margin: 0; font-weight: 600; color: #1e40af;">📋 Issued certificates - You can download these</p>
-                </div>
-                <div id="sentCertificatesList"></div>
-            </div>
+            <div id="certificatesListContent"></div>
         </div>
     </div>
 
-   <!-- Hall Ticket Modal - BULK GENERATION -->
-<div id="hallTicketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; align-items: center; justify-content: center;">
-    <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 1000px; width: 90%; max-height: 90%; overflow-y: auto;" onclick="event.stopPropagation()">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h3 style="margin: 0;">🎫 Bulk Hall Ticket Generation</h3>
-            <button onclick="closeHallTicketModal()" style="background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 20px;">×</button>
-        </div>
-        
-        <!-- Step Indicator -->
-        <div id="stepIndicator" style="display: flex; justify-content: space-between; margin-bottom: 2rem; padding: 0 2rem;">
-            <div class="step-item active" data-step="1">
-                <div class="step-circle">1</div>
-                <div class="step-label">Class & Exam Info</div>
+    <!-- Hall Ticket Modal -->
+    <div id="hallTicketModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 1000px; width: 90%; max-height: 90%; overflow-y: auto;" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0;">🎫 Bulk Hall Ticket Generation</h3>
+                <button onclick="closeHallTicketModal()" style="background: #ef4444; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 20px;">×</button>
             </div>
-            <div class="step-line"></div>
-            <div class="step-item" data-step="2">
-                <div class="step-circle">2</div>
-                <div class="step-label">Add Students</div>
+            
+            <!-- Step Indicator -->
+            <div id="stepIndicator" style="display: flex; justify-content: space-between; margin-bottom: 2rem; padding: 0 2rem;">
+                <div class="step-item active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Class & Exam Info</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-item" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Add Students</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-item" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Schedule Exams</div>
+                </div>
             </div>
-            <div class="step-line"></div>
-            <div class="step-item" data-step="3">
-                <div class="step-circle">3</div>
-                <div class="step-label">Schedule Exams</div>
-            </div>
-        </div>
 
-        <!-- Step 1: Basic Details -->
-        <div id="hallTicketStep1">
-            <form id="hallTicketBasicForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="hallExamName">Exam Name:</label>
-                        <input type="text" id="hallExamName" name="hallExamName" placeholder="e.g., Mid Term, Final Exam" required maxlength="100">
+            <!-- Step 1: Basic Details -->
+            <div id="hallTicketStep1">
+                <form id="hallTicketBasicForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hallExamName">Exam Name:</label>
+                            <input type="text" id="hallExamName" name="hallExamName" placeholder="e.g., Mid Term, Final Exam" required maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="hallStudentClass">Select Class:</label>
+                            <select id="hallStudentClass" name="hallStudentClass" required>
+                                <option value="">Choose class...</option>
+                                <option value="nursery">Nursery</option>
+                                <option value="lkg">LKG</option>
+                                <option value="ukg">UKG</option>
+                                <option value="1">Class 1</option>
+                                <option value="2">Class 2</option>
+                                <option value="3">Class 3</option>
+                                <option value="4">Class 4</option>
+                                <option value="5">Class 5</option>
+                                <option value="6">Class 6</option>
+                                <option value="7">Class 7</option>
+                                <option value="8">Class 8</option>
+                                <option value="9">Class 9</option>
+                                <option value="10">Class 10</option>
+                            </select>
+                        </div>
                     </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hallFromDate">Exam From Date:</label>
+                            <input type="date" id="hallFromDate" name="hallFromDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hallToDate">Exam To Date:</label>
+                            <input type="date" id="hallToDate" name="hallToDate" required>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label for="hallStudentClass">Select Class:</label>
-                        <select id="hallStudentClass" name="hallStudentClass" required>
-                            <option value="">Choose class...</option>
-                            <option value="1">Class 1</option>
-                            <option value="2">Class 2</option>
-                            <option value="3">Class 3</option>
-                            <option value="4">Class 4</option>
-                            <option value="5">Class 5</option>
-                            <option value="6">Class 6</option>
-                            <option value="7">Class 7</option>
-                            <option value="8">Class 8</option>
-                            <option value="9">Class 9</option>
-                            <option value="10">Class 10</option>
-                        </select>
+                        <label for="hallRemarks">Remarks/Instructions:</label>
+                        <textarea id="hallRemarks" name="hallRemarks" placeholder="Enter any general instructions for students" rows="3" maxlength="500"></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="submit" class="primary-btn" style="flex: 1;">
+                            Next: Add Students →
+                        </button>
+                        <button type="button" onclick="closeHallTicketModal()" class="danger-btn" style="flex: 1;">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Add Students -->
+            <div id="hallTicketStep2" style="display: none;">
+                <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
+                    <p style="margin: 0; font-weight: 600; color: #0369a1;">👥 Add all students who will receive hall tickets for this exam</p>
+                </div>
+
+                <!-- Quick Add Form -->
+                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
+                    <h4 style="margin-top: 0;">Add Student</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentName">Student Name:</label>
+                            <input type="text" id="studentName" placeholder="Enter full name" maxlength="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentRoll">Roll Number:</label>
+                            <input type="number" id="studentRoll" placeholder="Enter roll number" min="1" max="999">
+                        </div>
+                        <div style="display: flex; align-items: flex-end;">
+                            <button type="button" onclick="addStudentToList()" class="primary-btn" style="white-space: nowrap;">
+                                ➕ Add Student
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="hallFromDate">Exam From Date:</label>
-                        <input type="date" id="hallFromDate" name="hallFromDate" required>
+                <!-- Students List -->
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 0.5rem; margin-bottom: 0.5rem;">
+                        <h4 style="margin: 0;">Students List (<span id="studentCount">0</span>)</h4>
+                        <button type="button" onclick="clearAllStudents()" class="danger-btn" style="font-size: 0.875rem; padding: 0.5rem 1rem;">
+                            🗑️ Clear All
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="hallToDate">Exam To Date:</label>
-                        <input type="date" id="hallToDate" name="hallToDate" required>
+                    <div id="studentsList" style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1rem; max-height: 300px; overflow-y: auto;">
+                        <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyStudentsMessage">
+                            No students added yet
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="hallRemarks">Remarks/Instructions:</label>
-                    <textarea id="hallRemarks" name="hallRemarks" placeholder="Enter any general instructions for students" rows="3" maxlength="500"></textarea>
                 </div>
 
                 <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="submit" class="primary-btn" style="flex: 1;">
-                        Next: Add Students →
+                    <button type="button" onclick="goBackToStep1()" class="secondary-btn" style="flex: 1;">
+                        ← Back
                     </button>
-                    <button type="button" onclick="closeHallTicketModal()" class="danger-btn" style="flex: 1;">
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Step 2: Add Students -->
-        <div id="hallTicketStep2" style="display: none;">
-            <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
-                <p style="margin: 0; font-weight: 600; color: #0369a1;">👥 Add all students who will receive hall tickets for this exam</p>
-            </div>
-
-            <!-- Quick Add Form -->
-            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid #e5e7eb;">
-                <h4 style="margin-top: 0;">Add Student</h4>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="studentName">Student Name:</label>
-                        <input type="text" id="studentName" placeholder="Enter full name" maxlength="50">
-                    </div>
-                    <div class="form-group">
-                        <label for="studentRoll">Roll Number:</label>
-                        <input type="number" id="studentRoll" placeholder="Enter roll number" min="1" max="999">
-                    </div>
-                    <div style="display: flex; align-items: flex-end;">
-                        <button type="button" onclick="addStudentToList()" class="primary-btn" style="white-space: nowrap;">
-                            ➕ Add Student
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Students List -->
-            <div style="margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 0.5rem; margin-bottom: 0.5rem;">
-                    <h4 style="margin: 0;">Students List (<span id="studentCount">0</span>)</h4>
-                    <button type="button" onclick="clearAllStudents()" class="danger-btn" style="font-size: 0.875rem; padding: 0.5rem 1rem;">
-                        🗑️ Clear All
+                    <button type="button" onclick="goToStep3()" class="primary-btn" style="flex: 1;" id="nextToScheduleBtn" disabled>
+                        Next: Schedule Exams →
                     </button>
                 </div>
-                <div id="studentsList" style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1rem; max-height: 300px; overflow-y: auto;">
-                    <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyStudentsMessage">
-                        No students added yet
-                    </div>
+            </div>
+
+            <!-- Step 3: Exam Schedule -->
+            <div id="hallTicketStep3" style="display: none;">
+                <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
+                    <p style="margin: 0; font-weight: 600; color: #0369a1;">📅 Configure exam schedule (same for all <span id="totalStudentsCount">0</span> students)</p>
                 </div>
-            </div>
-
-            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                <button type="button" onclick="goBackToStep1()" class="secondary-btn" style="flex: 1;">
-                    ← Back
-                </button>
-                <button type="button" onclick="goToStep3()" class="primary-btn" style="flex: 1;" id="nextToScheduleBtn" disabled>
-                    Next: Schedule Exams →
-                </button>
-            </div>
-        </div>
-
-        <!-- Step 3: Exam Schedule -->
-        <div id="hallTicketStep3" style="display: none;">
-            <div style="background: #f0f9ff; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #0ea5e9;">
-                <p style="margin: 0; font-weight: 600; color: #0369a1;">📅 Configure exam schedule (same for all <span id="totalStudentsCount">0</span> students)</p>
-            </div>
-            <div id="examScheduleContainer"></div>
-            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                <button type="button" onclick="goBackToStep2()" class="secondary-btn" style="flex: 1;">
-                    ← Back
-                </button>
-                <button type="button" onclick="submitAllHallTickets()" class="primary-btn" style="flex: 2;">
-                    📤 Submit All Hall Tickets to Admin
-                </button>
+                <div id="examScheduleContainer"></div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" onclick="goBackToStep2()" class="secondary-btn" style="flex: 1;">
+                        ← Back
+                    </button>
+                    <button type="button" onclick="submitAllHallTickets()" class="primary-btn" style="flex: 2;">
+                        📤 Submit All Hall Tickets to Admin
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<style>
-.step-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    flex: 1;
-}
+    <style>
+    .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        flex: 1;
+    }
 
-.step-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #e5e7eb;
-    color: #6b7280;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    transition: all 0.3s;
-}
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e5e7eb;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s;
+    }
 
-.step-item.active .step-circle {
-    background: #3b82f6;
-    color: white;
-}
+    .step-item.active .step-circle {
+        background: #3b82f6;
+        color: white;
+    }
 
-.step-item.completed .step-circle {
-    background: #10b981;
-    color: white;
-}
+    .step-item.completed .step-circle {
+        background: #10b981;
+        color: white;
+    }
 
-.step-label {
-    font-size: 0.875rem;
-    color: #6b7280;
-    font-weight: 500;
-    text-align: center;
-}
+    .step-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-weight: 500;
+        text-align: center;
+    }
 
-.step-item.active .step-label {
-    color: #3b82f6;
-    font-weight: 600;
-}
+    .step-item.active .step-label {
+        color: #3b82f6;
+        font-weight: 600;
+    }
 
-.step-line {
-    height: 2px;
-    background: #e5e7eb;
-    flex: 1;
-    margin: 20px 10px 0 10px;
-}
+    .step-line {
+        height: 2px;
+        background: #e5e7eb;
+        flex: 1;
+        margin: 20px 10px 0 10px;
+    }
 
-.student-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 0.75rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.2s;
-}
+    .student-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s;
+    }
 
-.student-card:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-}
+    .student-card:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+    }
 
-.student-info {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-}
+    .student-info {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
 
-.student-name {
-    font-weight: 600;
-    color: #1f2937;
-    font-size: 1rem;
-}
+    .student-name {
+        font-weight: 600;
+        color: #1f2937;
+        font-size: 1rem;
+    }
 
-.student-roll {
-    background: #dbeafe;
-    color: #1e40af;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
+    .student-roll {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
 
-.remove-student-btn {
-    background: #fee2e2;
-    color: #dc2626;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s;
-}
+    .remove-student-btn {
+        background: #fee2e2;
+        color: #dc2626;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
 
-.remove-student-btn:hover {
-    background: #fecaca;
-}
+    .remove-student-btn:hover {
+        background: #fecaca;
+    }
+    </style>
 
-.cert-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    transition: all 0.2s;
-}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        const API_BASE = `${window.location.origin}/api`;
+        let currentStudentCode = null;
+        let hallTicketData = {};
+        let studentsList = [];
+        let examSchedule = [];
+        let currentStep = 1;
+        let allCertificatesGlobal = [];
+        // Add these functions to BOTH receptionist.html and admin.html
+// Place them in the <script> section with other utility functions
 
-.cert-card:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-}
+let loadingOverlay = null;
 
-.cert-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.cert-status {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-.cert-status.pending {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.cert-status.sent {
-    background: #dbeafe;
-    color: #1e40af;
-}
-
-.cert-details {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.cert-detail-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.cert-detail-label {
-    font-size: 0.75rem;
-    color: #6b7280;
-    margin-bottom: 0.25rem;
-}
-
-.cert-detail-value {
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.cert-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-}
-</style>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script>
-    const API_BASE = `${window.location.origin}/api`;
-    let currentStudentCode = null;
-    let hallTicketData = {};
-    let studentsList = [];
-    let examSchedule = [];
-    let currentStep = 1;
-    let currentCertTab = 'pending';
-    let allCertificatesGlobal = [];
-
-    function showNotification(message, type = 'success') {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed; top: 20px; right: 20px; z-index: 2000;
-            padding: 1rem; border-radius: 8px; color: white; font-weight: 600;
-            background: ${type === 'success' ? '#10b981' : type === 'info' ? '#3b82f6' : '#ef4444'};
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            if (document.body.contains(notification)) {
-                document.body.removeChild(notification);
+function showLoadingOverlay(message = 'Loading...') {
+    // Remove existing overlay if any
+    if (loadingOverlay && document.body.contains(loadingOverlay)) {
+        document.body.removeChild(loadingOverlay);
+    }
+    
+    loadingOverlay = document.createElement('div');
+    loadingOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    `;
+    
+    loadingOverlay.innerHTML = `
+        <div style="background: white; padding: 2rem; border-radius: 15px; text-align: center; min-width: 200px;">
+            <div style="width: 50px; height: 50px; border: 5px solid #f3f4f6; border-top: 5px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem auto;"></div>
+            <p style="margin: 0; font-weight: 600; color: #1f2937;">${message}</p>
+        </div>
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
-        }, 4000);
-    }
+        </style>
+    `;
+    
+    document.body.appendChild(loadingOverlay);
+}
 
-    function generateStudentCode(classNum, rollNum) {
-        const classStr = classNum.toString().toLowerCase();
-        const rollNumber = parseInt(rollNum);
-        
-        if (classStr === 'nursery' && rollNumber >= 1 && rollNumber <= 999) {
-            return `CB25N${rollNumber.toString().padStart(3, '0')}`;
-        } else if (classStr === 'lkg' && rollNumber >= 1 && rollNumber <= 999) {
-            return `CB25L${rollNumber.toString().padStart(3, '0')}`;
-        } else if (classStr === 'ukg' && rollNumber >= 1 && rollNumber <= 999) {
-            return `CB25U${rollNumber.toString().padStart(3, '0')}`;
-        } else {
-            const formattedClass = classNum.toString().padStart(2, '0');
-            return `CB25-${formattedClass}-${rollNumber}`;
-        }
+function hideLoadingOverlay() {
+    if (loadingOverlay && document.body.contains(loadingOverlay)) {
+        document.body.removeChild(loadingOverlay);
+        loadingOverlay = null;
     }
+}
+const DEBUG_MODE = true; // Set to false in production
 
-    // ========== STUDENT REGISTRATION (UPDATED: AUTO-SEND TO ADMIN) ==========
-    document.getElementById('studentRegistrationForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        try {
-            const formData = new FormData(e.target);
-            const studentClass = formData.get('regStudentClass');
-            const studentRoll = formData.get('regStudentRoll');
-            const studentCode = generateStudentCode(studentClass, studentRoll);
-            const totalFee = parseFloat(formData.get('regTotalFee'));
+function debugLog(message, data) {
+    if (DEBUG_MODE) {
+        const timestamp = new Date().toLocaleTimeString();
+        console.log(`[${timestamp}] ${message}`, data || '');
+    }
+}
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; z-index: 2000;
+                padding: 1rem; border-radius: 8px; color: white; font-weight: 600;
+                background: ${type === 'success' ? '#10b981' : type === 'info' ? '#3b82f6' : '#ef4444'};
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
             
-            const studentData = {
-                studentCode: studentCode,
-                studentName: formData.get('regStudentName'),
-                fatherName: formData.get('regFatherName'),
-                mobileNumber: formData.get('regMobileNumber'),
-                location: formData.get('regLocation'),
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 4000);
+        }
+
+// Replace generateStudentCode() in BOTH receptionist.html and admin.html
+
+function generateStudentCode(classCode, rollNum) {
+    console.log('generateStudentCode called with:', { classCode, rollNum });
+    
+    const classStr = classCode.toString().toLowerCase().trim();
+    const rollNumber = parseInt(rollNum);
+    
+    // Validate roll number
+    if (isNaN(rollNumber) || rollNumber < 1) {
+        console.error('Invalid roll number:', rollNum);
+        return null;
+    }
+    
+    // Nursery
+    if (classStr === 'nursery') {
+        if (rollNumber > 999) {
+            console.error('Nursery roll number must be between 1-999');
+            return null;
+        }
+        const code = `CB25N${rollNumber.toString().padStart(3, '0')}`;
+        console.log('Generated nursery code:', code);
+        return code;
+    }
+    
+    // LKG
+    if (classStr === 'lkg') {
+        if (rollNumber > 999) {
+            console.error('LKG roll number must be between 1-999');
+            return null;
+        }
+        const code = `CB25L${rollNumber.toString().padStart(3, '0')}`;
+        console.log('Generated LKG code:', code);
+        return code;
+    }
+    
+    // UKG
+    if (classStr === 'ukg') {
+        if (rollNumber > 999) {
+            console.error('UKG roll number must be between 1-999');
+            return null;
+        }
+        const code = `CB25U${rollNumber.toString().padStart(3, '0')}`;
+        console.log('Generated UKG code:', code);
+        return code;
+    }
+    
+    // Classes 1-10
+    const classNumber = parseInt(classCode);
+    if (!isNaN(classNumber) && classNumber >= 1 && classNumber <= 10) {
+        if (rollNumber > 999) { // Changed from 60 to 999
+            console.error('Class roll number must be between 1-999');
+            return null;
+        }
+        const formattedClass = classNumber.toString().padStart(2, '0');
+        const code = `CB25-${formattedClass}-${rollNumber}`;
+        console.log('Generated class code:', code);
+        return code;
+    }
+    
+    console.error('Invalid class code:', classCode);
+    return null;
+}
+
+        // ========== STUDENT REGISTRATION (UPDATED: Register Only) ==========
+        // ========== STUDENT REGISTRATION (UPDATED: Register Only) ==========
+document.getElementById('studentRegistrationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    try {
+        debugLog('Registration form submitted');
+        
+        const studentClass = document.getElementById('regStudentClass').value;
+        const studentRoll = document.getElementById('regStudentRoll').value;
+        const studentName = document.getElementById('regStudentName').value;
+        const fatherName = document.getElementById('regFatherName').value;
+        const totalFee = parseFloat(document.getElementById('regTotalFee').value);
+        const academicYear = document.getElementById('regAcademicYear').value;
+        
+        debugLog('Registration data', { studentClass, studentRoll, studentName, totalFee, academicYear });
+        
+        // Validation
+        if (!studentClass || !studentRoll || !studentName || !fatherName || !totalFee || !academicYear) {
+            showNotification('Please fill all required fields', 'error');
+            return;
+        }
+
+        if (isNaN(totalFee) || totalFee < 0) {
+            showNotification('Please enter a valid fee amount', 'error');
+            return;
+        }
+        
+        showLoadingOverlay('Registering student...');
+        
+        const response = await fetch(`${API_BASE}/register-student`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
                 studentClass: studentClass,
                 studentRoll: parseInt(studentRoll),
+                studentName: studentName,
+                fatherName: fatherName,
                 totalFee: totalFee,
-                amountPaid: 0,
-                remainingDue: totalFee,
-                academicYear: formData.get('regAcademicYear'),
-                registrationDate: new Date().toISOString(),
-                installments: []
-            };
+                academicYear: academicYear,
+                registeredBy: 'receptionist'
+            })
+        });
 
-            // Save to sessionStorage
-            const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-            students[studentCode] = studentData;
-            sessionStorage.setItem('feeStudents', JSON.stringify(students));
-
-            // CRITICAL: Send certificate to Admin API immediately
-            const certificateResponse = await fetch(`${API_BASE}/fee-certificates`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    studentClass: studentClass,
-                    studentRoll: parseInt(studentRoll),
-                    studentName: studentData.studentName,
-                    fatherName: studentData.fatherName,
-                    totalFee: totalFee,
-                    amountPaid: 0,
-                    remainingDue: totalFee,
-                    academicYear: studentData.academicYear,
-                    remarks: 'Initial Registration',
-                    postedBy: 'receptionist'
-                })
-            });
-
-            if (certificateResponse.ok) {
-                const result = await certificateResponse.json();
-                console.log('✅ Fee certificate sent to admin:', result);
-                showNotification(`Student registered! Certificate sent to Admin. Code: ${studentCode}`);
-            } else {
-                showNotification(`Student registered (Code: ${studentCode}) but certificate failed to send`, 'error');
-            }
-
-            e.target.reset();
-            loadFeeOverview();
-            loadPaymentHistory();
-        } catch (error) {
-            console.error('Registration error:', error);
-            showNotification('Error registering student: ' + error.message, 'error');
-        }
-    });
-
-    function searchStudentByRoll() {
-        const studentClass = document.getElementById('paymentClass').value;
-        const studentRoll = document.getElementById('paymentRollNumber').value;
-        const resultsContainer = document.getElementById('studentSearchResults');
+        debugLog('Registration API response status', response.status);
+        const result = await response.json();
+        debugLog('Registration API response data', result);
         
-        if (!studentClass || !studentRoll) {
-            resultsContainer.innerHTML = '';
-            document.getElementById('paymentForm').style.display = 'none';
-            return;
-        }
-
-        try {
+        hideLoadingOverlay();
+        
+        if (response.ok && result.success) {
             const studentCode = generateStudentCode(studentClass, studentRoll);
-            const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-            const student = students[studentCode];
-
-            if (student) {
-                currentStudentCode = studentCode;
-                displayStudentForPayment(student);
-            } else {
-                resultsContainer.innerHTML = `
-                    <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                        <p style="color: #92400e; margin: 0;">⚠️ Student ${studentCode} not found</p>
-                        <p style="color: #6b7280; margin: 0.5rem 0 0 0; font-size: 0.875rem;">Please register this student first.</p>
-                    </div>
-                `;
-                document.getElementById('paymentForm').style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Search error:', error);
-            showNotification('Error searching student: ' + error.message, 'error');
-        }
-    }
-
-    function displayStudentForPayment(student) {
-        const status = student.remainingDue === 0 ? 'Fully Paid' : student.amountPaid > 0 ? 'Partially Paid' : 'Unpaid';
-        const statusColor = student.remainingDue === 0 ? '#10b981' : student.amountPaid > 0 ? '#f59e0b' : '#ef4444';
-
-        document.getElementById('studentInfo').innerHTML = `
-            <h4 style="margin-top: 0; color: #92400e;">📋 Student Details</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div>
-                    <strong>Student Code:</strong> ${student.studentCode}<br>
-                    <strong>Name:</strong> ${student.studentName}<br>
-                    <strong>Father:</strong> ${student.fatherName}<br>
-                    <strong>Class:</strong> ${student.studentClass} | <strong>Roll:</strong> ${student.studentRoll}
-                </div>
-                <div>
-                    <strong>Mobile:</strong> ${student.mobileNumber || 'N/A'}<br>
-                    <strong>Location:</strong> ${student.location || 'N/A'}<br>
-                    <strong>Academic Year:</strong> ${student.academicYear}<br>
-                    <strong>Status:</strong> <span style="color: ${statusColor}; font-weight: 600;">${status}</span>
-                </div>
-            </div>
-            <hr style="margin: 1rem 0;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; text-align: center;">
-                <div>
-                    <div style="color: #1f2937; font-weight: 600;">Total Fee</div>
-                    <div style="font-size: 1.25rem; color: #1f2937;">₹${student.totalFee.toLocaleString()}</div>
-                </div>
-                <div>
-                    <div style="color: #10b981; font-weight: 600;">Paid</div>
-                    <div style="font-size: 1.25rem; color: #10b981;">₹${student.amountPaid.toLocaleString()}</div>
-                </div>
-                <div>
-                    <div style="color: #ef4444; font-weight: 600;">Due</div>
-                    <div style="font-size: 1.25rem; color: #ef4444;">₹${student.remainingDue.toLocaleString()}</div>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('paymentForm').style.display = 'block';
-        document.getElementById('paymentAmount').max = student.remainingDue;
-        document.getElementById('paymentAmount').value = '';
-
-        if (student.remainingDue === 0) {
-            document.getElementById('paymentAmount').disabled = true;
-            document.getElementById('paymentAmount').placeholder = 'Student has fully paid';
-        } else {
-            document.getElementById('paymentAmount').disabled = false;
-            document.getElementById('paymentAmount').placeholder = `Max: ₹${student.remainingDue.toLocaleString()}`;
-        }
-    }
-
-    // ========== PROCESS PAYMENT (UPDATED: AUTO-UPDATE CERTIFICATE) ==========
-    document.getElementById('paymentForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        if (!currentStudentCode) {
-            showNotification('Please select a student first', 'error');
-            return;
-        }
-
-        try {
-            const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-            const student = students[currentStudentCode];
-
-            if (!student) {
-                showNotification('Student not found', 'error');
-                return;
-            }
-
-            const paymentAmount = parseFloat(document.getElementById('paymentAmount').value);
-
-            if (paymentAmount <= 0) {
-                showNotification('Payment amount must be greater than 0', 'error');
-                return;
-            }
-
-            if (paymentAmount > student.remainingDue) {
-                showNotification(`Payment exceeds remaining due (₹${student.remainingDue.toLocaleString()})`, 'error');
-                return;
-            }
-
-            const installment = {
-                id: `PAY_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                amount: paymentAmount,
-                paymentMethod: document.getElementById('paymentMethod').value,
-                remarks: document.getElementById('paymentRemarks').value,
-                paymentDate: new Date().toISOString(),
-                processedBy: 'receptionist'
-            };
-
-            student.amountPaid += paymentAmount;
-            student.remainingDue -= paymentAmount;
-            student.installments.push(installment);
-            student.lastPaymentDate = installment.paymentDate;
-
-            students[currentStudentCode] = student;
-            sessionStorage.setItem('feeStudents', JSON.stringify(students));
-
-            // CRITICAL: Send updated certificate to Admin API
-            const certificateResponse = await fetch(`${API_BASE}/fee-certificates`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    studentClass: student.studentClass,
-                    studentRoll: student.studentRoll,
-                    studentName: student.studentName,
-                    fatherName: student.fatherName,
-                    totalFee: student.totalFee,
-                    amountPaid: student.amountPaid,
-                    remainingDue: student.remainingDue,
-                    academicYear: student.academicYear,
-                    remarks: `Payment: ₹${paymentAmount} via ${installment.paymentMethod}`,
-                    postedBy: 'receptionist'
-                })
-            });
-
-            if (certificateResponse.ok) {
-                showNotification(`Payment processed! Updated certificate sent to Admin.`);
-            } else {
-                showNotification(`Payment processed but certificate update failed`, 'error');
-            }
-
+            showNotification(`✅ Student registered successfully! Code: ${studentCode}`, 'success');
             e.target.reset();
-            document.getElementById('paymentForm').style.display = 'none';
-            loadFeeOverview();
-            loadPaymentHistory();
-
-        } catch (error) {
-            console.error('Payment error:', error);
-            showNotification('Error processing payment: ' + error.message, 'error');
+            document.getElementById('regAcademicYear').value = '2024-25';
+        } else {
+            showNotification(result.error || 'Failed to register student', 'error');
         }
-    });
-
-    function loadFeeOverview() {
-    const container = document.getElementById('feeOverview');
-    
-    try {
-        const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-        const studentsList = Object.values(students);
-        
-        if (studentsList.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="icon">👥</div>
-                    <p>No students registered yet</p>
-                </div>
-            `;
-            return;
-        }
-
-        const groupedByClass = {};
-        studentsList.forEach(student => {
-            if (!groupedByClass[student.studentClass]) {
-                groupedByClass[student.studentClass] = [];
-            }
-            groupedByClass[student.studentClass].push(student);
-        });
-
-        let html = '';
-        Object.keys(groupedByClass).sort((a, b) => parseInt(a) - parseInt(b)).forEach(classCode => {
-            const students = groupedByClass[classCode].sort((a, b) => a.studentRoll - b.studentRoll);
-            
-            html += `<h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1.5rem 0 0.5rem 0; border-left: 4px solid #6366f1;">Class ${classCode}</h3>`;
-            
-            html += `
-                <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; min-width: 700px;">
-                        <thead>
-                            <tr style="background: #f8fafc;">
-                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
-                                <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
-                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
-                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total</th>
-                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Paid</th>
-                                <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
-                                <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-
-            students.forEach(student => {
-                const status = student.remainingDue === 0 ? 'Paid' : student.amountPaid > 0 ? 'Partial' : 'Unpaid';
-                const statusColor = student.remainingDue === 0 ? '#10b981' : student.amountPaid > 0 ? '#f59e0b' : '#ef4444';
-                const statusBg = student.remainingDue === 0 ? '#f0fdf4' : student.amountPaid > 0 ? '#fef3c7' : '#fef2f2';
-
-                html += `<tr>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${student.studentCode}</strong></td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${student.studentName}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${student.studentRoll}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${student.totalFee.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${student.amountPaid.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${student.remainingDue.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
-                        <span style="background: ${statusBg}; color: ${statusColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${status}</span>
-                    </td>
-                </tr>`;
-            });
-
-            html += '</tbody></table></div>';
-        });
-
-        container.innerHTML = html;
     } catch (error) {
-        console.error('Error loading fee overview:', error);
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="icon">⚠️</div>
-                <p>Error loading fee overview</p>
-            </div>
-        `;
+        hideLoadingOverlay();
+        debugLog('Registration error', error);
+        console.error('Registration error:', error);
+        showNotification('Error registering student: ' + error.message, 'error');
     }
-}
+});
 
-    function loadPaymentHistory() {
-    const container = document.getElementById('paymentHistory');
+        // ========== SEARCH STUDENT FOR PAYMENT ==========
+// Replace searchStudentForPayment() in receptionist.html
+
+async function searchStudentForPayment() {
+    const studentClass = document.getElementById('paymentClass').value;
+    const studentRoll = document.getElementById('paymentRollNumber').value;
+    const resultsContainer = document.getElementById('studentSearchResults');
     
-    try {
-        const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-        const allInstallments = [];
-        
-        Object.values(students).forEach(student => {
-            if (student.installments && student.installments.length > 0) {
-                student.installments.forEach(installment => {
-                    allInstallments.push({
-                        ...installment,
-                        studentCode: student.studentCode,
-                        studentName: student.studentName,
-                        studentRoll: student.studentRoll
-                    });
-                });
-            }
-        });
-
-        if (allInstallments.length === 0) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <div class="icon">💳</div>
-                    <p>No payment transactions yet</p>
-                </div>
-            `;
-            return;
-        }
-
-        allInstallments.sort((a, b) => new Date(b.paymentDate) - new Date(a.paymentDate));
-
-        let html = `
-            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                <table style="width: 100%; border-collapse: collapse; min-width: 900px;">
-                    <thead>
-                        <tr style="background: #f8fafc;">
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Payment ID</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Student Code</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Student Name</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Roll</th>
-                            <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Amount</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Method</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Date & Time</th>
-                            <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
-
-        allInstallments.slice(0, 20).forEach(installment => {
-            const paymentDate = new Date(installment.paymentDate);
-            html += `
-                <tr>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><code style="font-size: 0.75rem;">${installment.id}</code></td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${installment.studentCode}</strong></td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${installment.studentName}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${installment.studentRoll}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; font-weight: 600; white-space: nowrap;">₹${installment.amount.toLocaleString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><span style="background: #ddd6fe; color: #5b21b6; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">${installment.paymentMethod.toUpperCase()}</span></td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${paymentDate.toLocaleDateString()} ${paymentDate.toLocaleTimeString()}</td>
-                    <td style="padding: 0.75rem; border: 1px solid #e5e7eb;">${installment.remarks || '-'}</td>
-                </tr>
-            `;
-        });
-
-        html += '</tbody></table></div>';
-        container.innerHTML = html;
-    } catch (error) {
-        console.error('Error loading payment history:', error);
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="icon">⚠️</div>
-                <p>Error loading payment history</p>
-            </div>
-        `;
-    }
-}
-
-    // ========== FEE HISTORY MODAL ==========
-    function viewFeeHistory() {
-    const modal = document.getElementById('feeRecordsModal');
-    const content = document.getElementById('feeRecordsContent');
+    // ALWAYS clear previous results and hide form first
+    resultsContainer.innerHTML = '';
+    document.getElementById('paymentForm').style.display = 'none';
+    currentStudentCode = null;
     
+    if (!studentClass || !studentRoll) {
+        return; // Exit early if fields are empty
+    }
+
     try {
-        const students = JSON.parse(sessionStorage.getItem('feeStudents') || '{}');
-        const studentsList = Object.values(students);
+        showLoadingOverlay('Searching for student...');
         
-        if (studentsList.length === 0) {
-            content.innerHTML = `
-                <div style="text-align: center; padding: 2rem;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📋</div>
-                    <p>No fee records available yet</p>
-                </div>
-            `;
-            modal.style.display = 'flex';
-            return;
-        }
-
-        let html = `
-            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; text-align: center;">
-                    <div>
-                        <div style="color: #6b7280;">Total Students</div>
-                        <div style="font-size: 1.25rem; color: #1f2937; font-weight: 600;">${studentsList.length}</div>
-                    </div>
-                    <div>
-                        <div style="color: #6b7280;">Total Fees</div>
-                        <div style="font-size: 1.25rem; color: #1f2937; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.totalFee, 0).toLocaleString()}</div>
-                    </div>
-                    <div>
-                        <div style="color: #6b7280;">Total Collected</div>
-                        <div style="font-size: 1.25rem; color: #10b981; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.amountPaid, 0).toLocaleString()}</div>
-                    </div>
-                    <div>
-                        <div style="color: #6b7280;">Total Due</div>
-                        <div style="font-size: 1.25rem; color: #ef4444; font-weight: 600;">₹${studentsList.reduce((sum, s) => sum + s.remainingDue, 0).toLocaleString()}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 800px;">
-                    <thead>
-                        <tr style="background: #f8fafc;">
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Code</th>
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Name</th>
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Father</th>
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Class</th>
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Roll</th>
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Total</th>
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Paid</th>
-                            <th style="padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e7eb;">Due</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
-
-        studentsList.forEach(student => {
-            html += `
-                <tr>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;"><code style="font-size: 0.75rem;">${student.studentCode}</code></td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;">${student.studentName}</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;">${student.fatherName}</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.studentClass}</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb;">${student.studentRoll}</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; white-space: nowrap;">₹${student.totalFee.toLocaleString()}</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; color: #10b981; white-space: nowrap;">₹${student.amountPaid.toLocaleString()}</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #e5e7eb; color: #ef4444; white-space: nowrap;">₹${student.remainingDue.toLocaleString()}</td>
-                </tr>
-            `;
-        });
-
-        html += '</tbody></table></div>';
-        content.innerHTML = html;
-        modal.style.display = 'flex';
-    } catch (error) {
-        console.error('Error loading fee history:', error);
-        showNotification('Error loading fee history', 'error');
-    }
-}
-
-    function closeFeeRecordsModal() {
-        document.getElementById('feeRecordsModal').style.display = 'none';
-    }
-
-    // ========== FEE CERTIFICATES MODAL (WITH DOWNLOAD) ==========
-    async function viewFeeCertificates() {
-        const modal = document.getElementById('feeCertificateModal');
-        modal.style.display = 'flex';
-        await loadCertificatesFromAPI();
-    }
-
-    function closeFeeCertificateModal() {
-        document.getElementById('feeCertificateModal').style.display = 'none';
-    }
-
-    function switchCertificateTab(tab) {
-        currentCertTab = tab;
+        const studentCode = generateStudentCode(studentClass, studentRoll);
         
-        // Update tab styling
-        document.getElementById('pendingCertTab').style.borderBottom = tab === 'pending' ? '3px solid #3b82f6' : '3px solid transparent';
-        document.getElementById('pendingCertTab').style.color = tab === 'pending' ? '#3b82f6' : '#6b7280';
-        document.getElementById('sentCertTab').style.borderBottom = tab === 'sent' ? '3px solid #3b82f6' : '3px solid transparent';
-        document.getElementById('sentCertTab').style.color = tab === 'sent' ? '#3b82f6' : '#6b7280';
-        
-        // Show/hide content
-        document.getElementById('pendingCertificatesContent').style.display = tab === 'pending' ? 'block' : 'none';
-        document.getElementById('sentCertificatesContent').style.display = tab === 'sent' ? 'block' : 'none';
-    }
-
-    async function loadCertificatesFromAPI() {
-        try {
-            const response = await fetch(`${API_BASE}/admin/fee-certificates`);
-            const allCertificates = await response.json();
-            
-            // Store globally for download function
-            allCertificatesGlobal = allCertificates;
-            
-            const pendingCerts = allCertificates.filter(c => c.status === 'pending');
-            const sentCerts = allCertificates.filter(c => c.status === 'issued');
-            
-            // Update counts
-            document.getElementById('pendingCertCount').textContent = pendingCerts.length;
-            document.getElementById('sentCertCount').textContent = sentCerts.length;
-            
-            displayPendingCertificates(pendingCerts);
-            displaySentCertificates(sentCerts);
-            
-        } catch (error) {
-            console.error('Error loading certificates:', error);
-            showNotification('Error loading certificates', 'error');
-        }
-    }
-
-    function displayPendingCertificates(certificates) {
-        const container = document.getElementById('pendingCertificatesList');
-        
-        if (certificates.length === 0) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 3rem; color: #9ca3af;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
-                    <p>No pending certificates</p>
-                    <p style="font-size: 0.875rem;">Certificates are automatically sent to Admin after registration/payment</p>
+        if (!studentCode) {
+            hideLoadingOverlay();
+            resultsContainer.innerHTML = `
+                <div style="background: #fee2e2; border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <p style="color: #dc2626; margin: 0; font-weight: 600;">❌ Invalid class or roll number combination</p>
+                    <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #7f1d1d;">Please check the class and roll number.</p>
                 </div>
             `;
             return;
         }
-
-        let html = '';
-        certificates.forEach(cert => {
-            html += `
-                <div class="cert-card">
-                    <div class="cert-header">
-                        <div>
-                            <h4 style="margin: 0; color: #1f2937;">${cert.studentName}</h4>
-                            <p style="margin: 0.25rem 0 0 0; color: #6b7280; font-size: 0.875rem;">Code: ${cert.studentCode}</p>
-                        </div>
-                        <span class="cert-status pending">⏳ Pending Admin Approval</span>
-                    </div>
-                    
-                    <div class="cert-details">
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Total Fee</span>
-                            <span class="cert-detail-value">₹${cert.totalFee.toLocaleString()}</span>
-                        </div>
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Amount Paid</span>
-                            <span class="cert-detail-value" style="color: #10b981;">₹${cert.amountPaid.toLocaleString()}</span>
-                        </div>
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Remaining Due</span>
-                            <span class="cert-detail-value" style="color: #ef4444;">₹${cert.remainingDue.toLocaleString()}</span>
-                        </div>
-                    </div>
-
-                    <div style="background: #f8fafc; padding: 0.75rem; border-radius: 6px; margin: 1rem 0; font-size: 0.875rem;">
-                        <strong>Generated:</strong> ${new Date(cert.date).toLocaleString()}<br>
-                        <strong>Remarks:</strong> ${cert.remarks || 'N/A'}
-                    </div>
-
-                    <div style="text-align: right; color: #6b7280; font-size: 0.875rem;">
-                        Awaiting admin approval...
-                    </div>
-                </div>
-            `;
-        });
-
-        container.innerHTML = html;
-    }
-
-    function displaySentCertificates(certificates) {
-        const container = document.getElementById('sentCertificatesList');
         
-        if (certificates.length === 0) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 3rem; color: #9ca3af;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
-                    <p>No issued certificates yet</p>
-                    <p style="font-size: 0.875rem;">Admin-approved certificates will appear here</p>
-                </div>
-            `;
-            return;
-        }
-
-        let html = '';
-        certificates.forEach(cert => {
-            html += `
-                <div class="cert-card">
-                    <div class="cert-header">
-                        <div>
-                            <h4 style="margin: 0; color: #1f2937;">${cert.studentName}</h4>
-                            <p style="margin: 0.25rem 0 0 0; color: #6b7280; font-size: 0.875rem;">Code: ${cert.studentCode}</p>
-                        </div>
-                        <span class="cert-status sent">✅ Issued</span>
-                    </div>
-                    
-                    <div class="cert-details">
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Father Name</span>
-                            <span class="cert-detail-value">${cert.fatherName}</span>
-                        </div>
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Class</span>
-                            <span class="cert-detail-value">Class ${cert.studentClass}</span>
-                        </div>
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Roll Number</span>
-                            <span class="cert-detail-value">${cert.studentRoll}</span>
-                        </div>
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Total Fee</span>
-                            <span class="cert-detail-value">₹${cert.totalFee.toLocaleString()}</span>
-                        </div>
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Amount Paid</span>
-                            <span class="cert-detail-value" style="color: #10b981;">₹${cert.amountPaid.toLocaleString()}</span>
-                        </div>
-                        <div class="cert-detail-item">
-                            <span class="cert-detail-label">Remaining Due</span>
-                            <span class="cert-detail-value" style="color: #ef4444;">₹${cert.remainingDue.toLocaleString()}</span>
-                        </div>
-                    </div>
-
-                    <div style="background: #d1fae5; padding: 0.75rem; border-radius: 6px; margin: 1rem 0; font-size: 0.875rem;">
-                        <strong>Issued On:</strong> ${new Date(cert.issuedDate).toLocaleString()}<br>
-                        <strong>Status:</strong> Certificate delivered to student
-                    </div>
-
-                    <div class="cert-actions">
-                        <button onclick="downloadFeeCertificateImage('${cert.id}')" style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.875rem;">
-                            ⬇️ Download Certificate
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-
-        container.innerHTML = html;
-    }
-
-    // ========== DOWNLOAD FEE CERTIFICATE (SAME AS ADMIN) ==========
-    // ========== DOWNLOAD FEE CERTIFICATE (FIXED VERSION) ==========
-// ========== DOWNLOAD FEE CERTIFICATE (EXACT STRUCTURE WITH AUTO-TRIM) ==========
-function downloadFeeCertificateImage(certificateId) {
-    try {
-        const certificate = allCertificatesGlobal.find(c => c.id === certificateId);
-        if (!certificate) {
-            showNotification('Certificate not found. Please refresh and try again.', 'error');
-            return;
-        }
-        if (typeof html2canvas === 'undefined') {
-            showNotification('Image generation library not loaded. Please refresh the page.', 'error');
-            return;
-        }
-
-        const currentDate = new Date().toLocaleDateString('en-IN');
-        const academicYear = certificate.academicYear || '2024-25';
-        const fatherName = certificate.fatherName || 'N/A';
-        const remarks = certificate.remarks || 'No remarks';
+        console.log('Generated student code:', studentCode);
         
-        let classDisplay = certificate.studentClass;
-        if (classDisplay === 'nursery') classDisplay = 'Nursery';
-        else if (classDisplay === 'lkg') classDisplay = 'LKG';
-        else if (classDisplay === 'ukg') classDisplay = 'UKG';
-        else classDisplay = 'Class ' + certificate.studentClass;
-
-        const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center;
-            background:rgba(0,0,0,.75); padding:20px;
-        `;
-
-        const sheet = document.createElement('div');
-        sheet.style.cssText = `
-            background:#fff; border-radius:12px; padding:20px; max-width:940px; width:100%;
-            max-height:92vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,.25);
-        `;
-
-        const card = document.createElement('div');
-        card.id = 'feeCertificateContent';
-        card.style.cssText = `
-            width:820px; margin:0 auto; background:#fff; font-family:"Times New Roman", Georgia, serif; color:#000;
-        `;
-
-        card.innerHTML = `
-            <div style="border:3px solid #000; padding:26px; background:#fff; line-height:1.45; color:#000;
-                        -webkit-print-color-adjust:exact; print-color-adjust:exact;">
-
-                <!-- Header -->
-                <div style="display:grid; grid-template-columns:110px 1fr; column-gap:20px; align-items:center;">
-                    <div>
-                        <img src="logo.png" alt="School Logo" width="100" height="100"
-                            style="width:100px;height:100px;object-fit:contain" crossorigin="anonymous"
-                            onerror="this.style.display='none'">
-                    </div>
-
-                    <div style="text-align:center; padding-right:50px;">
-                        <div style="font-size:24px; font-weight:700; letter-spacing:.5px; margin:2px 0 6px 0;">
-                            VISWA BHARATHI SCHOOL
-                        </div>
-                        <div style="font-size:13px; font-weight:700; margin:3px 0;">
-                            NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. A.P.
-                        </div>
-                        <div style="font-size:13px; font-weight:700; margin:3px 0;">
-                            Cell: 6301444214, 8555950709
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Title -->
-                <div style="text-align:center; margin:18px 0 6px 0; font-size:20px; font-weight:700; text-decoration:underline;">
-                    FEE CERTIFICATE
-                </div>
-                <div style="height:2px; background:#000; margin:8px 0 18px 0;"></div>
-
-                <!-- Certificate Info -->
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:14px;">
-                    <div><span style="font-weight:700">Certificate No:</span> FC${certificate.id || Date.now()}</div>
-                    <div><span style="font-weight:700">Date of Issue:</span> ${currentDate}</div>
-                    <div><span style="font-weight:700">Academic Year:</span> ${academicYear}</div>
-                </div>
-
-                <!-- Student Details -->
-                <div style="margin:22px 0 10px 0; font-size:16px; font-weight:700;">STUDENT DETAILS</div>
-                <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; font-size:14px;">
-                    <div><span style="font-weight:700">Student Name:</span> ${certificate.studentName}</div>
-                    <div><span style="font-weight:700">Student Code:</span> ${certificate.studentCode}</div>
-                    <div><span style="font-weight:700">Roll Number:</span> ${certificate.studentRoll}</div>
-                    <div><span style="font-weight:700">Father's Name:</span> ${fatherName}</div>
-                    <div><span style="font-weight:700">Class:</span> ${classDisplay}</div>
-                </div>
-
-                <!-- Fee Details -->
-                <div style="margin:24px 0 10px 0; font-size:16px; font-weight:700;">FEE DETAILS</div>
-                <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
-                <table style="width:100%; border-collapse:collapse; font-size:14px;">
-                    <thead>
-                        <tr>
-                            <th style="border:1px solid #000; padding:10px; text-align:left; background:#f2f2f2; font-weight:700;">Description</th>
-                            <th style="border:1px solid #000; padding:10px; text-align:right; background:#f2f2f2; font-weight:700;">Amount (₹)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="border:1px solid #000; padding:10px;">Total Fee Amount</td>
-                            <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalFee||0).toFixed(2)}</td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid #000; padding:10px;">Amount Paid</td>
-                            <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.amountPaid||0).toFixed(2)}</td>
-                        </tr>
-                        <tr>
-                            <td style="border:1px solid #000; padding:10px;">Remaining Due</td>
-                            <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.remainingDue||0).toFixed(2)}</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <!-- Remarks -->
-                <div style="margin:16px 0 0 0; font-size:14px;">
-                    <span style="font-weight:700;">Remarks:</span> ${remarks}
-                </div>
-
-                <!-- Signature -->
-                <div style="margin-top:46px; display:flex; justify-content:flex-end;">
-                    <div style="min-width:220px; text-align:center;">
-                        <div style="border-top:2px solid #000; margin-bottom:6px;"></div>
-                        <div style="font-size:13px; font-weight:700;">Correspondent</div>
-                        <div style="font-size:13px; font-weight:700;">Viswa Bharathi School</div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        const actions = document.createElement('div');
-        actions.style.cssText = 'display:flex; gap:10px; justify-content:center; margin-top:16px;';
-        const dl = document.createElement('button');
-        dl.textContent = '⬇️ Download PNG';
-        dl.style.cssText = 'background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
-        dl.onclick = () => generateFeeCertificateImage(card, certificate);
-        const close = document.createElement('button');
-        close.textContent = '✕ Close';
-        close.style.cssText = 'background:#ef4444;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
-        close.onclick = () => document.body.removeChild(overlay);
-
-        actions.append(dl, close);
-        sheet.append(card, actions);
-        overlay.appendChild(sheet);
-        document.body.appendChild(overlay);
-
-    } catch (err) {
-        console.error('downloadFeeCertificateImage error:', err);
-        showNotification('Error preparing certificate: ' + err.message, 'error');
-    }
-}
-
-// ========== GENERATE FEE CERTIFICATE IMAGE (WITH AUTO-TRIM & PADDING) ==========
-function generateFeeCertificateImage(element, certificate) {
-    const notify = (m, t) => { 
-        try { 
-            showNotification(m, t); 
-        } catch(_) {} 
-    };
-
-    element.style.maxWidth = '820px';
-    element.style.width = '820px';
-    element.style.margin = '0 auto';
-
-    const onClone = (doc) => {
-        doc.querySelectorAll('#feeCertificateContent *').forEach(n => {
-            n.style.color = '#000';
-            if (n.tagName === 'IMG') n.setAttribute('crossorigin', 'anonymous');
-        });
-    };
-
-    const trimCanvas = (canvas) => {
-        const ctx = canvas.getContext('2d');
-        const { width, height } = canvas;
-        const data = ctx.getImageData(0, 0, width, height).data;
-        let top = null, left = null, right = null, bottom = null;
+        const response = await fetch(`${API_BASE}/student-balance/${studentCode}`);
+        console.log('API response status:', response.status);
         
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                const a = data[(y * width + x) * 4 + 3];
-                if (a !== 0) {
-                    if (top === null) top = y;
-                    bottom = y;
-                    if (left === null || x < left) left = x;
-                    if (right === null || x > right) right = x;
-                }
-            }
-        }
+        hideLoadingOverlay();
         
-        if (top === null) return canvas;
-        
-        const w = right - left + 1, h = bottom - top + 1;
-        const out = document.createElement('canvas');
-        out.width = w;
-        out.height = h;
-        out.getContext('2d').drawImage(canvas, left, top, w, h, 0, 0, w, h);
-        return out;
-    };
-
-    const padCanvas = (canvas, cssMarginPx, cssWidth) => {
-        const scale = canvas.width / cssWidth;
-        const pad = Math.round(cssMarginPx * scale);
-        const out = document.createElement('canvas');
-        out.width = canvas.width + pad * 2;
-        out.height = canvas.height + pad * 2;
-        const ctx = out.getContext('2d');
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, out.width, out.height);
-        ctx.drawImage(canvas, pad, pad);
-        return out;
-    };
-
-    if (!window.html2canvas) {
-        notify('Image library not loaded. Please refresh.', 'error');
-        return;
-    }
-
-    notify('Generating certificate image...', 'info');
-
-    html2canvas(element, {
-        scale: 3,
-        backgroundColor: '#ffffff',
-        logging: false,
-        useCORS: true,
-        allowTaint: false,
-        scrollX: 0,
-        scrollY: 0,
-        width: element.offsetWidth,
-        height: element.offsetHeight,
-        windowWidth: element.offsetWidth,
-        windowHeight: element.offsetHeight,
-        onclone: onClone
-    })
-    .then(canvas => {
-        const trimmed = trimCanvas(canvas);
-        const padded = padCanvas(trimmed, 24, element.offsetWidth);
-        padded.toBlob(blob => {
-            if (!blob) {
-                notify('Could not create image file', 'error');
-                return;
-            }
-            const url = URL.createObjectURL(blob);
-            const safeName = (certificate?.studentName || 'Student').replace(/\s+/g, '_');
-            const a = document.createElement('a');
-            a.download = `FeeCertificate_${safeName}_${certificate?.studentCode || ''}.png`;
-            a.href = url;
-            a.click();
-            setTimeout(() => URL.revokeObjectURL(url), 250);
-            notify('✅ Fee certificate downloaded successfully!', 'success');
+        if (response.ok) {
+            const studentRecord = await response.json();
+            console.log('Student found:', studentRecord);
+            currentStudentCode = studentCode;
+            displayStudentForPayment(studentRecord);
             
-            // Close modal after download
+            // Smooth scroll to payment form
             setTimeout(() => {
-                const modal = overlay || document.body.querySelector('[style*="z-index:10000"]');
-                if (modal && document.body.contains(modal)) {
-                    try {
-                        document.body.removeChild(modal);
-                    } catch(_) {}
-                }
-            }, 1000);
-        }, 'image/png');
-    })
-    .catch(err => {
-        console.error('html2canvas (certificate) error:', err);
-        notify('❌ Failed to generate image: ' + (err.message || 'Unknown error'), 'error');
-    });
-}
-    // ========== HALL TICKET FUNCTIONS ==========
-    function issueHallTicket() {
-        document.getElementById('hallTicketModal').style.display = 'flex';
-        resetHallTicketForm();
-    }
-
-    function closeHallTicketModal() {
-        document.getElementById('hallTicketModal').style.display = 'none';
-        resetHallTicketForm();
-    }
-
-    function resetHallTicketForm() {
-        currentStep = 1;
-        hallTicketData = {};
-        studentsList = [];
-        examSchedule = [];
-        
-        document.getElementById('hallTicketBasicForm').reset();
-        document.getElementById('studentName').value = '';
-        document.getElementById('studentRoll').value = '';
-        
-        document.getElementById('hallTicketStep1').style.display = 'block';
-        document.getElementById('hallTicketStep2').style.display = 'none';
-        document.getElementById('hallTicketStep3').style.display = 'none';
-        
-        updateStepIndicator(1);
-        updateStudentsList();
-    }
-
-    function updateStepIndicator(step) {
-        const steps = document.querySelectorAll('.step-item');
-        steps.forEach((stepItem, index) => {
-            const stepNumber = index + 1;
-            stepItem.classList.remove('active', 'completed');
-            
-            if (stepNumber < step) {
-                stepItem.classList.add('completed');
-            } else if (stepNumber === step) {
-                stepItem.classList.add('active');
-            }
-        });
-    }
-
-    document.getElementById('hallTicketBasicForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(e.target);
-        const fromDate = new Date(formData.get('hallFromDate'));
-        const toDate = new Date(formData.get('hallToDate'));
-        
-        if (toDate < fromDate) {
-            showNotification('End date cannot be before start date', 'error');
-            return;
-        }
-        
-        hallTicketData = {
-            examName: formData.get('hallExamName'),
-            fromDate: formData.get('hallFromDate'),
-            toDate: formData.get('hallToDate'),
-            studentClass: formData.get('hallStudentClass'),
-            remarks: formData.get('hallRemarks') || ''
-        };
-        
-        goToStep2();
-    });
-
-    function goBackToStep1() {
-        currentStep = 1;
-        document.getElementById('hallTicketStep1').style.display = 'block';
-        document.getElementById('hallTicketStep2').style.display = 'none';
-        document.getElementById('hallTicketStep3').style.display = 'none';
-        updateStepIndicator(1);
-    }
-
-    function goToStep2() {
-        currentStep = 2;
-        document.getElementById('hallTicketStep1').style.display = 'none';
-        document.getElementById('hallTicketStep2').style.display = 'block';
-        document.getElementById('hallTicketStep3').style.display = 'none';
-        updateStepIndicator(2);
-        updateStudentsList();
-    }
-
-    function addStudentToList() {
-        const name = document.getElementById('studentName').value.trim();
-        const roll = document.getElementById('studentRoll').value.trim();
-        
-        if (!name || !roll) {
-            showNotification('Please enter both student name and roll number', 'error');
-            return;
-        }
-        
-        if (parseInt(roll) < 1) {
-            showNotification('Roll number must be greater than 0', 'error');
-            return;
-        }
-        
-        if (studentsList.some(s => s.roll === roll)) {
-            showNotification('A student with this roll number already exists', 'error');
-            return;
-        }
-        
-        studentsList.push({
-            name: name,
-            roll: roll
-        });
-        
-        document.getElementById('studentName').value = '';
-        document.getElementById('studentRoll').value = '';
-        document.getElementById('studentName').focus();
-        
-        updateStudentsList();
-        showNotification(`${name} added successfully!`);
-    }
-
-    function updateStudentsList() {
-        const container = document.getElementById('studentsList');
-        const countSpan = document.getElementById('studentCount');
-        const nextBtn = document.getElementById('nextToScheduleBtn');
-        
-        countSpan.textContent = studentsList.length;
-        
-        if (studentsList.length === 0) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyStudentsMessage">
-                    No students added yet
-                </div>
-            `;
-            nextBtn.disabled = true;
-            return;
-        }
-        
-        nextBtn.disabled = false;
-        
-        let html = '';
-        studentsList.forEach((student, index) => {
-            html += `
-                <div class="student-card">
-                    <div class="student-info">
-                        <div class="student-name">${student.name}</div>
-                        <div class="student-roll">Roll: ${student.roll}</div>
-                    </div>
-                    <button class="remove-student-btn" onclick="removeStudent(${index})">
-                        🗑️ Remove
+                document.getElementById('paymentForm').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }, 100);
+        } else {
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            console.log('Student not found:', errorData);
+            resultsContainer.innerHTML = `
+                <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                    <p style="color: #92400e; margin: 0; font-weight: 600;">⚠️ Student ${studentCode} not found</p>
+                    <p style="color: #6b7280; margin: 0.5rem 0 0 0; font-size: 0.875rem;">
+                        This student needs to be registered first. Please use the "Register New Student" section above.
+                    </p>
+                    <button onclick="scrollToRegistration()" style="margin-top: 0.75rem; background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.875rem; font-weight: 600;">
+                        Go to Registration →
                     </button>
                 </div>
             `;
-        });
-        
-        container.innerHTML = html;
-    }
-
-    function removeStudent(index) {
-        const student = studentsList[index];
-        studentsList.splice(index, 1);
-        updateStudentsList();
-        showNotification(`${student.name} removed`);
-    }
-
-    function clearAllStudents() {
-        if (studentsList.length === 0) return;
-        
-        if (confirm(`Are you sure you want to remove all ${studentsList.length} students?`)) {
-            studentsList = [];
-            updateStudentsList();
-            showNotification('All students removed');
         }
+    } catch (error) {
+        hideLoadingOverlay();
+        console.error('❌ Search error:', error);
+        resultsContainer.innerHTML = `
+            <div style="background: #fee2e2; border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                <p style="color: #dc2626; margin: 0; font-weight: 600;">❌ Error searching for student</p>
+                <p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: #7f1d1d;">${error.message}</p>
+            </div>
+        `;
+        showNotification('Error searching student: ' + error.message, 'error');
+    }
+}
+
+// Helper function to scroll to registration (already exists but included for completeness)
+function scrollToRegistration() {
+    document.querySelector('#studentRegistrationForm').scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+    });
+}
+// Replace displayStudentForPayment() in receptionist.html
+
+function displayStudentForPayment(student) {
+    const status = student.currentDue === 0 ? 'Fully Paid' : student.currentDue < student.totalFee ? 'Partially Paid' : 'Unpaid';
+    const statusColor = student.currentDue === 0 ? '#10b981' : student.currentDue < student.totalFee ? '#f59e0b' : '#ef4444';
+    const totalPaid = student.totalFee - student.currentDue;
+
+    document.getElementById('studentInfo').innerHTML = `
+        <h4 style="margin-top: 0; color: #92400e;">📋 Student Details</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <strong>Student Code:</strong> ${student.studentCode}<br>
+                <strong>Name:</strong> ${student.studentName}<br>
+                <strong>Father:</strong> ${student.fatherName}<br>
+                <strong>Class:</strong> ${student.studentClass}
+            </div>
+            <div>
+                <strong>Academic Year:</strong> ${student.academicYear}<br>
+                <strong>Last Updated:</strong> ${new Date(student.lastUpdated).toLocaleString()}<br>
+                <strong>Status:</strong> <span style="color: ${statusColor}; font-weight: 600;">${status}</span>
+            </div>
+        </div>
+        <hr style="margin: 1rem 0;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; text-align: center;">
+            <div>
+                <div style="color: #1f2937; font-weight: 600;">Total Fee</div>
+                <div style="font-size: 1.25rem; color: #1f2937;">₹${student.totalFee.toLocaleString()}</div>
+            </div>
+            <div>
+                <div style="color: #10b981; font-weight: 600;">Paid</div>
+                <div style="font-size: 1.25rem; color: #10b981;">₹${totalPaid.toLocaleString()}</div>
+            </div>
+            <div>
+                <div style="color: #ef4444; font-weight: 600;">Due</div>
+                <div style="font-size: 1.25rem; color: #ef4444;">₹${student.currentDue.toLocaleString()}</div>
+            </div>
+        </div>
+    `;
+
+    const paymentAmountInput = document.getElementById('paymentAmount');
+    const paymentForm = document.getElementById('paymentForm');
+    
+    // Store current due in data attribute for validation
+    paymentAmountInput.dataset.maxAmount = student.currentDue;
+    paymentAmountInput.max = student.currentDue;
+    paymentAmountInput.value = '';
+
+    if (student.currentDue === 0) {
+        paymentAmountInput.disabled = true;
+        paymentAmountInput.placeholder = 'Student has fully paid';
+        paymentForm.querySelector('button[type="submit"]').disabled = true;
+        paymentForm.querySelector('button[type="submit"]').style.opacity = '0.5';
+        paymentForm.querySelector('button[type="submit"]').style.cursor = 'not-allowed';
+    } else {
+        paymentAmountInput.disabled = false;
+        paymentAmountInput.placeholder = `Enter amount (Max: ₹${student.currentDue.toLocaleString()})`;
+        paymentForm.querySelector('button[type="submit"]').disabled = false;
+        paymentForm.querySelector('button[type="submit"]').style.opacity = '1';
+        paymentForm.querySelector('button[type="submit"]').style.cursor = 'pointer';
+        
+        // Add real-time validation
+        paymentAmountInput.oninput = function() {
+            const amount = parseFloat(this.value);
+            const maxAmount = parseFloat(this.dataset.maxAmount);
+            
+            if (amount > maxAmount) {
+                this.style.borderColor = '#ef4444';
+                this.style.backgroundColor = '#fee2e2';
+                showNotification(`Amount cannot exceed ₹${maxAmount.toLocaleString()}`, 'error');
+            } else if (amount <= 0) {
+                this.style.borderColor = '#ef4444';
+                this.style.backgroundColor = '#fee2e2';
+            } else {
+                this.style.borderColor = '#10b981';
+                this.style.backgroundColor = '#f0fdf4';
+            }
+        };
+    }
+    
+    paymentForm.style.display = 'block';
+}
+
+        // ========== PROCESS PAYMENT & GENERATE CERTIFICATE ==========
+        // ========== PROCESS PAYMENT & GENERATE CERTIFICATE ==========
+// Replace the payment form submit handler in receptionist.html
+
+document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    console.log('Payment form submitted');
+    
+    if (!currentStudentCode) {
+        showNotification('Please select a student first', 'error');
+        return;
     }
 
-    function goBackToStep2() {
-        currentStep = 2;
-        document.getElementById('hallTicketStep1').style.display = 'none';
-        document.getElementById('hallTicketStep2').style.display = 'block';
-        document.getElementById('hallTicketStep3').style.display = 'none';
-        updateStepIndicator(2);
-    }
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    
+    try {
+        const paymentAmount = parseFloat(document.getElementById('paymentAmount').value);
+        const maxAmount = parseFloat(document.getElementById('paymentAmount').dataset.maxAmount);
+        
+        console.log('Payment amount entered:', paymentAmount);
+        console.log('Max allowed amount:', maxAmount);
 
-    function goToStep3() {
-        if (studentsList.length === 0) {
-            showNotification('Please add at least one student', 'error');
+        // Validation
+        if (isNaN(paymentAmount) || paymentAmount <= 0) {
+            showNotification('Payment amount must be greater than 0', 'error');
             return;
         }
         
-        currentStep = 3;
-        document.getElementById('hallTicketStep1').style.display = 'none';
-        document.getElementById('hallTicketStep2').style.display = 'none';
-        document.getElementById('hallTicketStep3').style.display = 'block';
-        updateStepIndicator(3);
-        
-        document.getElementById('totalStudentsCount').textContent = studentsList.length;
-        generateExamScheduleForm();
-    }
-
-    function generateExamScheduleForm() {
-        const container = document.getElementById('examScheduleContainer');
-        container.innerHTML = '';
-        
-        const fromDate = new Date(hallTicketData.fromDate);
-        const toDate = new Date(hallTicketData.toDate);
-        
-        const dates = [];
-        const currentDate = new Date(fromDate);
-        
-        while (currentDate <= toDate) {
-            dates.push(new Date(currentDate));
-            currentDate.setDate(currentDate.getDate() + 1);
+        if (paymentAmount > maxAmount) {
+            showNotification(`Payment amount (₹${paymentAmount}) cannot exceed due amount (₹${maxAmount})`, 'error');
+            return;
         }
+
+        const remarks = document.getElementById('paymentRemarks').value.trim();
+        console.log('Payment remarks:', remarks);
+
+        // Show loading state
+        showLoadingOverlay('Processing payment...');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>⏳ Processing...</span>';
+
+        console.log('Sending payment request to API');
+
+        const response = await fetch(`${API_BASE}/fee-certificates`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentCode: currentStudentCode,
+                amountPaid: paymentAmount,
+                remarks: remarks,
+                generatedBy: 'receptionist'
+            })
+        });
+
+        console.log('Payment API response status:', response.status);
+        const result = await response.json();
+        console.log('Payment API response data:', result);
+
+        hideLoadingOverlay();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+
+        if (response.ok && result.success) {
+            showNotification(`✅ Payment processed! Certificate generated. New balance: ₹${result.newBalance.currentDue.toLocaleString()}`, 'success');
+            
+            // Reset form and clear all data
+            e.target.reset();
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('studentSearchResults').innerHTML = '';
+            document.getElementById('paymentClass').value = '';
+            document.getElementById('paymentRollNumber').value = '';
+            currentStudentCode = null; // Clear the current student
+            
+            console.log('Payment successful, form reset');
+            
+            // Optionally reload certificates
+            if (typeof loadAllCertificates === 'function') {
+                loadAllCertificates();
+            }
+        } else {
+            showNotification(result.error || 'Failed to process payment', 'error');
+        }
+    } catch (error) {
+        hideLoadingOverlay();
+        console.error('❌ Payment error:', error);
+        showNotification('Error processing payment: ' + error.message, 'error');
         
-        dates.forEach((date, index) => {
-            const dateStr = date.toISOString().split('T')[0];
-            const displayDate = date.toLocaleDateString('en-IN', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    }
+});
+
+        // ========== LOAD ALL CERTIFICATES ==========
+        async function loadAllCertificates() {
+            try {
+                const response = await fetch(`${API_BASE}/receptionist/fee-certificates`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                allCertificatesGlobal = await response.json();
+                displayAllCertificates();
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                document.getElementById('allCertificatesDisplay').innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #ef4444;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                        <p>Error loading certificates: ${error.message}</p>
+                        <button onclick="loadAllCertificates()" style="margin-top: 1rem; background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Retry</button>
+                    </div>
+                `;
+                showNotification('Error loading certificates: ' + error.message, 'error');
+            }
+        }
+
+        function displayAllCertificates() {
+            const container = document.getElementById('allCertificatesDisplay');
+            
+            if (!allCertificatesGlobal || allCertificatesGlobal.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                        <p>No certificates available yet</p>
+                        <p style="font-size: 0.875rem; color: #9ca3af; margin-top: 0.5rem;">Generated certificates will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const groupedByClass = {};
+            allCertificatesGlobal.forEach(cert => {
+                if (!groupedByClass[cert.studentClass]) {
+                    groupedByClass[cert.studentClass] = [];
+                }
+                groupedByClass[cert.studentClass].push(cert);
+            });
+
+            let html = '';
+            Object.keys(groupedByClass).sort().forEach(classCode => {
+                const classCerts = groupedByClass[classCode].sort((a,b) => 
+                    parseInt(a.studentRoll) - parseInt(b.studentRoll)
+                );
+                
+                let classDisplay = classCode;
+                if (classCode === 'nursery') classDisplay = 'Nursery';
+                else if (classCode === 'lkg') classDisplay = 'LKG';
+                else if (classCode === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + classCode;
+                
+                html += `
+                    <h3 style="background: #f1f5f9; padding: 0.75rem 1rem; margin: 1rem 0 0.5rem 0; 
+                        border-left: 4px solid #3b82f6;">${classDisplay}</h3>
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; min-width: 900px;">
+                            <thead>
+                                <tr style="background: #f8fafc;">
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Code</th>
+                                    <th style="padding: 0.75rem; text-align: left; border: 1px solid #e5e7eb;">Name</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Roll</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Total Fee</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Amount Paid</th>
+                                    <th style="padding: 0.75rem; text-align: right; border: 1px solid #e5e7eb;">Due</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Generated By</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Date</th>
+                                    <th style="padding: 0.75rem; text-align: center; border: 1px solid #e5e7eb;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                classCerts.forEach(cert => {
+                    const generatedByColor = cert.generatedBy === 'admin' ? '#3b82f6' : '#10b981';
+                    const generatedByLabel = cert.generatedBy === 'admin' ? 'Admin' : 'Receptionist';
+                    const generatedDate = new Date(cert.generatedAt).toLocaleString();
+                    
+                    html += `
+                        <tr>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;"><strong>${cert.studentCode}</strong></td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; white-space: nowrap;">${cert.studentName}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">${cert.studentRoll}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; white-space: nowrap;">₹${cert.totalFee.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #10b981; white-space: nowrap;">₹${cert.amountPaid.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: right; color: #ef4444; white-space: nowrap;">₹${cert.remainingDue.toLocaleString()}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <span style="background: ${generatedByColor}20; color: ${generatedByColor}; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">${generatedByLabel}</span>
+                            </td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center; font-size: 0.875rem; white-space: nowrap;">${generatedDate}</td>
+                            <td style="padding: 0.75rem; border: 1px solid #e5e7eb; text-align: center;">
+                                <button onclick="downloadCertificate('${cert.id}')" 
+                                    style="background: #3b82f6; color: white; border: none; padding: 0.4rem 0.8rem; 
+                                    border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: 600; white-space: nowrap;">
+                                    ⬇️ Download
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table></div>';
             });
             
-            const dateSection = document.createElement('div');
-            dateSection.style.cssText = 'background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;';
-            dateSection.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h4 style="margin: 0; color: #1f2937;">📅 ${displayDate}</h4>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <button type="button" onclick="setExamCount('${dateStr}', 1)" 
-                            class="exam-count-btn" data-date="${dateStr}" data-count="1"
-                            style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                            1 Exam
-                        </button>
-                        <button type="button" onclick="setExamCount('${dateStr}', 2)" 
-                            class="exam-count-btn" data-date="${dateStr}" data-count="2"
-                            style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
-                            2 Exams
-                        </button>
-                    </div>
-                </div>
-                <div id="exams-${dateStr}" style="display: none; margin-top: 1rem;"></div>
-            `;
-            
-            container.appendChild(dateSection);
-        });
-    }
-
-    function setExamCount(dateStr, count) {
-        const buttons = document.querySelectorAll(`button[data-date="${dateStr}"]`);
-        buttons.forEach(btn => {
-            if (parseInt(btn.dataset.count) === count) {
-                btn.style.background = '#3b82f6';
-                btn.style.color = 'white';
-            } else {
-                btn.style.background = 'white';
-                btn.style.color = '#3b82f6';
-            }
-        });
-        
-        const examsContainer = document.getElementById(`exams-${dateStr}`);
-        examsContainer.style.display = 'block';
-        examsContainer.innerHTML = '';
-        
-        for (let i = 1; i <= count; i++) {
-            const examDiv = document.createElement('div');
-            examDiv.style.cssText = 'background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #cbd5e1;';
-            examDiv.innerHTML = `
-                <h5 style="margin: 0 0 0.75rem 0; color: #475569;">${count === 1 ? 'Exam Details' : i === 1 ? '🌅 Forenoon Exam' : '🌆 Afternoon Exam'}</h5>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Exam Name:</label>
-                        <input type="text" 
-                            id="examName-${dateStr}-${i}" 
-                            placeholder="e.g., Mathematics, Science" 
-                            required
-                            style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Timing:</label>
-                        <input type="text" 
-                            id="examTiming-${dateStr}-${i}" 
-                            placeholder="e.g., 9:00 AM - 12:00 PM" 
-                            required
-                            style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
-                    </div>
-                </div>
-            `;
-            examsContainer.appendChild(examDiv);
+            container.innerHTML = html;
         }
-    }
 
-    async function submitAllHallTickets() {
-        try {
+        // ========== DOWNLOAD FEE CERTIFICATE ==========
+        function downloadCertificate(certificateId) {
+            try {
+                const certificate = allCertificatesGlobal.find(c => c.id === certificateId);
+                if (!certificate) {
+                    showNotification('Certificate not found. Please refresh and try again.', 'error');
+                    return;
+                }
+                if (typeof html2canvas === 'undefined') {
+                    showNotification('Image generation library not loaded. Please refresh the page.', 'error');
+                    return;
+                }
+
+                const currentDate = new Date().toLocaleDateString('en-IN');
+                const academicYear = certificate.academicYear || '2024-25';
+                const fatherName = certificate.fatherName || 'N/A';
+                const remarks = certificate.remarks || 'No remarks';
+                
+                let classDisplay = certificate.studentClass;
+                if (classDisplay === 'nursery') classDisplay = 'Nursery';
+                else if (classDisplay === 'lkg') classDisplay = 'LKG';
+                else if (classDisplay === 'ukg') classDisplay = 'UKG';
+                else classDisplay = 'Class ' + certificate.studentClass;
+
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position:fixed; inset:0; z-index:10000; display:flex; align-items:center; justify-content:center;
+                    background:rgba(0,0,0,.75); padding:20px;
+                `;
+
+                const sheet = document.createElement('div');
+                sheet.style.cssText = `
+                    background:#fff; border-radius:12px; padding:20px; max-width:940px; width:100%;
+                    max-height:92vh; overflow:auto; box-shadow:0 24px 48px rgba(0,0,0,.25);
+                `;
+
+                const card = document.createElement('div');
+                card.id = 'feeCertificateContent';
+                card.style.cssText = `
+                    width:820px; margin:0 auto; background:#fff; font-family:"Times New Roman", Georgia, serif; color:#000;
+                `;
+
+                card.innerHTML = `
+                    <div style="border:3px solid #000; padding:26px; background:#fff; line-height:1.45; color:#000;
+                                -webkit-print-color-adjust:exact; print-color-adjust:exact;">
+
+                        <!-- Header -->
+                        <div style="display:grid; grid-template-columns:110px 1fr; column-gap:20px; align-items:center;">
+                            <div>
+                                <img src="logo.png" alt="School Logo" width="100" height="100"
+                                    style="width:100px;height:100px;object-fit:contain" crossorigin="anonymous"
+                                    onerror="this.style.display='none'">
+                            </div>
+
+                            <div style="text-align:center; padding-right:50px;">
+                                <div style="font-size:24px; font-weight:700; letter-spacing:.5px; margin:2px 0 6px 0;">
+                                    VISWA BHARATHI SCHOOL
+                                </div>
+                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                                    NEHRU ROAD, PRODDATUR-516 360. Kadapa Dist. A.P.
+                                </div>
+                                <div style="font-size:13px; font-weight:700; margin:3px 0;">
+                                    Cell: 6301444214, 8555950709
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Title -->
+                        <div style="text-align:center; margin:18px 0 6px 0; font-size:20px; font-weight:700; text-decoration:underline;">
+                            FEE CERTIFICATE
+                        </div>
+                        <div style="height:2px; background:#000; margin:8px 0 18px 0;"></div>
+
+                        <!-- Certificate Info -->
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:14px;">
+                            <div><span style="font-weight:700">Certificate No:</span> ${certificate.id}</div>
+                            <div><span style="font-weight:700">Date of Issue:</span> ${currentDate}</div>
+                            <div><span style="font-weight:700">Academic Year:</span> ${academicYear}</div>
+                        </div>
+
+                        <!-- Student Details -->
+                        <div style="margin:22px 0 10px 0; font-size:16px; font-weight:700;">STUDENT DETAILS</div>
+                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; font-size:14px;">
+                            <div><span style="font-weight:700">Student Name:</span> ${certificate.studentName}</div>
+                            <div><span style="font-weight:700">Student Code:</span> ${certificate.studentCode}</div>
+                            <div><span style="font-weight:700">Roll Number:</span> ${certificate.studentRoll}</div>
+                            <div><span style="font-weight:700">Father's Name:</span> ${fatherName}</div>
+                            <div><span style="font-weight:700">Class:</span> ${classDisplay}</div>
+                        </div>
+
+                        <!-- Fee Details -->
+                        <div style="margin:24px 0 10px 0; font-size:16px; font-weight:700;">FEE DETAILS</div>
+                        <div style="height:1px; background:#000; margin:-6px 0 14px 0;"></div>
+                        <table style="width:100%; border-collapse:collapse; font-size:14px;">
+                            <thead>
+                                <tr>
+                                    <th style="border:1px solid #000; padding:10px; text-align:left; background:#f2f2f2; font-weight:700;">Description</th>
+                                    <th style="border:1px solid #000; padding:10px; text-align:right; background:#f2f2f2; font-weight:700;">Amount (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Total Fee Amount</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalFee||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Amount Paid (This Payment)</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.amountPaid||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Total Paid to Date</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.totalPaidToDate||0).toFixed(2)}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #000; padding:10px;">Remaining Due</td>
+                                    <td style="border:1px solid #000; padding:10px; text-align:right;">${Number(certificate.remainingDue||0).toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Remarks -->
+                        <div style="margin:16px 0 0 0; font-size:14px;">
+                            <span style="font-weight:700;">Remarks:</span> ${remarks}
+                        </div>
+
+                        <!-- Signature -->
+                        <div style="margin-top:46px; display:flex; justify-content:flex-end;">
+                            <div style="min-width:220px; text-align:center;">
+                                <div style="border-top:2px solid #000; margin-bottom:6px;"></div>
+                                <div style="font-size:13px; font-weight:700;">Correspondent</div>
+                                <div style="font-size:13px; font-weight:700;">Viswa Bharathi School</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const actions = document.createElement('div');
+                actions.style.cssText = 'display:flex; gap:10px; justify-content:center; margin-top:16px;';
+                const dl = document.createElement('button');
+                dl.textContent = '⬇️ Download PNG';
+                dl.style.cssText = 'background:#10b981;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+                dl.onclick = () => generateCertificateImage(card, certificate, overlay);
+                const close = document.createElement('button');
+                close.textContent = '✕ Close';
+                close.style.cssText = 'background:#ef4444;color:#fff;border:none;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;';
+                close.onclick = () => document.body.removeChild(overlay);
+
+                actions.append(dl, close);
+                sheet.append(card, actions);
+                overlay.appendChild(sheet);
+                document.body.appendChild(overlay);
+
+            } catch (err) {
+                console.error('downloadCertificate error:', err);
+                showNotification('Error preparing certificate: ' + err.message, 'error');
+            }
+        }
+
+        function generateCertificateImage(element, certificate, overlay) {
+            showNotification('Generating certificate image...', 'info');
+            
+            html2canvas(element, {
+                scale: 3,
+                backgroundColor: '#ffffff',
+                logging: false,
+                useCORS: true,
+                allowTaint: false,
+                onclone: (doc) => {
+                    doc.querySelectorAll('#feeCertificateContent *').forEach(n => {
+                        n.style.color = '#000';
+                    });
+                }
+            })
+            .then(canvas => {
+                canvas.toBlob(blob => {
+                    if (!blob) {
+                        showNotification('Could not create image file', 'error');
+                        return;
+                    }
+                    const url = URL.createObjectURL(blob);
+                    const safeName = (certificate.studentName || 'Student').replace(/\s+/g, '_');
+                    const a = document.createElement('a');
+                    a.download = `FeeCertificate_${safeName}_${certificate.studentCode}.png`;
+                    a.href = url;
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 250);
+                    showNotification('✅ Fee certificate downloaded successfully!', 'success');
+                    setTimeout(() => {
+                        if (document.body.contains(overlay)) {
+                            document.body.removeChild(overlay);
+                        }
+                    }, 1000);
+                }, 'image/png');
+            })
+            .catch(err => {
+                console.error('html2canvas error:', err);
+                showNotification('Failed to generate image: ' + (err.message || 'Unknown error'), 'error');
+            });
+        }
+
+        // ========== FEE HISTORY MODAL ==========
+        function viewFeeHistory() {
+            // This would show complete fee records from API
+            showNotification('Fee history feature - load from API', 'info');
+        }
+
+        function closeFeeRecordsModal() {
+            document.getElementById('feeRecordsModal').style.display = 'none';
+        }
+
+        // ========== FEE CERTIFICATES MODAL ==========
+        async function viewFeeCertificates() {
+            const modal = document.getElementById('feeCertificateModal');
+            modal.style.display = 'flex';
+            await loadCertificatesForModal();
+        }
+
+        async function loadCertificatesForModal() {
+            try {
+                const response = await fetch(`${API_BASE}/receptionist/fee-certificates`);
+                const certificates = await response.json();
+                displayCertificatesInModal(certificates);
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+                showNotification('Error loading certificates', 'error');
+            }
+        }
+
+        function displayCertificatesInModal(certificates) {
+            const container = document.getElementById('certificatesListContent');
+            
+            if (certificates.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #64748b;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📜</div>
+                        <p>No certificates generated yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            certificates.forEach(cert => {
+                const generatedByColor = cert.generatedBy === 'admin' ? '#3b82f6' : '#10b981';
+                const generatedByLabel = cert.generatedBy === 'admin' ? 'Admin' : 'Receptionist';
+                
+                html += `
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div>
+                                <h4 style="margin: 0;">${cert.studentName}</h4>
+                                <p style="margin: 0.25rem 0 0 0; color: #6b7280; font-size: 0.875rem;">${cert.studentCode} - Class ${cert.studentClass}</p>
+                            </div>
+                            <span style="background: ${generatedByColor}20; color: ${generatedByColor}; padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;">${generatedByLabel}</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <div style="font-size: 0.75rem; color: #6b7280;">Amount Paid</div>
+                                <div style="font-weight: 600; color: #10b981;">₹${cert.amountPaid.toLocaleString()}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.75rem; color: #6b7280;">Remaining Due</div>
+                                <div style="font-weight: 600; color: #ef4444;">₹${cert.remainingDue.toLocaleString()}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.75rem; color: #6b7280;">Generated</div>
+                                <div style="font-weight: 600; font-size: 0.875rem;">${new Date(cert.generatedAt).toLocaleDateString()}</div>
+                            </div>
+                        </div>
+                        <button onclick="downloadCertificate('${cert.id}'); closeFeeCertificateModal();" 
+                            style="background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%;">
+                            ⬇️ Download Certificate
+                        </button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function closeFeeCertificateModal() {
+            document.getElementById('feeCertificateModal').style.display = 'none';
+        }
+
+        // ========== HALL TICKET FUNCTIONS ==========
+        function issueHallTicket() {
+            document.getElementById('hallTicketModal').style.display = 'flex';
+            resetHallTicketForm();
+        }
+
+        function closeHallTicketModal() {
+            document.getElementById('hallTicketModal').style.display = 'none';
+            resetHallTicketForm();
+        }
+
+        function resetHallTicketForm() {
+            currentStep = 1;
+            hallTicketData = {};
+            studentsList = [];
             examSchedule = [];
+            
+            document.getElementById('hallTicketBasicForm').reset();
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentRoll').value = '';
+            
+            document.getElementById('hallTicketStep1').style.display = 'block';
+            document.getElementById('hallTicketStep2').style.display = 'none';
+            document.getElementById('hallTicketStep3').style.display = 'none';
+            
+            updateStepIndicator(1);
+            updateStudentsList();
+        }
+
+        function updateStepIndicator(step) {
+            const steps = document.querySelectorAll('.step-item');
+            steps.forEach((stepItem, index) => {
+                const stepNumber = index + 1;
+                stepItem.classList.remove('active', 'completed');
+                
+                if (stepNumber < step) {
+                    stepItem.classList.add('completed');
+                } else if (stepNumber === step) {
+                    stepItem.classList.add('active');
+                }
+            });
+        }
+
+        document.getElementById('hallTicketBasicForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const fromDate = new Date(formData.get('hallFromDate'));
+            const toDate = new Date(formData.get('hallToDate'));
+            
+            if (toDate < fromDate) {
+                showNotification('End date cannot be before start date', 'error');
+                return;
+            }
+            
+            hallTicketData = {
+                examName: formData.get('hallExamName'),
+                fromDate: formData.get('hallFromDate'),
+                toDate: formData.get('hallToDate'),
+                studentClass: formData.get('hallStudentClass'),
+                remarks: formData.get('hallRemarks') || ''
+            };
+            
+            goToStep2();
+        });
+
+        function goBackToStep1() {
+            currentStep = 1;
+            document.getElementById('hallTicketStep1').style.display = 'block';
+            document.getElementById('hallTicketStep2').style.display = 'none';
+            document.getElementById('hallTicketStep3').style.display = 'none';
+            updateStepIndicator(1);
+        }
+
+        function goToStep2() {
+            currentStep = 2;
+            document.getElementById('hallTicketStep1').style.display = 'none';
+            document.getElementById('hallTicketStep2').style.display = 'block';
+            document.getElementById('hallTicketStep3').style.display = 'none';
+            updateStepIndicator(2);
+            updateStudentsList();
+        }
+
+        function addStudentToList() {
+            const name = document.getElementById('studentName').value.trim();
+            const roll = document.getElementById('studentRoll').value.trim();
+            
+            if (!name || !roll) {
+                showNotification('Please enter both student name and roll number', 'error');
+                return;
+            }
+            
+            if (parseInt(roll) < 1) {
+                showNotification('Roll number must be greater than 0', 'error');
+                return;
+            }
+            
+            if (studentsList.some(s => s.roll === roll)) {
+                showNotification('A student with this roll number already exists', 'error');
+                return;
+                 }
+            
+            studentsList.push({
+                name: name,
+                roll: roll
+            });
+            
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentRoll').value = '';
+            document.getElementById('studentName').focus();
+            
+            updateStudentsList();
+            showNotification(`${name} added successfully!`);
+        }
+
+        function updateStudentsList() {
+            const container = document.getElementById('studentsList');
+            const countSpan = document.getElementById('studentCount');
+            const nextBtn = document.getElementById('nextToScheduleBtn');
+            
+            countSpan.textContent = studentsList.length;
+            
+            if (studentsList.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #9ca3af;" id="emptyStudentsMessage">
+                        No students added yet
+                    </div>
+                `;
+                nextBtn.disabled = true;
+                return;
+            }
+            
+            nextBtn.disabled = false;
+            
+            let html = '';
+            studentsList.forEach((student, index) => {
+                html += `
+                    <div class="student-card">
+                        <div class="student-info">
+                            <div class="student-name">${student.name}</div>
+                            <div class="student-roll">Roll: ${student.roll}</div>
+                        </div>
+                        <button class="remove-student-btn" onclick="removeStudent(${index})">
+                            🗑️ Remove
+                        </button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function removeStudent(index) {
+            const student = studentsList[index];
+            studentsList.splice(index, 1);
+            updateStudentsList();
+            showNotification(`${student.name} removed`);
+        }
+
+        function clearAllStudents() {
+            if (studentsList.length === 0) return;
+            
+            if (confirm(`Are you sure you want to remove all ${studentsList.length} students?`)) {
+                studentsList = [];
+                updateStudentsList();
+                showNotification('All students removed');
+            }
+        }
+
+        function goBackToStep2() {
+            currentStep = 2;
+            document.getElementById('hallTicketStep1').style.display = 'none';
+            document.getElementById('hallTicketStep2').style.display = 'block';
+            document.getElementById('hallTicketStep3').style.display = 'none';
+            updateStepIndicator(2);
+        }
+
+        function goToStep3() {
+            if (studentsList.length === 0) {
+                showNotification('Please add at least one student', 'error');
+                return;
+            }
+            
+            currentStep = 3;
+            document.getElementById('hallTicketStep1').style.display = 'none';
+            document.getElementById('hallTicketStep2').style.display = 'none';
+            document.getElementById('hallTicketStep3').style.display = 'block';
+            updateStepIndicator(3);
+            
+            document.getElementById('totalStudentsCount').textContent = studentsList.length;
+            generateExamScheduleForm();
+        }
+
+        function generateExamScheduleForm() {
+            const container = document.getElementById('examScheduleContainer');
+            container.innerHTML = '';
+            
             const fromDate = new Date(hallTicketData.fromDate);
             const toDate = new Date(hallTicketData.toDate);
             
@@ -2295,152 +2006,246 @@ function generateFeeCertificateImage(element, certificate) {
                 currentDate.setDate(currentDate.getDate() + 1);
             }
             
-            for (const date of dates) {
+            dates.forEach((date, index) => {
                 const dateStr = date.toISOString().split('T')[0];
-                const examsContainer = document.getElementById(`exams-${dateStr}`);
-                
-                if (!examsContainer || examsContainer.style.display === 'none') {
-                    showNotification(`Please configure exams for ${date.toLocaleDateString('en-IN')}`, 'error');
-                    return;
-                }
-                
-                const examInputs = examsContainer.querySelectorAll('input[id^="examName-"]');
-                if (examInputs.length === 0) {
-                    showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
-                    return;
-                }
-                
-                const dateExams = [];
-                for (let i = 1; i <= examInputs.length; i++) {
-                    const examName = document.getElementById(`examName-${dateStr}-${i}`);
-                    const examTiming = document.getElementById(`examTiming-${dateStr}-${i}`);
-                    
-                    if (!examName || !examName.value.trim()) {
-                        showNotification(`Please enter exam name for ${date.toLocaleDateString('en-IN')}`, 'error');
-                        return;
-                    }
-                    
-                    if (!examTiming || !examTiming.value.trim()) {
-                        showNotification(`Please enter exam timing for ${date.toLocaleDateString('en-IN')}`, 'error');
-                        return;
-                    }
-                    
-                    dateExams.push({
-                        examName: examName.value.trim(),
-                        timing: examTiming.value.trim()
-                    });
-                }
-                
-                examSchedule.push({
-                    date: dateStr,
-                    exams: dateExams
+                const displayDate = date.toLocaleDateString('en-IN', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
                 });
-            }
-            
-            let successCount = 0;
-            let failCount = 0;
-            
-            showNotification(`Generating ${studentsList.length} hall tickets...`);
-            
-            for (const student of studentsList) {
-                const studentCode = generateStudentCode(hallTicketData.studentClass, student.roll);
                 
-                const hallTicket = {
-                    hallTicketId: `HT_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                    examName: hallTicketData.examName,
-                    fromDate: hallTicketData.fromDate,
-                    toDate: hallTicketData.toDate,
-                    studentName: student.name,
-                    studentRoll: student.roll,
-                    studentClass: hallTicketData.studentClass,
-                    studentCode: studentCode,
-                    examSchedule: examSchedule,
-                    remarks: hallTicketData.remarks,
-                    issuedBy: 'receptionist',
-                    issuedDate: new Date().toISOString(),
-                    createdAt: new Date().toISOString(),
-                    status: 'pending'
-                };
+                const dateSection = document.createElement('div');
+                dateSection.style.cssText = 'background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem;';
+                dateSection.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h4 style="margin: 0; color: #1f2937;">📅 ${displayDate}</h4>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button type="button" onclick="setExamCount('${dateStr}', 1)" 
+                                class="exam-count-btn" data-date="${dateStr}" data-count="1"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                1 Exam
+                            </button>
+                            <button type="button" onclick="setExamCount('${dateStr}', 2)" 
+                                class="exam-count-btn" data-date="${dateStr}" data-count="2"
+                                style="padding: 0.5rem 1rem; border: 2px solid #3b82f6; background: white; color: #3b82f6; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                2 Exams
+                            </button>
+                        </div>
+                    </div>
+                    <div id="exams-${dateStr}" style="display: none; margin-top: 1rem;"></div>
+                `;
                 
-                try {
-                    const response = await fetch(`${API_BASE}/admin/create-hall-ticket`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(hallTicket)
-                    });
-
-                    if (response.ok) {
-                        successCount++;
-                    } else {
-                        failCount++;
-                        console.error(`Failed for ${student.name}:`, await response.text());
-                    }
-                } catch (error) {
-                    failCount++;
-                    console.error(`Error for ${student.name}:`, error);
-                }
-            }
-            
-            if (successCount > 0) {
-                showNotification(`✅ ${successCount} hall tickets sent to Admin successfully!`);
-            }
-            
-            if (failCount > 0) {
-                showNotification(`⚠️ ${failCount} hall tickets failed to send`, 'error');
-            }
-            
-            if (successCount === studentsList.length) {
-                setTimeout(() => {
-                    closeHallTicketModal();
-                }, 1500);
-            }
-            
-        } catch (error) {
-            console.error('Hall ticket submission error:', error);
-            showNotification('Error creating hall tickets: ' + error.message, 'error');
+                container.appendChild(dateSection);
+            });
         }
-    }
 
-    function clearAllData() {
-        const confirmDialog = document.createElement('div');
-        confirmDialog.style.cssText = `
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); z-index: 1000; display: flex;
-            align-items: center; justify-content: center;
-        `;
+        function setExamCount(dateStr, count) {
+            const buttons = document.querySelectorAll(`button[data-date="${dateStr}"]`);
+            buttons.forEach(btn => {
+                if (parseInt(btn.dataset.count) === count) {
+                    btn.style.background = '#3b82f6';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.background = 'white';
+                    btn.style.color = '#3b82f6';
+                }
+            });
+            
+            const examsContainer = document.getElementById(`exams-${dateStr}`);
+            examsContainer.style.display = 'block';
+            examsContainer.innerHTML = '';
+            
+            for (let i = 1; i <= count; i++) {
+                const examDiv = document.createElement('div');
+                examDiv.style.cssText = 'background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #cbd5e1;';
+                examDiv.innerHTML = `
+                    <h5 style="margin: 0 0 0.75rem 0; color: #475569;">${count === 1 ? 'Exam Details' : i === 1 ? '🌅 Forenoon Exam' : '🌆 Afternoon Exam'}</h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Exam Name:</label>
+                            <input type="text" 
+                                id="examName-${dateStr}-${i}" 
+                                placeholder="e.g., Mathematics, Science" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: #475569;">Timing:</label>
+                            <input type="text" 
+                                id="examTiming-${dateStr}-${i}" 
+                                placeholder="e.g., 9:00 AM - 12:00 PM" 
+                                required
+                                style="width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+                        </div>
+                    </div>
+                `;
+                examsContainer.appendChild(examDiv);
+            }
+        }
 
-        confirmDialog.innerHTML = `
-            <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 500px; width: 90%;" onclick="event.stopPropagation()">
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <div style="font-size: 3rem; color: #ef4444;">⚠️</div>
-                    <h3 style="margin: 0.5rem 0; color: #dc2626;">Clear All Data</h3>
-                    <p style="color: #6b7280;">This will delete all student records, payment history, and certificates. This action cannot be undone.</p>
-                </div>
-                <div style="display: flex; gap: 1rem; justify-content: center;">
-                    <button onclick="confirmClearData()" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Yes, Clear All</button>
-                    <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Cancel</button>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(confirmDialog);
-    }
-
-    function confirmClearData() {
-        sessionStorage.removeItem('feeStudents');
-        sessionStorage.removeItem('hallTickets');
-        showNotification('All local data cleared successfully!');
-        setTimeout(() => location.reload(), 1000);
-    }
-
-    // Initialize on page load
-    document.getElementById('regAcademicYear').value = '2024-25';
-    loadFeeOverview();
-    loadPaymentHistory();
-</script>
+        async function submitAllHallTickets() {
+            try {
+                examSchedule = [];
+                const fromDate = new Date(hallTicketData.fromDate);
+                const toDate = new Date(hallTicketData.toDate);
+                
+                const dates = [];
+                const currentDate = new Date(fromDate);
+                
+                while (currentDate <= toDate) {
+                    dates.push(new Date(currentDate));
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+                
+                for (const date of dates) {
+                    const dateStr = date.toISOString().split('T')[0];
+                    const examsContainer = document.getElementById(`exams-${dateStr}`);
                     
+                    if (!examsContainer || examsContainer.style.display === 'none') {
+                        showNotification(`Please configure exams for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const examInputs = examsContainer.querySelectorAll('input[id^="examName-"]');
+                    if (examInputs.length === 0) {
+                        showNotification(`Please add exam details for ${date.toLocaleDateString('en-IN')}`, 'error');
+                        return;
+                    }
+                    
+                    const dateExams = [];
+                    for (let i = 1; i <= examInputs.length; i++) {
+                        const examName = document.getElementById(`examName-${dateStr}-${i}`);
+                        const examTiming = document.getElementById(`examTiming-${dateStr}-${i}`);
+                        
+                        if (!examName || !examName.value.trim()) {
+                            showNotification(`Please enter exam name for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        if (!examTiming || !examTiming.value.trim()) {
+                            showNotification(`Please enter exam timing for ${date.toLocaleDateString('en-IN')}`, 'error');
+                            return;
+                        }
+                        
+                        dateExams.push({
+                            examName: examName.value.trim(),
+                            timing: examTiming.value.trim()
+                        });
+                    }
+                    
+                    examSchedule.push({
+                        date: dateStr,
+                        exams: dateExams
+                    });
+                }
+                
+                let successCount = 0;
+                let failCount = 0;
+                
+                showNotification(`Generating ${studentsList.length} hall tickets...`, 'info');
+                
+                for (const student of studentsList) {
+                    const studentCode = generateStudentCode(hallTicketData.studentClass, student.roll);
+                    
+                    const hallTicket = {
+                        hallTicketId: `HT_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                        examName: hallTicketData.examName,
+                        fromDate: hallTicketData.fromDate,
+                        toDate: hallTicketData.toDate,
+                        studentName: student.name,
+                        studentRoll: student.roll,
+                        studentClass: hallTicketData.studentClass,
+                        studentCode: studentCode,
+                        examSchedule: examSchedule,
+                        remarks: hallTicketData.remarks,
+                        issuedBy: 'receptionist',
+                        issuedDate: new Date().toISOString(),
+                        createdAt: new Date().toISOString(),
+                        status: 'pending'
+                    };
+                    
+                    try {
+                        const response = await fetch(`${API_BASE}/admin/create-hall-ticket`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(hallTicket)
+                        });
+
+                        if (response.ok) {
+                            successCount++;
+                        } else {
+                            failCount++;
+                            console.error(`Failed for ${student.name}:`, await response.text());
+                        }
+                    } catch (error) {
+                        failCount++;
+                        console.error(`Error for ${student.name}:`, error);
+                    }
+                }
+                
+                if (successCount > 0) {
+                    showNotification(`✅ ${successCount} hall tickets sent to Admin successfully!`);
+                }
+                
+                if (failCount > 0) {
+                    showNotification(`⚠️ ${failCount} hall tickets failed to send`, 'error');
+                }
+                
+                if (successCount === studentsList.length) {
+                    setTimeout(() => {
+                        closeHallTicketModal();
+                    }, 1500);
+                }
+                
+            } catch (error) {
+                console.error('Hall ticket submission error:', error);
+                showNotification('Error creating hall tickets: ' + error.message, 'error');
+            }
+        }
+
+        function clearAllData() {
+            const confirmDialog = document.createElement('div');
+            confirmDialog.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); z-index: 1000; display: flex;
+                align-items: center; justify-content: center;
+            `;
+
+            confirmDialog.innerHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 15px; max-width: 500px; width: 90%;" onclick="event.stopPropagation()">
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem; color: #ef4444;">⚠️</div>
+                        <h3 style="margin: 0.5rem 0; color: #dc2626;">Clear All Data</h3>
+                        <p style="color: #6b7280;">This will clear all local session data. This action cannot be undone.</p>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button onclick="confirmClearData()" style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Yes, Clear All</button>
+                        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background: #6b7280; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Cancel</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(confirmDialog);
+        }
+
+        function confirmClearData() {
+            sessionStorage.clear();
+            showNotification('All local data cleared successfully!');
+            setTimeout(() => location.reload(), 1000);
+        }
+
+        // Initialize on page load
+        document.getElementById('regAcademicYear').value = '2024-25';
+        
+        // Auto-load certificates on page load
+        loadAllCertificates();
+        
+        console.log('✅ Receptionist Dashboard loaded successfully');
+        console.log('✅ NEW FEE CERTIFICATE SYSTEM: Direct generation without approval');
+    </script>
 </body>
 </html>
                 
